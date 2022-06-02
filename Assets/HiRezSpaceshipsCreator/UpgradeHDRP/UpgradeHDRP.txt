@@ -1,0 +1,8 @@
+Due to size limitations I am unable to include the exported Unity package that contains the HDRP materials.
+However, you can easily upgrade to HDRP by going to:
+Window -> Render Pipeline -> HD Render Pipeline Wizard -> Fix All
+And afterwards:
+Window -> Render Pipeline -> HD Render Pipeline Wizard -> Upgrade Project Materials to High Definition Materials 
+
+You may need to change the "Emission Intensity" value of the materials depending on the lighting and exposure of your scene. If you drop any prefab in your scene and you notice that the emissive textures are too dimmed out; simply select the material, and under the "Emission Inputs" tab, make sure the "Emissive Color" is white and change the "Emission Intensity" value, values may greatly differ from 1 to 10000.
+Alternatively, you may be able to simply adjust all the emissive values by setting up your scene to have an exposure of 0 or changing the exposure of your scene or camera without changing any materials. For any questions feel free to reach out on our suppor thread.
