@@ -8,13 +8,13 @@ using Autohand.Demo;
 public class GetInputValues : MonoBehaviour
 {
     [SerializeField]
-    private JoystickObjectMover Joystick;
+    private JoystickAutohand Joystick;
+
 
     [SerializeField]
-    private MoverLever Throttle;
+    private ThrottleAutohand Throttle;
 
     public Vector2 joystickValues;
-
     public float throttleValue;
 
 

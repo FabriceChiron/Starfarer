@@ -6,6 +6,8 @@ using Autohand.Demo;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 
+using UnityEngine.InputSystem;
+
 public enum controlType
 {
     PHYSICS,
@@ -21,6 +23,13 @@ public class Spaceship : MonoBehaviour
 
     [SerializeField]
     private bool _useXR;
+
+    [SerializeField]
+    private PlayerInput _playerInput;
+
+    [SerializeField]
+    private float lockPitchYawDurationOnStart = 2f;
+
 
     [Header("=== Ship Movement Settings ===")]
     [SerializeField]
@@ -62,12 +71,16 @@ public class Spaceship : MonoBehaviour
     public float normalSpeed = 25f;
     public float accelerationSpeed = 45f;
     public float warpSpeed = 1000f;
+    public float strafeSpeed = 10f;
+    public float upDownSpeed = 10f;
 
     [SerializeField]
     private float _maxSpeed;
     public Transform spaceshipRoot;
     public float rotationSpeed = 2.0f;
-    public float cameraSmooth = 4f;
+    public float cameraSmoothFlat = 0.1f;
+    public float cameraSmoothXR = 2f;
+    public float cameraSmooth;
     private float throttleAmount;
     private float verticalAxis;
     private bool wasBoosting, wasWarping;
@@ -96,7 +109,7 @@ public class Spaceship : MonoBehaviour
 
     /* /TRANSFORM CONTROLS/ */
 
-    public bool boosting, warping;
+    public bool boosting, warping, warpingReleased, warpingStarted;
 
     [SerializeField]
     private GetInputValues getInputValues;
@@ -150,6 +163,9 @@ public class Spaceship : MonoBehaviour
         rotationZTmp = ((roll1D != 0) ? roll1D : rollXR1D) * -1f;
 
         ApllyForces();
+
+        //ManageWarp();
+        cameraSmooth = (JoystickGrabbed) ? cameraSmoothXR : cameraSmoothFlat;
     }
 
     void FixedUpdate()
@@ -159,12 +175,12 @@ public class Spaceship : MonoBehaviour
             thrust1D = getInputValues.throttleValue;
         }*/
 
-
+        lockPitchYawDurationOnStart -= Time.deltaTime;
 
 
         //ApllyForces();
 
-        if (JoystickGrabbed)
+        if (JoystickGrabbed && lockPitchYawDurationOnStart < 0f)
         {
             pitchYaw = getInputValues.joystickValues;
         }
@@ -197,7 +213,7 @@ public class Spaceship : MonoBehaviour
 
                 RotateShip();
 
-                Vector3 moveDirection = new Vector3(0, 0, speed);
+                Vector3 moveDirection = new Vector3(strafe1D * strafeSpeed, upDown1D * upDownSpeed, speed);
                 moveDirection = transform.TransformDirection(moveDirection);
                 rb.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
 
@@ -209,6 +225,20 @@ public class Spaceship : MonoBehaviour
 
 
 
+
+    }
+
+    void ManageWarp()
+    {
+        if (warpingStarted)
+        {
+            warping = true;
+        }
+
+        if (warpingReleased)
+        {
+            warping = false;
+        }
 
     }
 
@@ -423,7 +453,10 @@ public class Spaceship : MonoBehaviour
 
     public void OnPitchYaw(InputAction.CallbackContext context)
     {
-        pitchYaw = (JoystickGrabbed) ? getInputValues.joystickValues :  context.ReadValue<Vector2>();
+        if(lockPitchYawDurationOnStart < 0f)
+        {
+            pitchYaw = (JoystickGrabbed) ? getInputValues.joystickValues :  context.ReadValue<Vector2>();
+        }
     }
 
     public void OnBoost(InputAction.CallbackContext context)
@@ -433,7 +466,16 @@ public class Spaceship : MonoBehaviour
 
     public void OnWarp(InputAction.CallbackContext context)
     {
+        //warpingStarted = context.performed;
         warping = context.performed;
+        //warpingStarted = context.started;
+        //warpingReleased = context.canceled;
+    }
+
+    public void OnWarpReleased(InputAction.CallbackContext context)
+    {
+        //warpingReleased = context.performed;
+        warping = !context.performed;
     }
     #endregion
 }

@@ -25,6 +25,8 @@ public class ToggleModes : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        initGameMode(GameMode);
     }
 
     // Update is called once per frame
@@ -33,16 +35,21 @@ public class ToggleModes : MonoBehaviour
         
     }
 
-    public void switchModes()
+    public void initGameMode(gameModes GameMode)
     {
-        if(GameMode == gameModes.PILOTING)
-        {
-            enableRoaming();
-        }
+        Debug.Log($"initGameMode: Enabling {GameMode}");
 
-        if (GameMode == gameModes.ROAMING)
+        switch (GameMode)
         {
-            enablePiloting();
+            case gameModes.PILOTING:
+                Debug.Log($"initGameMode switch: PILOTING");
+                enablePiloting();
+                break;
+
+            case gameModes.ROAMING:
+                Debug.Log($"initGameMode switch: ROAMING");
+                enableRoaming();
+                break;
         }
     }
 
@@ -79,6 +86,9 @@ public class ToggleModes : MonoBehaviour
         if (GameMode == gameModes.ROAMING)
         {
             Debug.Log("enablePiloting");
+
+            rb.isKinematic = false;
+            rb.freezeRotation = false;
 
             GameMode = gameModes.PILOTING;
 
