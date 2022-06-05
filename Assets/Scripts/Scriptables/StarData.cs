@@ -43,9 +43,9 @@ public class StarData : ScriptableObject
     public float YearLength;
 
     //Coordinates of planet on orbit plane (e.g "nw")
-    public string Coords;
+    public float AngleOnPlane;
 
-    public PlanetData[] ChildrenItem;
+    public StellarBodyData[] ChildrenItem;
 
     public AsteroidBeltData[] AsteroidBeltItem;
 

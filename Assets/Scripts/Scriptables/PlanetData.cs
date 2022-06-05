@@ -27,35 +27,38 @@ public class PlanetData : ScriptableObject
     //Texture file for clouds (if any)
     public bool Clouds;
 
+    //Texture file for clouds (if any)
     public Material CloudsMaterial;
 
-    //Texture file for clouds (if any)
     public bool TidallyLocked;
 
-    //Orbit in UA
+    [Tooltip("Orbit in UA")]
     public float Orbit;
 
-    //Tilt (in degrees)
+    [Tooltip("Orbit Tilt (in degrees)")]
     public float OrbitTilt;
 
 
-    //Size (relative to Earth)
+    [Tooltip("Size (relative to Earth)")]
     public float Size;
 
+    [Tooltip("Mass (* 10^24 kg)")]
     public float Mass;
 
-    //Tilt (in degrees)
+
+    [Tooltip("Stellar body Tilt (in degrees)")]
     public float BodyTilt;
 
-    //Year length in Earth years
+    [Tooltip("Year length in Earth years")]
     public float YearLength;
 
-    //Day length in Earth days
+    [Tooltip("Day length in Earth days")]
     public float DayLength;
 
-    //Coordinates of planet on orbit plane (e.g "nw")
+    [Tooltip("Coordinates of stellar body on orbit plane (e.g \"nw\")")]
     public string Coords;
 
+    [Tooltip("Does the stellar body have rings?")]
     public bool Rings;
 
     public GameObject RingsPrefab;

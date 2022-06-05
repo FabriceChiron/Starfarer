@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour
 
         centerPoint.transform.GetChild(0).localScale = new Vector3(stellarSystemCenterSize, stellarSystemCenterSize, stellarSystemCenterSize);
 
-        foreach(PlanetData planetData in stellarSystemData.ChildrenItem)
+        foreach(StellarBodyData planetData in stellarSystemData.ChildrenItem)
         {
             CreateStellarObject(planetData, centerPoint, "Planet");
         }
@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
         //_cameraContainer.transform.LookAt(centerPoint.transform.position);
     }
 
-    private void CreateStellarObject(PlanetData planetData, SgtFloatingObject thisCenter, string Type)
+    private void CreateStellarObject(StellarBodyData planetData, SgtFloatingObject thisCenter, string Type)
     {
 
         GameObject prefab = (planetData.Prefab == null) ? (planetData.Gaseous ? JovianPrefab : RockyPrefab) : planetData.Prefab;
@@ -345,7 +345,7 @@ public class GameManager : MonoBehaviour
 
         orbitVisual.Points = Mathf.Max((int)orbitRadius * 50, 30);
 
-        OrbitComp.Angle = Utils.GetOrbitOrientationStart(planetData.Coords);
+        OrbitComp.Angle = planetData.AngleOnPlane;
         OrbitComp.Tilt = new Vector3(planetData.OrbitTilt, 0f, 0f);
 
         double revolutionPeriod = 360 / (planetData.YearLength * _currentScales.Year * scaleFactor);
@@ -391,7 +391,7 @@ public class GameManager : MonoBehaviour
             Camera.main.farClipPlane = Mathf.Max((float)OrbitComp.Radius * 1.2f, 1000f);
         }
 
-        foreach (PlanetData moonData in planetData.ChildrenItem)
+        foreach (StellarBodyData moonData in planetData.ChildrenItem)
         {
             
             CreateStellarObject(moonData, newStellarObject.transform.GetComponent<SgtFloatingObject>(), "Moon");
@@ -445,11 +445,11 @@ public class GameManager : MonoBehaviour
 
         orbitVisual.Points = (int)OrbitComp.Radius * 30;
 
-        OrbitComp.Angle = Utils.GetOrbitOrientationStart(starData.Coords);
+        OrbitComp.Angle = starData.AngleOnPlane;
 
         OrbitComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360 / (starData.YearLength * _currentScales.Year) : 0;
 
-        foreach (PlanetData planetData in starData.ChildrenItem)
+        foreach (StellarBodyData planetData in starData.ChildrenItem)
         {
             CreateStellarObject(planetData, newStar.transform.GetComponent<SgtFloatingObject>(), "Planet");
         }

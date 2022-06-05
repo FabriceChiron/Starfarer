@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47d20a54185c3543880d0d45c5a32e1, type: 3}
+  m_Name: Saturn
+  m_EditorClassIdentifier: 
+  Name: Saturn
+  Details: 
+  Prefab: {fileID: 7192316361646330921, guid: 1bec074ce6191764ea900d76f0c48e64, type: 3}
+  ReadyMadePrefab: 1
+  Gaseous: 1
+  Texture: []
+  Material: {fileID: 0}
+  Clouds: 0
+  CloudsMaterial: {fileID: 0}
+  TidallyLocked: 0
+  Orbit: 9.536
+  OrbitTilt: 0
+  Size: 9.014
+  Mass: 568300
+  BodyTilt: 0
+  YearLength: 29
+  DayLength: 0.4291667
+  AngleOnPlane: 0
+  Rings: 1
+  RingsPrefab: {fileID: 0}
+  ChildrenItem:
+  - {fileID: 11400000, guid: 06dfce59d2d62654b81d8010f30ac98b, type: 2}

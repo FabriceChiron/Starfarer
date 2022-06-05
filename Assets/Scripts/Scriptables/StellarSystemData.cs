@@ -25,7 +25,9 @@ public class StellarSystemData : ScriptableObject
 
     public float Left;
 
-    public PlanetData[] ChildrenItem;
+    public WarpGateData warpGate;
+
+    public StellarBodyData[] ChildrenItem;
 
     public AsteroidBeltData[] AsteroidBeltItem;
 

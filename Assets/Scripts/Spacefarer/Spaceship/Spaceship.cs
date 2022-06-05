@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 using Autohand.Demo;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
-
-using UnityEngine.InputSystem;
+using SpaceGraphicsToolkit;
 
 public enum controlType
 {
@@ -118,7 +117,7 @@ public class Spaceship : MonoBehaviour
     private List<GameObject> forVR, forFlatScreens;
 
     [SerializeField]
-    private bool joystickGrabbed, throttleGrabbed, leftXRThumbstickUsed;
+    private bool joystickGrabbed, throttleGrabbed, leftXRThumbstickUsed, spaceShipLocked;
 
     Rigidbody rb;
 
@@ -130,6 +129,7 @@ public class Spaceship : MonoBehaviour
     public bool ThrottleGrabbed { get => throttleGrabbed; set => throttleGrabbed = value; }
     public bool JoystickGrabbed { get => joystickGrabbed; set => joystickGrabbed = value; }
     public bool LeftXRThumbstickUsed { get => leftXRThumbstickUsed; set => leftXRThumbstickUsed = value; }
+    public bool SpaceShipLocked { get => spaceShipLocked; set => spaceShipLocked = value; }
 
     void Start()
     {
@@ -143,15 +143,15 @@ public class Spaceship : MonoBehaviour
 
         //Debug.Log($"XR device active: {XRSettings.isDeviceActive}");
 
-        //foreach (GameObject vrGameObject in forVR)
-        //{
-        //    vrGameObject.SetActive(XRSettings.isDeviceActive);
-        //}
+        foreach (GameObject vrGameObject in forVR)
+        {
+            vrGameObject.SetActive(_useXR);
+        }
 
-        //foreach (GameObject flatScreenGameObject in forFlatScreens)
-        //{
-        //    flatScreenGameObject.SetActive(!XRSettings.isDeviceActive);
-        //}
+        foreach (GameObject flatScreenGameObject in forFlatScreens)
+        {
+            flatScreenGameObject.SetActive(!_useXR);
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -175,16 +175,24 @@ public class Spaceship : MonoBehaviour
             thrust1D = getInputValues.throttleValue;
         }*/
 
-        lockPitchYawDurationOnStart -= Time.deltaTime;
+        if (!SpaceShipLocked)
+        {
+            lockPitchYawDurationOnStart -= Time.deltaTime;
+        
+            if(lockPitchYawDurationOnStart < 0f)
+            {
+                UnlockSpaceShip();
+            }
+        }
 
 
         //ApllyForces();
 
-        if (JoystickGrabbed && lockPitchYawDurationOnStart < 0f)
+
+        if (JoystickGrabbed && !SpaceShipLocked)
         {
             pitchYaw = getInputValues.joystickValues;
         }
-
 
         switch (_controlType)
         {
@@ -224,8 +232,11 @@ public class Spaceship : MonoBehaviour
         }
 
 
+    }
 
-
+    private void UnlockSpaceShip()
+    {
+        transform.GetComponent<SgtFloatingOrbit>().enabled = false;
     }
 
     void ManageWarp()
@@ -244,14 +255,16 @@ public class Spaceship : MonoBehaviour
 
     private void ApllyForces()
     {
-        if(getInputValues != null)
-        {
-            thrust1D = (Mathf.Abs(getInputValues.throttleValue) >= Mathf.Abs(thrust1DInput)) ? getInputValues.throttleValue : thrust1DInput;
-        }
-        else
-        {
-            thrust1D = thrust1DInput;
-        }
+        
+            if(getInputValues != null)
+            {
+                thrust1D = (Mathf.Abs(getInputValues.throttleValue) >= Mathf.Abs(thrust1DInput)) ? getInputValues.throttleValue : thrust1DInput;
+            }
+            else
+            {
+                thrust1D = thrust1DInput;
+            }
+        
         //strafe1D = (Mathf.Abs(strafeXR1D) >= Mathf.Abs(strafeFlat1D)) ? strafeXR1D : strafeFlat1D;
         //upDown1D = (Mathf.Abs(upDownXR1D) >= Mathf.Abs(upDownFlat1D)) ? upDownXR1D : upDownFlat1D;
 
@@ -335,10 +348,10 @@ public class Spaceship : MonoBehaviour
             speed += thrust1D * Time.deltaTime * Mathf.Min(
                     speed, normalSpeed * -1f);
 
-            if (speed >= -125f)
-            {
-                speed = -125f;
-            }
+            //if (speed >= -125f)
+            //{
+            //    speed = -125f;
+            //}
         }
 
         else
