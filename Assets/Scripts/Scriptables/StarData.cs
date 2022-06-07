@@ -49,4 +49,6 @@ public class StarData : ScriptableObject
 
     public AsteroidBeltData[] AsteroidBeltItem;
 
+    public WarpGateData warpGate;
+
 }

@@ -24,7 +24,13 @@ public class StellarSystemGenerator : MonoBehaviour
     [SerializeField]
     private SgtFloatingObject stellarSystemCenter;
 
+    [SerializeField]
+    private bool _useXR;
+
     private GameObject _player;
+
+    public bool UseXR { get => _useXR; set => _useXR = value; }
+
 
     // Start is called before the first frame update
     void Start()
@@ -67,17 +73,20 @@ public class StellarSystemGenerator : MonoBehaviour
 
         newStar.name = starData.Name;
 
-        newStar.transform.localScale *= _scales.Planet;
+        newStar.transform.localScale = new Vector3(1f, 1f, 1f);
+        newStar.transform.localScale *= starData.Size * _scales.Planet /109f;
 
         SgtFloatingOrbit orbitComp = newStar.GetComponent<SgtFloatingOrbit>();
 
         orbitComp.ParentPoint = stellarSystemCenter;
 
-        orbitComp.Radius = starData.Orbit * _scales.Orbit;
+        orbitComp.Radius = starData.Orbit * _scales.Orbit + newStar.transform.localScale.x;
+
+        Debug.Log($"{starData.name} orbit: {starData.Orbit * _scales.Orbit + newStar.transform.localScale.x}");
 
         orbitComp.Angle = starData.AngleOnPlane;
 
-        orbitComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360 / (starData.YearLength * _scales.Year) : 0;
+        orbitComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360f / (starData.YearLength * _scales.Year) : 0;
 
         if(starData.ChildrenItem.Length > 0)
         {
@@ -86,21 +95,44 @@ public class StellarSystemGenerator : MonoBehaviour
                 CreateStellarObject(stellarBodyData, newStar.transform.GetComponent<SgtFloatingObject>(), "Planet");
             }
         }
+
+        if (starData.warpGate != null)
+        {
+            SpawnWarpGate(starData.warpGate, newStar.GetComponent<SgtFloatingObject>());
+        }
     }
 
     private void CreateStellarObject(StellarBodyData stellarBodyData, SgtFloatingObject thisCenter, string Type)
     {
+        Debug.Log($"{stellarBodyData.Name}");
+        Debug.Log($"{stellarBodyData.Prefab}");
+        Debug.Log($"{stellarSystemContainer}");
+
         GameObject newStellarBody = Instantiate(stellarBodyData.Prefab, stellarSystemContainer);
 
         newStellarBody.name = stellarBodyData.Name;
 
+        //Reset prefab scale to 1;
+        newStellarBody.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        //Assign scale: Stellar Body Size * desired scale;
         newStellarBody.transform.localScale *= stellarBodyData.Size * _scales.Planet;
 
         SgtFloatingOrbit orbitComp = newStellarBody.GetComponent<SgtFloatingOrbit>();
 
+        if(orbitComp == null)
+        {
+            Debug.Log(stellarBodyData.Name);
+            newStellarBody.AddComponent<SetupStellarBody>();
+            orbitComp = newStellarBody.GetComponent<SgtFloatingOrbit>();
+        }
+
+
         orbitComp.ParentPoint = thisCenter;
 
         orbitComp.Radius = stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (thisCenter.transform.localScale.x + newStellarBody.transform.localScale.x) * 5f : 0f);
+
+        Debug.Log($"{stellarBodyData.name} orbit: {stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (thisCenter.transform.localScale.x + newStellarBody.transform.localScale.x) * 5f : 0f)}");
 
         orbitComp.Angle = stellarBodyData.AngleOnPlane;
 
@@ -136,8 +168,6 @@ public class StellarSystemGenerator : MonoBehaviour
 
         SgtFloatingObject objectComp = newWarpGate.GetComponent<SgtFloatingObject>();
 
-
-
         SgtFloatingOrbit orbitComp = newWarpGate.GetComponent<SgtFloatingOrbit>();
 
         orbitComp.ParentPoint = thisCenter;
@@ -157,8 +187,6 @@ public class StellarSystemGenerator : MonoBehaviour
             _player = Instantiate(_playerPrefab);
 
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
-
-            
 
             SgtFloatingOrbit _playerOrbitTemp = _playerCamera.gameObject.AddComponent<SgtFloatingOrbit>();
 

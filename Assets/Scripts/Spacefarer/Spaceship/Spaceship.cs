@@ -124,16 +124,26 @@ public class Spaceship : MonoBehaviour
     // Input Values
     [SerializeField]
     private float thrust1D, thrust1DInput, upDown1D, upDownFlat1D, upDownXR1D, strafe1D, strafeFlat1D, strafeXR1D, roll1D, rollXR1D;
+
+    [SerializeField]
     private Vector2 pitchYaw;
 
     public bool ThrottleGrabbed { get => throttleGrabbed; set => throttleGrabbed = value; }
     public bool JoystickGrabbed { get => joystickGrabbed; set => joystickGrabbed = value; }
     public bool LeftXRThumbstickUsed { get => leftXRThumbstickUsed; set => leftXRThumbstickUsed = value; }
     public bool SpaceShipLocked { get => spaceShipLocked; set => spaceShipLocked = value; }
+    public bool UseXR { get => _useXR; set => _useXR = value; }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        StellarSystemGenerator _stellarSystemGenerator = GameObject.FindObjectOfType<StellarSystemGenerator>();
+
+        if (_stellarSystemGenerator != null)
+        {
+            UseXR = _stellarSystemGenerator.UseXR;
+        }
 
         /* TRANSFORM CONTROLS */
         lookRotation = transform.rotation;
@@ -145,12 +155,12 @@ public class Spaceship : MonoBehaviour
 
         foreach (GameObject vrGameObject in forVR)
         {
-            vrGameObject.SetActive(_useXR);
+            vrGameObject.SetActive(UseXR);
         }
 
         foreach (GameObject flatScreenGameObject in forFlatScreens)
         {
-            flatScreenGameObject.SetActive(!_useXR);
+            flatScreenGameObject.SetActive(!UseXR);
         }
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -189,7 +199,7 @@ public class Spaceship : MonoBehaviour
         //ApllyForces();
 
 
-        if (JoystickGrabbed && !SpaceShipLocked)
+        if (JoystickGrabbed && !SpaceShipLocked && UseXR)
         {
             pitchYaw = getInputValues.joystickValues;
         }
@@ -206,9 +216,9 @@ public class Spaceship : MonoBehaviour
                 //rotationZTmp = ((roll1D != 0) ? roll1D : rollXR1D) * -1f;
 
 
-
                 mouseXSmooth = Mathf.Lerp(mouseXSmooth, pitchYaw.x * rotationSpeed, Time.deltaTime * cameraSmooth);
-
+                //Debug.Log($"pitchYaw.x: {pitchYaw.x}");
+                //Debug.Log($"mouseXSmooth: {mouseXSmooth}");
 
                 mouseXSmooth = Mathf.Round(mouseXSmooth * 100f) / 100f;
 
