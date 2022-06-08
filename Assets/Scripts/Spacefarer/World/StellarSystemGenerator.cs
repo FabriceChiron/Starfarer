@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceGraphicsToolkit;
+using SpaceGraphicsToolkit.Starfield;
+using SpaceGraphicsToolkit.Belt;
 using CW.Common;
 
 public class StellarSystemGenerator : MonoBehaviour
@@ -127,6 +129,22 @@ public class StellarSystemGenerator : MonoBehaviour
             orbitComp = newStellarBody.GetComponent<SgtFloatingOrbit>();
         }
 
+        if (!stellarBodyData.ReadyMadePrefab)
+        {
+            if(stellarBodyData.Material != null)
+            {
+                SgtPlanet planetComp = newStellarBody.GetComponentInChildren<SgtPlanet>();
+                Debug.Log($"Before :\n{planetComp.Material.name} - {stellarBodyData.Material.name}");
+                newStellarBody.GetComponentInChildren<SgtPlanet>().Material = stellarBodyData.Material;
+                Debug.Log($"After :\n{planetComp.Material.name} - {stellarBodyData.Material.name}");
+            }
+
+            if (!stellarBodyData.Clouds)
+            {
+                //newStellarBody.GetComponentInChildren<Sgt>().Material
+            }
+        }
+
 
         orbitComp.ParentPoint = thisCenter;
 
@@ -188,6 +206,7 @@ public class StellarSystemGenerator : MonoBehaviour
 
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 
+            
             SgtFloatingOrbit _playerOrbitTemp = _playerCamera.gameObject.AddComponent<SgtFloatingOrbit>();
 
             _playerOrbitTemp.ParentPoint = objectComp;
@@ -197,12 +216,18 @@ public class StellarSystemGenerator : MonoBehaviour
             _playerOrbitTemp.DegreesPerSecond = 0f;
 
             //_playerOrbitTemp.enabled = false;
+            
 
             //CwFollow _playerFollowComp = _playerCamera.gameObject.AddComponent<CwFollow>();
 
             //_playerFollowComp.Target = newWarpGate.transform;
+            //_playerFollowComp.Damping = 10f;
 
             //_playerFollowComp.enabled = false;
+
+            //Transform starField = GameObject.FindGameObjectWithTag("Starfield").transform;
+            //Transform background = GameObject.FindGameObjectWithTag("Background").transform;
+
 
 
 

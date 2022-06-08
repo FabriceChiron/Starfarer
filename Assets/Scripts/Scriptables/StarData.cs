@@ -26,15 +26,11 @@ public class StarData : ScriptableObject
 
     public GameObject Prefab;
 
-    //Material file for planet
-    public Material Material;
-
     //Orbit in UA
     public float Orbit;
 
     //Tilt (in degrees)
     public float OrbitTilt;
-
 
     //Size (relative to Earth)
     public float Size;
