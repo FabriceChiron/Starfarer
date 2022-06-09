@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639053375225021145}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.00014169775, y: -0.99949384, z: -0.031493947, w: 0.0044969264}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   sourceMaterial: {fileID: 2100000, guid: f644a0974064d63439d24a5f6cb7d309, type: 2}
   mesh: {fileID: 0}
   followCameras: 1
-  followDistance: 100
+  followDistance: 10000000
   cameraOffset: 0
   model: {fileID: 5852379365954238547}
 --- !u!114 &8675377385643500749
@@ -345,7 +345,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5335747936459718467}
-  m_LocalRotation: {x: 0.00014169775, y: 0.99949384, z: 0.031493954, w: -0.0044969264}
+  m_LocalRotation: {x: -0, y: 0.9848078, z: 0.1736482, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -559,6 +559,7 @@ GameObject:
   - component: {fileID: 2469770177523734608}
   - component: {fileID: 6171816096287252459}
   - component: {fileID: 3816811633137597998}
+  - component: {fileID: 2095476196589602325}
   m_Layer: 0
   m_Name: Yellow Dwarf
   m_TagString: Untagged
@@ -659,6 +660,20 @@ MonoBehaviour:
   range:
     Value: 1000000
     Scale: 0
+--- !u!114 &2095476196589602325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6417201281091560396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfb1d3dd33d1443bdea6dd00ce03d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 100
+  autoSetMass: 0
 --- !u!1 &7383385102987374176
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,7 +798,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7592762329645774453}
-  m_LocalRotation: {x: 0.031493958, y: 0.0044969036, z: -0.00014096602, w: 0.99949384}
+  m_LocalRotation: {x: 0.1736482, y: -0, z: -0, w: 0.9848078}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 7.07, y: 7.07, z: 7.07}
   m_ConstrainProportionsScale: 1

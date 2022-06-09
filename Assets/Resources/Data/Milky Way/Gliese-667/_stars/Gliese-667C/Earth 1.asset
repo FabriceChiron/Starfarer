@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b47d20a54185c3543880d0d45c5a32e1, type: 3}
-  m_Name: Earth
+  m_Name: Earth 1
   m_EditorClassIdentifier: 
   Name: Earth
   Details: Earth is the third planet from the Sun and the only object in the Universe
@@ -35,6 +35,7 @@ MonoBehaviour:
   AngleOnPlane: 225
   Rings: 0
   RingsPrefab: {fileID: 0}
+  OrbitsAround: {fileID: 11400000, guid: 76b234c48b929a24b8b916566558daac, type: 2}
   ChildrenItem:
   - {fileID: 11400000, guid: df7e8a73c6f738e4091cc648d6b47730, type: 2}
-  warpGate: {fileID: 11400000, guid: 07f3226361839c14ba7cd39c9bfce8b2, type: 2}
+  warpGate: {fileID: 0}

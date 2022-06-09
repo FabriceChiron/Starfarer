@@ -57,7 +57,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2322457153235212612}
-  m_LocalRotation: {x: 0.00000004057074, y: -1, z: -0.000000001897206, w: -9.313226e-10}
+  m_LocalRotation: {x: 0.9740742, y: -0.22622907, z: 3.8262993e-10, w: -0.000000077876585}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 4755648943773216097}
   - component: {fileID: 4755648943773216109}
   - component: {fileID: 7287275129680274993}
-  - component: {fileID: -7437390433093655302}
   - component: {fileID: 5215980717016599434}
   m_Layer: 0
   m_Name: Orange Dwarf - Light
@@ -163,8 +162,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4755648943773216102}
-  m_LocalRotation: {x: -0.0009667846, y: 0.99780834, z: 0.06444811, w: 0.014968098}
-  m_LocalPosition: {x: 0, y: 0, z: 13000000}
+  m_LocalRotation: {x: -0.000000025800981, y: 0.000000005965947, z: 1.5392727e-16, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -13000000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -172,7 +171,7 @@ Transform:
   - {fileID: 2345735669085505280}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -7.391, y: 178.281, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &4755648943773216098
 Light:
   m_ObjectHideFlags: 0
@@ -250,11 +249,11 @@ MonoBehaviour:
   position:
     LocalX: 0
     LocalY: 0
-    LocalZ: 0
+    LocalZ: -13000000
     GlobalX: 0
     GlobalY: 0
     GlobalZ: 0
-  expectedPosition: {x: 0, y: 0, z: 13000000}
+  expectedPosition: {x: 0, y: 0, z: -13000000}
   expectedPositionSet: 1
   positionSet: 1
   seed: 0
@@ -342,18 +341,6 @@ MonoBehaviour:
   angle: 0
   degreesPerSecond: 10
   parentPoint: {fileID: 4755648943773216096}
---- !u!114 &-7437390433093655302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4755648943773216102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a85d53ea066b9cb46a54d26db74d2659, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5215980717016599434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,7 +355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1564979478514175802}
   scale: {x: 0.0001, y: 0.0001, z: 0.0001}
-  multiplier: 0.5
+  multiplier: 0.25
   range:
     Value: 0.1
     Scale: 2
@@ -397,7 +384,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4755648945607304068}
-  m_LocalRotation: {x: 0.00000004057074, y: -1, z: -0.000000001897206, w: -9.313226e-10}
+  m_LocalRotation: {x: 0.9740742, y: -0.22622907, z: 3.8262993e-10, w: -0.000000077876585}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_ConstrainProportionsScale: 1

@@ -6,6 +6,7 @@ using Autohand.Demo;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 using SpaceGraphicsToolkit;
+using CW.Common;
 
 public enum controlType
 {
@@ -22,6 +23,9 @@ public class Spaceship : MonoBehaviour
 
     [SerializeField]
     private bool _useXR;
+
+    [SerializeField]
+    private StellarSystemGenerator stellarSystemGenerator;
 
     [SerializeField]
     private PlayerInput _playerInput;
@@ -133,6 +137,7 @@ public class Spaceship : MonoBehaviour
     public bool LeftXRThumbstickUsed { get => leftXRThumbstickUsed; set => leftXRThumbstickUsed = value; }
     public bool SpaceShipLocked { get => spaceShipLocked; set => spaceShipLocked = value; }
     public bool UseXR { get => _useXR; set => _useXR = value; }
+    public StellarSystemGenerator StellarSystemGenerator { get => stellarSystemGenerator; set => stellarSystemGenerator = value; }
 
     void Start()
     {
@@ -240,13 +245,25 @@ public class Spaceship : MonoBehaviour
 
                 break;
         }
-
-
     }
 
     private void UnlockSpaceShip()
     {
-        transform.GetComponent<SgtFloatingOrbit>().enabled = false;
+        SgtFloatingOrbit spaceShipOrbitComp = transform.GetComponent<SgtFloatingOrbit>();
+
+        if(spaceShipOrbitComp != null)
+        {
+            spaceShipOrbitComp.enabled = false;
+        }
+
+        CwFollow spaceShipFollowComp = transform.GetComponent<CwFollow>();
+
+        if(spaceShipFollowComp != null)
+        {
+            spaceShipFollowComp.enabled = false;
+        }
+
+        //transform.GetComponent<SgtFloatingCamera>().enabled = true;
     }
 
     void ManageWarp()

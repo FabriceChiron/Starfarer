@@ -24,7 +24,7 @@ public class StarData : ScriptableObject
 
     public StarType starType;
 
-    public GameObject Prefab;
+    public GameObject Prefab, FlarePrefab;
 
     //Orbit in UA
     public float Orbit;

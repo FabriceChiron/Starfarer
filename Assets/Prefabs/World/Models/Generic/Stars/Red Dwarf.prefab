@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639053375225021145}
-  m_LocalRotation: {x: -0, y: 0.9848078, z: 0.1736482, w: 0}
+  m_LocalRotation: {x: -0.00022021701, y: 0.99834824, z: 0.057324093, w: 0.003835268}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   sourceMaterial: {fileID: 2100000, guid: f644a0974064d63439d24a5f6cb7d309, type: 2}
   mesh: {fileID: 0}
   followCameras: 1
-  followDistance: 100
+  followDistance: 10000000
   cameraOffset: 0
   model: {fileID: 6754533341087054047}
 --- !u!114 &8675377385643500749
@@ -142,7 +142,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2296068850548139533}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.09}
+  m_LocalPosition: {x: 0.00068693573, y: 0.010301446, z: -0.089405864}
   m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -240,7 +240,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3165508740394798114}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.0573249, y: -0.0038226214, z: -0, w: 0.9983483}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
@@ -444,7 +444,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5648478819829926514}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: -0.00022021701, y: 0.99834824, z: 0.057324093, w: 0.003835268}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 3559809620141302462}
   - component: {fileID: -3215116750628492009}
   - component: {fileID: 9028924323142867245}
+  - component: {fileID: 2095476196589602325}
   m_Layer: 0
   m_Name: Red Dwarf
   m_TagString: Untagged
@@ -759,6 +760,20 @@ MonoBehaviour:
   range:
     Value: 1000000
     Scale: 0
+--- !u!114 &2095476196589602325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6417201281091560396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfb1d3dd33d1443bdea6dd00ce03d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 100
+  autoSetMass: 0
 --- !u!1 &7920152035512296712
 GameObject:
   m_ObjectHideFlags: 0

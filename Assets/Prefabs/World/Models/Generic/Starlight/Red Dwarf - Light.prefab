@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 4755648943773216097}
   - component: {fileID: 4755648943773216109}
   - component: {fileID: 7287275129680274993}
-  - component: {fileID: -7437390433093655302}
   - component: {fileID: 6639876910542873548}
   m_Layer: 0
   m_Name: Red Dwarf - Light
@@ -33,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4755648943773216102}
   m_LocalRotation: {x: -0.0009667846, y: 0.99780834, z: 0.06444811, w: 0.014968098}
-  m_LocalPosition: {x: 0, y: 0, z: 13000000}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -41,7 +40,7 @@ Transform:
   - {fileID: 5717061579318208358}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -7.391, y: 178.281, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &4755648943773216098
 Light:
   m_ObjectHideFlags: 0
@@ -119,11 +118,11 @@ MonoBehaviour:
   position:
     LocalX: 0
     LocalY: 0
-    LocalZ: 0
+    LocalZ: -13000000
     GlobalX: 0
     GlobalY: 0
     GlobalZ: 0
-  expectedPosition: {x: 0, y: 0, z: 13000000}
+  expectedPosition: {x: 0, y: 0, z: 0}
   expectedPositionSet: 1
   positionSet: 1
   seed: 0
@@ -211,18 +210,6 @@ MonoBehaviour:
   angle: 0
   degreesPerSecond: 10
   parentPoint: {fileID: 4755648943773216096}
---- !u!114 &-7437390433093655302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4755648943773216102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a85d53ea066b9cb46a54d26db74d2659, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6639876910542873548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 4398674869283229126}
   scale: {x: 0.0001, y: 0.0001, z: 0.0001}
-  multiplier: 0.5
+  multiplier: 0.25
   range:
     Value: 0.1
     Scale: 2

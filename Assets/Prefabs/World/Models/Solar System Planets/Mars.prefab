@@ -251,7 +251,8 @@ GameObject:
   - component: {fileID: 7591701472406057386}
   - component: {fileID: 2318379069607349031}
   - component: {fileID: 6516421227174974141}
-  - component: {fileID: 7136556683783386359}
+  - component: {fileID: 2194085068986272444}
+  - component: {fileID: 2801735230901281737}
   m_Layer: 0
   m_Name: Mars
   m_TagString: Untagged
@@ -295,8 +296,8 @@ MonoBehaviour:
     GlobalY: 0
     GlobalZ: 0
   expectedPosition: {x: 0, y: 0, z: 0}
-  expectedPositionSet: 0
-  positionSet: 0
+  expectedPositionSet: 1
+  positionSet: 1
   seed: 0
 --- !u!114 &6516421227174974141
 MonoBehaviour:
@@ -319,7 +320,21 @@ MonoBehaviour:
   angle: 0
   degreesPerSecond: 10
   parentPoint: {fileID: 0}
---- !u!114 &7136556683783386359
+--- !u!114 &2194085068986272444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7591701472406057301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92ede0252ef7e92459ff5df2a16cd28e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angularVelocity: {x: 0, y: 1, z: 0}
+  relativeTo: 0
+--- !u!114 &2801735230901281737
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

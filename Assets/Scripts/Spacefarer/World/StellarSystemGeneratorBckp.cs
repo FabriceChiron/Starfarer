@@ -6,7 +6,7 @@ using SpaceGraphicsToolkit.Starfield;
 using SpaceGraphicsToolkit.Belt;
 using CW.Common;
 
-public class StellarSystemGenerator : MonoBehaviour
+public class StellarSystemGeneratorBckp : MonoBehaviour
 {
     [SerializeField]
     private Utils Utils;
@@ -29,10 +29,33 @@ public class StellarSystemGenerator : MonoBehaviour
     [SerializeField]
     private bool _useXR;
 
+    public bool _stopRevolution;
+
     private GameObject _player;
+
+    [SerializeField]
+    private List<ToggleOrbitRevolution> ToggleOrbitRevolutionList;
 
     public bool UseXR { get => _useXR; set => _useXR = value; }
 
+    //public bool StopRevolution
+    //{
+    //    get {
+    //        Debug.Log("Get StopRevolution");    
+    //        return _stopRevolution; 
+    //    }
+    //    set
+    //    {
+    //        if (value == _stopRevolution)
+    //            return;
+
+    //        _stopRevolution = value;
+    //        if (_stopRevolution)
+    //        {
+    //            Debug.Log("Toggle Revolution!");
+    //        }
+    //    }
+    //}
 
     // Start is called before the first frame update
     void Start()
@@ -76,7 +99,7 @@ public class StellarSystemGenerator : MonoBehaviour
         newStar.name = starData.Name;
 
         newStar.transform.localScale = new Vector3(1f, 1f, 1f);
-        newStar.transform.localScale *= starData.Size * _scales.Planet;
+        newStar.transform.localScale *= starData.Size * _scales.Planet /109f;
 
         SgtFloatingOrbit orbitComp = newStar.GetComponent<SgtFloatingOrbit>();
 
@@ -88,40 +111,16 @@ public class StellarSystemGenerator : MonoBehaviour
 
         orbitComp.Angle = starData.AngleOnPlane;
 
-        //orbitComp.enabled = false;
+        //orbitComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360f / (starData.YearLength * _scales.Year) : 0;
+        orbitComp.DegreesPerSecond = 0;
 
-        orbitComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360f / (starData.YearLength * _scales.Year) : 0;
-
-        GameObject newStarFlare = Instantiate(starData.FlarePrefab, stellarSystemContainer);
-
-        newStarFlare.name = $"{starData.Name} - Flare";
-
-        newStarFlare.transform.localScale = new Vector3(1f, 1f, 1f);
-        newStarFlare.transform.localScale *= starData.Size * _scales.Planet / 109f;
-
-        SgtFloatingOrbit orbitFlareComp = newStarFlare.GetComponent<SgtFloatingOrbit>();
-
-        orbitFlareComp.ParentPoint = stellarSystemCenter;
-
-        orbitFlareComp.Radius = starData.Orbit * _scales.Orbit + newStar.transform.localScale.x;
-
-        //Debug.Log($"{starData.name} orbit: {starData.Orbit * _scales.Orbit + newStar.transform.localScale.x}");
-
-        orbitFlareComp.Angle = starData.AngleOnPlane;
-
-        //orbitComp.enabled = false;
-
-        orbitFlareComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360f / (starData.YearLength * _scales.Year) : 0;
-
-        //Destroy(orbitComp);
-
-        //if(starData.ChildrenItem.Length > 0)
-        //{
-        //    foreach (StellarBodyData stellarBodyData in starData.ChildrenItem)
-        //    {
-        //        CreateStellarObject(stellarBodyData, newStar.transform.GetComponent<SgtFloatingObject>(), "Planet");
-        //    }
-        //}
+        if(starData.ChildrenItem.Length > 0)
+        {
+            foreach (StellarBodyData stellarBodyData in starData.ChildrenItem)
+            {
+                CreateStellarObject(stellarBodyData, newStar.transform.GetComponent<SgtFloatingObject>(), "Planet");
+            }
+        }
 
         if (starData.warpGate != null)
         {
@@ -135,22 +134,10 @@ public class StellarSystemGenerator : MonoBehaviour
         //Debug.Log($"{stellarBodyData.Prefab}");
         //Debug.Log($"{stellarSystemContainer}");
 
-        Debug.Log(stellarBodyData.Prefab);
-
         GameObject stellarBody = Instantiate(stellarBodyData.Prefab, stellarSystemContainer);
 
-        SphereCollider stellarBodyCollider = stellarBody.AddComponent<SphereCollider>();
-
-        stellarBodyCollider.radius = stellarBodyData.Gaseous ? 0.9f : 1f;
-
-        Rigidbody stellarBodyRb = stellarBody.AddComponent<Rigidbody>();
-
-        stellarBodyRb.useGravity = false;
-        stellarBodyRb.isKinematic = true;
-        stellarBodyRb.angularDrag = 0f;
-
         SgtGravitySource stellarBodyGravitySource = stellarBody.GetComponent<SgtGravitySource>();
-        stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+12;
+        stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+9;
 
         stellarBody.name = stellarBodyData.Name;
 
@@ -160,21 +147,41 @@ public class StellarSystemGenerator : MonoBehaviour
         //Assign scale: Stellar Body Size * desired scale;
         stellarBody.transform.localScale *= stellarBodyData.Size * _scales.Planet;
 
+        ToggleOrbitRevolution toggleOrbit = stellarBody.AddComponent<ToggleOrbitRevolution>();
+        
+        ToggleOrbitRevolutionList.Add(toggleOrbit);
+
         SgtFloatingOrbit orbitComp = stellarBody.GetComponent<SgtFloatingOrbit>();
 
-        if(Type == "Planet" && stellarBodyData.OrbitsAround != null)
+        if(orbitComp == null)
         {
-            orbitComp.ParentPoint = GameObject.Find($"{stellarBodyData.OrbitsAround.Name}").GetComponent<SgtFloatingObject>();
-        }
-        else
-        {
-            orbitComp.ParentPoint = thisCenter;
+            Debug.Log(stellarBodyData.Name);
+            stellarBody.AddComponent<SetupStellarBody>();
+            orbitComp = stellarBody.GetComponent<SgtFloatingOrbit>();
         }
 
+        if (!stellarBodyData.ReadyMadePrefab)
+        {
+            if(stellarBodyData.Material != null)
+            {
+                SgtPlanet planetComp = stellarBody.GetComponentInChildren<SgtPlanet>();
+                Debug.Log($"Before :\n{planetComp.Material.name} - {stellarBodyData.Material.name}");
+                stellarBody.GetComponentInChildren<SgtPlanet>().Material = stellarBodyData.Material;
+                Debug.Log($"After :\n{planetComp.Material.name} - {stellarBodyData.Material.name}");
+            }
 
-        orbitComp.Radius = stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (orbitComp.ParentPoint.transform.localScale.x + stellarBody.transform.localScale.x) * 5f : orbitComp.ParentPoint.transform.localScale.x);
+            if (!stellarBodyData.Clouds)
+            {
+                //newStellarBody.GetComponentInChildren<Sgt>().Material
+            }
+        }
 
-        //Debug.Log($"{stellarBodyData.name} orbit: {stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (thisCenter.transform.localScale.x + stellarBody.transform.localScale.x) * 5f : 0f)}");
+
+        orbitComp.ParentPoint = thisCenter;
+
+        orbitComp.Radius = stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (thisCenter.transform.localScale.x + stellarBody.transform.localScale.x) * 5f : 0f);
+
+        //Debug.Log($"{stellarBodyData.name} orbit: {stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (thisCenter.transform.localScale.x + newStellarBody.transform.localScale.x) * 5f : 0f)}");
 
         orbitComp.Angle = stellarBodyData.AngleOnPlane;
 
@@ -182,13 +189,15 @@ public class StellarSystemGenerator : MonoBehaviour
 
         double revolutionPeriod = 360 / (stellarBodyData.YearLength * _scales.Year);
 
+        toggleOrbit.DegreesPerSecond = revolutionPeriod;
+
         orbitComp.DegreesPerSecond = revolutionPeriod;
-        
-        CwRotate rotateComp = stellarBody.transform.GetChild(0).gameObject.AddComponent<CwRotate>();
+        //orbitComp.DegreesPerSecond = 0;
+
+
+        CwRotate rotateComp = stellarBody.GetComponent<CwRotate>();
 
         rotateComp.RelativeTo = Space.Self;
-        
-        //rotateComp.enabled = false;
 
         float rotationY = (stellarBodyData.TidallyLocked) ? (float)orbitComp.DegreesPerSecond : (float)(360 / (stellarBodyData.DayLength * _scales.Day));
 
@@ -232,12 +241,17 @@ public class StellarSystemGenerator : MonoBehaviour
 
         double revolutionPeriod = 360 / (warpGateData.YearLength * _scales.Year);
 
-        //orbitComp.DegreesPerSecond = revolutionPeriod;
-        orbitComp.DegreesPerSecond = 0;
+        orbitComp.DegreesPerSecond = revolutionPeriod;
 
         if (warpGateData.spawnsPlayer && _playerPrefab != null)
         {
             _player = Instantiate(_playerPrefab);
+
+            Spaceship _playerSpaceship = _player.GetComponentInChildren<Spaceship>();
+
+            _player.transform.LookAt(thisCenter.transform);
+
+            _playerSpaceship.StellarSystemGenerator = stellarSystemContainer.GetComponent<StellarSystemGenerator>();
 
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 
@@ -267,6 +281,27 @@ public class StellarSystemGenerator : MonoBehaviour
             //_playerCamera.UpdatePositionNow();
 
             _playerCamera.enabled = true;
+        }
+    }
+
+    public void toggleOrbits(bool StopRevolution)
+    {
+        //Debug.Log(transform.GetComponentInChildren<ToggleOrbitRevolution>());
+        foreach(ToggleOrbitRevolution thisToggleOrbitRevolution in ToggleOrbitRevolutionList)
+        {
+            if (StopRevolution)
+            {
+                thisToggleOrbitRevolution.DegreesPerSecond = thisToggleOrbitRevolution.OrbitComp.DegreesPerSecond;
+
+                thisToggleOrbitRevolution.OrbitComp.DegreesPerSecond = 0f;
+            }
+
+            else
+            {
+                thisToggleOrbitRevolution.OrbitComp.DegreesPerSecond = thisToggleOrbitRevolution.DegreesPerSecond;
+
+                thisToggleOrbitRevolution.DegreesPerSecond = 0;
+            }
         }
     }
 }

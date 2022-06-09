@@ -40,6 +40,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6816120847413361887}
+  - component: {fileID: -2189673181934753310}
+  - component: {fileID: -2266903183343803426}
+  - component: {fileID: -8906278731849428379}
+  - component: {fileID: 6687586785058123367}
   m_Layer: 0
   m_Name: Stellar Object - Center Orbit
   m_TagString: Untagged
@@ -63,3 +67,73 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2189673181934753310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139880921978327479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dafcadce2aec5dc4b8dde998829302c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position:
+    LocalX: 0
+    LocalY: 0
+    LocalZ: 0
+    GlobalX: 0
+    GlobalY: 0
+    GlobalZ: 0
+  expectedPosition: {x: 0, y: 0, z: 0}
+  expectedPositionSet: 0
+  positionSet: 0
+  seed: 0
+--- !u!114 &-2266903183343803426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139880921978327479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42e1dc0604dde5458e70c58ea9da1c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius:
+    Value: 1
+    Scale: 0
+  oblateness: 0
+  tilt: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0, z: 0}
+  angle: 0
+  degreesPerSecond: 10
+  parentPoint: {fileID: 0}
+--- !u!114 &-8906278731849428379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139880921978327479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfb1d3dd33d1443bdea6dd00ce03d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 100
+  autoSetMass: 0
+--- !u!114 &6687586785058123367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139880921978327479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85d53ea066b9cb46a54d26db74d2659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -71,6 +71,9 @@ public class StellarBodyData : ScriptableObject
     [EnableIf("Rings")]
     public GameObject RingsPrefab;
 
+    [Tooltip("If not specified, will rotate around the stellar system's center")]
+    public StarData OrbitsAround;
+
     public StellarBodyData[] ChildrenItem;
 
     public WarpGateData warpGate;

@@ -13,6 +13,10 @@ GameObject:
   - component: {fileID: 6150491343142762104}
   - component: {fileID: 6150491343142762111}
   - component: {fileID: 6150491343142762105}
+  - component: {fileID: 3913085772278021813}
+  - component: {fileID: 8135586339062755628}
+  - component: {fileID: 8589605981869892794}
+  - component: {fileID: 5793198447847959388}
   m_Layer: 0
   m_Name: Gliese-667Cb
   m_TagString: Untagged
@@ -28,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6150491343142762108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3000}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -52,7 +56,7 @@ MonoBehaviour:
   sourceMaterial: {fileID: 2100000, guid: 2d4369648019347469f64a3aa7abcb16, type: 2}
   color: {r: 1, g: 1, b: 1, a: 1}
   brightness: 1
-  mainTex: {fileID: 8900000, guid: a81f1528759cba74c973bc5186cdb8c5, type: 3}
+  mainTex: {fileID: 8900000, guid: c3594c7b2bb528446be5b092117b67ed, type: 3}
   flowTex: {fileID: 8900000, guid: 0383da5ea578c9f4998a6c9f3321389c, type: 3}
   cameraOffset: 0
   sky: 1
@@ -114,6 +118,76 @@ MonoBehaviour:
   sunsetSharpnessR: 1
   sunsetSharpnessG: 1
   sunsetSharpnessB: 1
+--- !u!114 &3913085772278021813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6150491343142762108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dafcadce2aec5dc4b8dde998829302c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position:
+    LocalX: 0
+    LocalY: 0
+    LocalZ: 0
+    GlobalX: 0
+    GlobalY: 0
+    GlobalZ: 0
+  expectedPosition: {x: 0, y: 0, z: 0}
+  expectedPositionSet: 1
+  positionSet: 1
+  seed: 0
+--- !u!114 &8135586339062755628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6150491343142762108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42e1dc0604dde5458e70c58ea9da1c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius:
+    Value: 1
+    Scale: 0
+  oblateness: 0
+  tilt: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0, z: 0}
+  angle: 0
+  degreesPerSecond: 10
+  parentPoint: {fileID: 0}
+--- !u!114 &8589605981869892794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6150491343142762108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85d53ea066b9cb46a54d26db74d2659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5793198447847959388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6150491343142762108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfb1d3dd33d1443bdea6dd00ce03d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 100
+  autoSetMass: 0
 --- !u!1 &6150491343642694254
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7099259698004161380
 Transform:
   m_ObjectHideFlags: 0
