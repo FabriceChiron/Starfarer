@@ -35,10 +35,15 @@ public class StellarSystemGenerator : MonoBehaviour
     [SerializeField]
     private bool _useXR;
 
+    [SerializeField]
+    private bool _useRadar, _useCockpitProjection;
+
     private GameObject _player;
 
     public bool UseXR { get => _useXR; set => _useXR = value; }
     public List<SgtFloatingObject> FloatingObjectsList { get => _floatingObjectsList; set => _floatingObjectsList = value; }
+    public bool UseRadar { get => _useRadar; set => _useRadar = value; }
+    public bool UseCockpitProjection { get => _useCockpitProjection; set => _useCockpitProjection = value; }
 
 
     // Start is called before the first frame update
@@ -126,6 +131,8 @@ public class StellarSystemGenerator : MonoBehaviour
         starRaycastToRadar.StellarBodyName = starData.Name;
         starRaycastToRadar.CurrentScales = _scales;
         starRaycastToRadar.Type = "Star";
+        starRaycastToRadar.UseRadar = UseRadar;
+        starRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
 
         if (starData.warpGate != null)
         {
@@ -153,6 +160,8 @@ public class StellarSystemGenerator : MonoBehaviour
         stellarBodyRaycastToRadar.StellarBodyName = stellarBodyData.Name;
         stellarBodyRaycastToRadar.CurrentScales = _scales;
         stellarBodyRaycastToRadar.Type = Type;
+        stellarBodyRaycastToRadar.UseRadar = UseRadar;
+        stellarBodyRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
 
         SphereCollider stellarBodyCollider = stellarBody.AddComponent<SphereCollider>();
 

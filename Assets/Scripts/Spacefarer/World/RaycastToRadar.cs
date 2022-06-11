@@ -27,11 +27,15 @@ public class RaycastToRadar : MonoBehaviour
 
     private LineRenderer cockpitLineRenderer;
 
+    [SerializeField]
+    private bool _useRadar, _useCockpitProjection;
 
     public GameObject RadarPrefab { get => _radarPrefab; set => _radarPrefab = value; }
     public string StellarBodyName { get => stellarBodyName; set => stellarBodyName = value; }
     public Scales CurrentScales { get => _currentScales; set => _currentScales = value; }
     public string Type { get => _type; set => _type = value; }
+    public bool UseRadar { get => _useRadar; set => _useRadar = value; }
+    public bool UseCockpitProjection { get => _useCockpitProjection; set => _useCockpitProjection = value; }
 
     private bool isIconSpawned, isCockpitIconSpawned;
 
@@ -59,10 +63,11 @@ public class RaycastToRadar : MonoBehaviour
     void LateUpdate()
     {
         _radarUI = GameObject.FindObjectOfType<RadarUI>();
+
         _spaceship = GameObject.FindObjectOfType<Spaceship>();
         
 
-        if (_radarUI != null)
+        if (_radarUI != null && UseRadar)
         {
             IsRadarFound = true;
         
@@ -79,12 +84,10 @@ public class RaycastToRadar : MonoBehaviour
             }
         }
 
-        if(_spaceship != null)
+        if(_spaceship != null && UseCockpitProjection)
         {
             IsSpaceshipFound = true;
             _cameraTransform = _spaceship.transform.GetComponentInChildren<Camera>().transform;
-
-            //Debug.Log(_spaceship.transform.GetComponentInChildren<Camera>());
 
             if (!isCockpitIconSpawned)
             {
@@ -102,15 +105,8 @@ public class RaycastToRadar : MonoBehaviour
             }
         }
 
-        if(IsSpaceshipFound && isCockpitIconSpawned)
+        if(IsSpaceshipFound && isCockpitIconSpawned && UseCockpitProjection)
         {
-
-            //if (Physics.Raycast(_cameraTransform.position, transform.position - _cameraTransform.position, out RaycastHit hitinfo, Mathf.Infinity))
-            //{
-                //Debug.Log($"{transform.parent.name} hit: {hitinfo.transform.name}");
-                //_lineRenderer.SetPosition(0, _cameraTransform.transform.position);
-                //_lineRenderer.SetPosition(1, hitinfo.point);
-                //Debug.DrawRay(_cameraTransform.position, transform.position - _cameraTransform.position * hitinfo.distance, Color.red);
 
                 float stellarBodyDistance = Mathf.Round(Vector3.Distance(_cameraTransform.position, transform.position) / _currentScales.Orbit * 100f) / 100f;
 
@@ -122,23 +118,10 @@ public class RaycastToRadar : MonoBehaviour
 
                 cockpitLineRenderer.SetPosition(0, _radarUI.transform.position);
                 cockpitLineRenderer.SetPosition(1, radarCockpitIcon.transform.position);
-            //}
         }
         
-        if (IsRadarFound && isIconSpawned)
+        if (IsRadarFound && isIconSpawned && UseRadar)
         {
-            /*if(Physics.Raycast(_radarUI.transform.position, transform.position - _radarUI.transform.position, out RaycastHit hitinfo, 0.3f))
-            {
-                Debug.Log($"{transform.parent.name} hit: {hitinfo.transform.name}");
-                _lineRenderer.SetPosition(0, _radarUI.transform.position);
-                _lineRenderer.SetPosition(1, hitinfo.point);
-                //Debug.DrawRay(transform.position, _radarUI.transform.position - transform.position * hitinfo.distance, Color.red);
-            }
-            else
-            {
-            }*/
-            //_lineRenderer.SetPosition(0, _radarUI.transform.position);
-            //_lineRenderer.SetPosition(1, _radarUI.transform.position + Vector3.Normalize(transform.position - _radarUI.transform.position) * 0.15f);
 
             float stellarBodyDistance = Mathf.Round(Vector3.Distance(_radarUI.transform.position, transform.position) / _currentScales.Orbit * 100f) /100f;
 
@@ -147,25 +130,6 @@ public class RaycastToRadar : MonoBehaviour
             radarIcon.transform.position = _radarUI.transform.position + Vector3.Normalize(transform.position - _radarUI.transform.position) * 0.1f;
             _textComp.text = $"{(Type == "Moon" ? StellarBodyName : StellarBodyName.ToUpper())} \n {stellarBodyDistance} AU";
 
-
-            /*Vector3 raycastDir = transform.position - _radarUI.transform.position;
-            RaycastHit raycastHit;
-
-            Ray ray = new(_radarUI.transform.position, raycastDir);
-
-            Vector3 endPosition = _radarUI.transform.position;
-
-            if(Physics.Raycast(ray, out raycastHit, Mathf.Infinity, ~layerMask, QueryTriggerInteraction.Collide)){
-                
-                endPosition = raycastHit.point;
-                Debug.Log($"{transform.parent.name}'s raycast hit: {raycastHit.transform.name}");
-            }
-
-            //Debug.Log($"{transform.parent.name} distance: {Vector3.Distance(transform.position, endPosition)}");
-
-
-            _lineRenderer.SetPosition(0, transform.position);
-            _lineRenderer.SetPosition(1, endPosition);*/
         }
     }
 }
