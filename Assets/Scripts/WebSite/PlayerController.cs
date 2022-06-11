@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         
         transform.Translate(Vector3.right * curSpeed * Time.fixedDeltaTime * lateralMove);
 
-        
+
     }
 
 

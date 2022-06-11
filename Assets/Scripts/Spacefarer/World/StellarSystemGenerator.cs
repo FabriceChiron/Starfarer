@@ -15,7 +15,10 @@ public class StellarSystemGenerator : MonoBehaviour
     private Scales _scales;
 
     [SerializeField]
-    private GameObject _playerPrefab;
+    private GameObject _playerPrefab, _forRadarPrefab;
+
+    [SerializeField]
+    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab;
 
     [SerializeField]
     private StellarSystemData _currentSystemData;
@@ -27,11 +30,15 @@ public class StellarSystemGenerator : MonoBehaviour
     private SgtFloatingObject stellarSystemCenter;
 
     [SerializeField]
+    private List<SgtFloatingObject> _floatingObjectsList;
+
+    [SerializeField]
     private bool _useXR;
 
     private GameObject _player;
 
     public bool UseXR { get => _useXR; set => _useXR = value; }
+    public List<SgtFloatingObject> FloatingObjectsList { get => _floatingObjectsList; set => _floatingObjectsList = value; }
 
 
     // Start is called before the first frame update
@@ -53,7 +60,6 @@ public class StellarSystemGenerator : MonoBehaviour
 
     private void GenerateStellarSystem(StellarSystemData stellarSystemData)
     {
-        Debug.Log(stellarSystemData.ChildrenItem.Length);
 
         foreach (StarData starData in stellarSystemData.StarsItem)
         {
@@ -67,6 +73,8 @@ public class StellarSystemGenerator : MonoBehaviour
                 CreateStellarObject(stellarBodyData, stellarSystemCenter, "Planet");
             }
         }
+
+        //_player.GetComponentInChildren<RadarUI>().FloatingObjectsList = FloatingObjectsList;
     }
 
     private void CreateStar(StarData starData, int starsCount)
@@ -79,6 +87,7 @@ public class StellarSystemGenerator : MonoBehaviour
         newStar.transform.localScale *= starData.Size * _scales.Planet;
 
         SgtFloatingOrbit orbitComp = newStar.GetComponent<SgtFloatingOrbit>();
+
 
         orbitComp.ParentPoint = stellarSystemCenter;
 
@@ -105,23 +114,13 @@ public class StellarSystemGenerator : MonoBehaviour
 
         orbitFlareComp.Radius = starData.Orbit * _scales.Orbit + newStar.transform.localScale.x;
 
-        //Debug.Log($"{starData.name} orbit: {starData.Orbit * _scales.Orbit + newStar.transform.localScale.x}");
-
         orbitFlareComp.Angle = starData.AngleOnPlane;
-
-        //orbitComp.enabled = false;
 
         orbitFlareComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360f / (starData.YearLength * _scales.Year) : 0;
 
-        //Destroy(orbitComp);
+        GameObject starToRadar = Instantiate(_forRadarPrefab, newStarFlare.transform);
 
-        //if(starData.ChildrenItem.Length > 0)
-        //{
-        //    foreach (StellarBodyData stellarBodyData in starData.ChildrenItem)
-        //    {
-        //        CreateStellarObject(stellarBodyData, newStar.transform.GetComponent<SgtFloatingObject>(), "Planet");
-        //    }
-        //}
+        starToRadar.GetComponent<RaycastToRadar>().RadarPrefab = _starRadarPrefab;
 
         if (starData.warpGate != null)
         {
@@ -138,6 +137,12 @@ public class StellarSystemGenerator : MonoBehaviour
         Debug.Log(stellarBodyData.Prefab);
 
         GameObject stellarBody = Instantiate(stellarBodyData.Prefab, stellarSystemContainer);
+
+        
+
+        GameObject stellarBodyToRadar = Instantiate(_forRadarPrefab, stellarBody.transform);
+
+        stellarBodyToRadar.GetComponent<RaycastToRadar>().RadarPrefab = stellarBodyData.Gaseous ? _gaseousPlanetRadarPrefab : _rockyPlanetRadarPrefab;
 
         SphereCollider stellarBodyCollider = stellarBody.AddComponent<SphereCollider>();
 
@@ -242,6 +247,10 @@ public class StellarSystemGenerator : MonoBehaviour
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 
             SgtFloatingOrbit _playerOrbitTemp = _playerCamera.gameObject.AddComponent<SgtFloatingOrbit>();
+
+            RadarUI radarUI = _player.GetComponentInChildren<RadarUI>();
+
+            //radarUI.FloatingObjectsList = FloatingObjectsList;
 
             _playerOrbitTemp.ParentPoint = objectComp;
 
