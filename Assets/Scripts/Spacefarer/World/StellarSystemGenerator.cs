@@ -120,7 +120,12 @@ public class StellarSystemGenerator : MonoBehaviour
 
         GameObject starToRadar = Instantiate(_forRadarPrefab, newStarFlare.transform);
 
-        starToRadar.GetComponent<RaycastToRadar>().RadarPrefab = _starRadarPrefab;
+
+        RaycastToRadar starRaycastToRadar = starToRadar.GetComponent<RaycastToRadar>();
+        starRaycastToRadar.RadarPrefab = _starRadarPrefab;
+        starRaycastToRadar.StellarBodyName = starData.Name;
+        starRaycastToRadar.CurrentScales = _scales;
+        starRaycastToRadar.Type = "Star";
 
         if (starData.warpGate != null)
         {
@@ -142,7 +147,12 @@ public class StellarSystemGenerator : MonoBehaviour
 
         GameObject stellarBodyToRadar = Instantiate(_forRadarPrefab, stellarBody.transform);
 
-        stellarBodyToRadar.GetComponent<RaycastToRadar>().RadarPrefab = stellarBodyData.Gaseous ? _gaseousPlanetRadarPrefab : _rockyPlanetRadarPrefab;
+        RaycastToRadar stellarBodyRaycastToRadar = stellarBodyToRadar.GetComponent<RaycastToRadar>();
+
+        stellarBodyRaycastToRadar.RadarPrefab = stellarBodyData.Gaseous ? _gaseousPlanetRadarPrefab : _rockyPlanetRadarPrefab;
+        stellarBodyRaycastToRadar.StellarBodyName = stellarBodyData.Name;
+        stellarBodyRaycastToRadar.CurrentScales = _scales;
+        stellarBodyRaycastToRadar.Type = Type;
 
         SphereCollider stellarBodyCollider = stellarBody.AddComponent<SphereCollider>();
 
@@ -155,7 +165,7 @@ public class StellarSystemGenerator : MonoBehaviour
         stellarBodyRb.angularDrag = 0f;
 
         SgtGravitySource stellarBodyGravitySource = stellarBody.GetComponent<SgtGravitySource>();
-        stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+12;
+        stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
 
         stellarBody.name = stellarBodyData.Name;
 
