@@ -1992,8 +1992,6 @@ GameObject:
   - component: {fileID: 2720359095626404769}
   - component: {fileID: 4789300849337579323}
   - component: {fileID: 7455797367757816675}
-  - component: {fileID: 5162554292608680337}
-  - component: {fileID: 249331673167958690}
   m_Layer: 0
   m_Name: J1407b
   m_TagString: Moon
@@ -2080,33 +2078,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85d53ea066b9cb46a54d26db74d2659, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5162554292608680337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7192316361646330921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b953daf9c5af8794c94f6a8cfff71599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shapes: []
---- !u!114 &249331673167958690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7192316361646330921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfb1d3dd33d1443bdea6dd00ce03d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mass: 100
-  autoSetMass: 0
 --- !u!1 &7433652389931333042
 GameObject:
   m_ObjectHideFlags: 0

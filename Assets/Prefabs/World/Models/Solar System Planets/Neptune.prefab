@@ -107,7 +107,6 @@ GameObject:
   - component: {fileID: -4800680973234546942}
   - component: {fileID: -2890919962801840322}
   - component: {fileID: 8338430798078421427}
-  - component: {fileID: 3190145478424464229}
   m_Layer: 0
   m_Name: Neptune
   m_TagString: Planet
@@ -202,20 +201,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angularVelocity: {x: 0, y: 1, z: 0}
   relativeTo: 0
---- !u!114 &3190145478424464229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1253402978812570745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfb1d3dd33d1443bdea6dd00ce03d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mass: 100
-  autoSetMass: 0
 --- !u!1 &2850313659331089709
 GameObject:
   m_ObjectHideFlags: 0

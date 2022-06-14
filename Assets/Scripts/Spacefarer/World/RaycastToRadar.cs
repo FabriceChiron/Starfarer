@@ -28,12 +28,13 @@ public class RaycastToRadar : MonoBehaviour
     private LineRenderer cockpitLineRenderer;
 
     [SerializeField]
-    private bool _useRadar, _useCockpitProjection;
+    private bool _useXR, _useRadar, _useCockpitProjection;
 
     public GameObject RadarPrefab { get => _radarPrefab; set => _radarPrefab = value; }
     public string StellarBodyName { get => stellarBodyName; set => stellarBodyName = value; }
     public Scales CurrentScales { get => _currentScales; set => _currentScales = value; }
     public string Type { get => _type; set => _type = value; }
+    public bool UseXR { get => _useXR; set => _useXR = value; }
     public bool UseRadar { get => _useRadar; set => _useRadar = value; }
     public bool UseCockpitProjection { get => _useCockpitProjection; set => _useCockpitProjection = value; }
 
@@ -108,16 +109,16 @@ public class RaycastToRadar : MonoBehaviour
         if(IsSpaceshipFound && isCockpitIconSpawned && UseCockpitProjection)
         {
 
-                float stellarBodyDistance = Mathf.Round(Vector3.Distance(_cameraTransform.position, transform.position) / _currentScales.Orbit * 100f) / 100f;
+            float stellarBodyDistance = Mathf.Round(Vector3.Distance(_cameraTransform.position, transform.position) / _currentScales.Orbit * 100f) / 100f;
 
-                radarCockpitIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon"));
+            radarCockpitIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon"));
 
 
-                radarCockpitIcon.transform.position = _cameraTransform.position + Vector3.Normalize(transform.position - _cameraTransform.transform.position) * 0.75f;
-                _textCockpitComp.text = $"{(Type == "Moon" ? StellarBodyName : StellarBodyName.ToUpper())} \n {stellarBodyDistance} AU";
+            radarCockpitIcon.transform.position = _cameraTransform.position + Vector3.Normalize(transform.position - _cameraTransform.transform.position) * 0.75f;
+            _textCockpitComp.text = $"{(Type == "Moon" ? StellarBodyName : StellarBodyName.ToUpper())} \n {stellarBodyDistance} AU";
 
-                cockpitLineRenderer.SetPosition(0, _radarUI.transform.position);
-                cockpitLineRenderer.SetPosition(1, radarCockpitIcon.transform.position);
+            /*cockpitLineRenderer.SetPosition(0, _radarUI.transform.position);
+            cockpitLineRenderer.SetPosition(1, radarCockpitIcon.transform.position);*/
         }
         
         if (IsRadarFound && isIconSpawned && UseRadar)
@@ -128,6 +129,7 @@ public class RaycastToRadar : MonoBehaviour
             radarIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon"));
 
             radarIcon.transform.position = _radarUI.transform.position + Vector3.Normalize(transform.position - _radarUI.transform.position) * 0.1f;
+
             _textComp.text = $"{(Type == "Moon" ? StellarBodyName : StellarBodyName.ToUpper())} \n {stellarBodyDistance} AU";
 
         }

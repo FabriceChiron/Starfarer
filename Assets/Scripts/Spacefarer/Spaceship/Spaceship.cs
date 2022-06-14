@@ -189,7 +189,7 @@ public class Spaceship : MonoBehaviour
         {
             thrust1D = getInputValues.throttleValue;
         }*/
-
+        
         if (!SpaceShipLocked)
         {
             lockPitchYawDurationOnStart -= Time.deltaTime;
@@ -462,6 +462,11 @@ public class Spaceship : MonoBehaviour
     {
         thrust1DInput =  context.ReadValue<float>();
     }
+    public void OnThrustRoll(InputAction.CallbackContext context)
+    {
+        thrust1DInput = context.ReadValue<Vector2>().y;
+        roll1D = context.ReadValue<Vector2>().x;
+    }
 
     public void OnStrafe(InputAction.CallbackContext context)
     {
@@ -477,6 +482,12 @@ public class Spaceship : MonoBehaviour
     {
         upDownXR1D = context.ReadValue<Vector2>().y;
         strafeXR1D = context.ReadValue<Vector2>().x;
+    }
+
+    public void OnUpDownStrafe(InputAction.CallbackContext context)
+    {
+        upDown1D = context.ReadValue<Vector2>().y;
+        strafe1D = context.ReadValue<Vector2>().x;
     }
 
     public void OnRoll(InputAction.CallbackContext context)

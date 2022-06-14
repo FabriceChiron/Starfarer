@@ -173,8 +173,15 @@ public class StellarSystemGenerator : MonoBehaviour
         stellarBodyRb.isKinematic = true;
         stellarBodyRb.angularDrag = 0f;
 
-        SgtGravitySource stellarBodyGravitySource = stellarBody.GetComponent<SgtGravitySource>();
-        stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
+        SgtGravitySource stellarBodyGravitySource = (stellarBody.GetComponent<SgtGravitySource>() != null 
+            ? stellarBody.GetComponent<SgtGravitySource>() 
+            : stellarBody.AddComponent<SgtGravitySource>()
+        );
+        
+        if(stellarBodyGravitySource != null)
+        {
+            stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
+        }
 
         stellarBody.name = stellarBodyData.Name;
 
