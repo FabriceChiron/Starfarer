@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     {
 
 
-        if (isSprinting)
+        if (isSprinting && forwardMove>0)
         {
             curSpeed = speed * 1.5f;
         }
