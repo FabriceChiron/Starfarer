@@ -31,6 +31,9 @@ public class Spaceship : MonoBehaviour
     private PlayerInput _playerInput;
 
     [SerializeField]
+    private List<Transform> _playerAnchors;
+
+    [SerializeField]
     private float lockPitchYawDurationOnStart = 2f;
 
 
@@ -112,7 +115,10 @@ public class Spaceship : MonoBehaviour
 
     /* /TRANSFORM CONTROLS/ */
 
-    public bool boosting, warping, warpingReleased, warpingStarted;
+    public bool boosting, warping, warpingReleased, warpingStarted, _showCockpitRadar, _enableGravity, _useRadar;
+
+    [SerializeField]
+    private GameObject _radar;
 
     [SerializeField]
     private GetInputValues getInputValues;
@@ -121,7 +127,10 @@ public class Spaceship : MonoBehaviour
     private List<GameObject> forVR, forFlatScreens;
 
     [SerializeField]
-    private bool joystickGrabbed, throttleGrabbed, leftXRThumbstickUsed, spaceShipLocked;
+    private Camera _cameraVR, _cameraFlat;
+
+    [SerializeField]
+    private bool joystickGrabbed, throttleGrabbed, spaceShipLocked;
 
     Rigidbody rb;
 
@@ -134,20 +143,40 @@ public class Spaceship : MonoBehaviour
 
     public bool ThrottleGrabbed { get => throttleGrabbed; set => throttleGrabbed = value; }
     public bool JoystickGrabbed { get => joystickGrabbed; set => joystickGrabbed = value; }
-    public bool LeftXRThumbstickUsed { get => leftXRThumbstickUsed; set => leftXRThumbstickUsed = value; }
     public bool SpaceShipLocked { get => spaceShipLocked; set => spaceShipLocked = value; }
     public bool UseXR { get => _useXR; set => _useXR = value; }
+    public bool ShowCockpitRadar { get => _showCockpitRadar; set => _showCockpitRadar = value; }
+    public bool EnableGravity { get => _enableGravity; set => _enableGravity = value; }
+    public bool UseRadar { get => _useRadar; set => _useRadar = value; }
     public StellarSystemGenerator StellarSystemGenerator { get => stellarSystemGenerator; set => stellarSystemGenerator = value; }
+    public Camera CameraVR { get => _cameraVR; set => _cameraVR = value; }
+    public Camera CameraFlat { get => _cameraFlat; set => _cameraFlat = value; }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
+        _radar.SetActive(UseRadar);
+
         StellarSystemGenerator _stellarSystemGenerator = GameObject.FindObjectOfType<StellarSystemGenerator>();
+
+        if (EnableGravity)
+        {
+            transform.gameObject.AddComponent<SgtGravityReceiver>();
+        }
 
         if (_stellarSystemGenerator != null)
         {
             UseXR = _stellarSystemGenerator.UseXR;
+        }
+
+        if (UseXR)
+        {
+            foreach(Transform trackerOffset in _playerAnchors)
+            {
+                trackerOffset.localPosition = new Vector3(0f, trackerOffset.localPosition.y, 0f);
+                trackerOffset.parent.gameObject.SetActive(true);
+            }
         }
 
         /* TRANSFORM CONTROLS */
@@ -527,6 +556,14 @@ public class Spaceship : MonoBehaviour
     {
         //warpingReleased = context.performed;
         warping = !context.performed;
+    }
+
+    public void OnToggleCockpitRadar(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ShowCockpitRadar = !ShowCockpitRadar;
+        }
     }
     #endregion
 }

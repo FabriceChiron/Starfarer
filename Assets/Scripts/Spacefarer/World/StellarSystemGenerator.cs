@@ -36,7 +36,7 @@ public class StellarSystemGenerator : MonoBehaviour
     private bool _useXR;
 
     [SerializeField]
-    private bool _useRadar, _useCockpitProjection;
+    private bool _useRadar, _useCockpitProjection, _enableGravity;
 
     private GameObject _player;
 
@@ -44,6 +44,7 @@ public class StellarSystemGenerator : MonoBehaviour
     public List<SgtFloatingObject> FloatingObjectsList { get => _floatingObjectsList; set => _floatingObjectsList = value; }
     public bool UseRadar { get => _useRadar; set => _useRadar = value; }
     public bool UseCockpitProjection { get => _useCockpitProjection; set => _useCockpitProjection = value; }
+    public bool EnableGravity { get => _enableGravity; set => _enableGravity = value; }
 
 
     // Start is called before the first frame update
@@ -133,6 +134,8 @@ public class StellarSystemGenerator : MonoBehaviour
         starRaycastToRadar.Type = "Star";
         starRaycastToRadar.UseRadar = UseRadar;
         starRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
+        starRaycastToRadar.StarData = starData;
+        starRaycastToRadar.UseXR = UseXR;
 
         if (starData.warpGate != null)
         {
@@ -162,6 +165,13 @@ public class StellarSystemGenerator : MonoBehaviour
         stellarBodyRaycastToRadar.Type = Type;
         stellarBodyRaycastToRadar.UseRadar = UseRadar;
         stellarBodyRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
+        stellarBodyRaycastToRadar.StellarBodyData = stellarBodyData;
+        stellarBodyRaycastToRadar.UseXR= UseXR;
+
+        if(Type == "Moon")
+        {
+            stellarBodyRaycastToRadar.ParentName = thisCenter.name;
+        }
 
         SphereCollider stellarBodyCollider = stellarBody.AddComponent<SphereCollider>();
 
@@ -172,15 +182,18 @@ public class StellarSystemGenerator : MonoBehaviour
         stellarBodyRb.useGravity = false;
         stellarBodyRb.isKinematic = true;
         stellarBodyRb.angularDrag = 0f;
-
-        SgtGravitySource stellarBodyGravitySource = (stellarBody.GetComponent<SgtGravitySource>() != null 
-            ? stellarBody.GetComponent<SgtGravitySource>() 
-            : stellarBody.AddComponent<SgtGravitySource>()
-        );
         
-        if(stellarBodyGravitySource != null)
+        if(EnableGravity)
         {
-            stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
+            SgtGravitySource stellarBodyGravitySource = (stellarBody.GetComponent<SgtGravitySource>() != null 
+                ? stellarBody.GetComponent<SgtGravitySource>() 
+                : stellarBody.AddComponent<SgtGravitySource>()
+            );
+        
+            if(stellarBodyGravitySource != null)
+            {
+                stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
+            }
         }
 
         stellarBody.name = stellarBodyData.Name;
@@ -272,26 +285,30 @@ public class StellarSystemGenerator : MonoBehaviour
 
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 
-            SgtFloatingOrbit _playerOrbitTemp = _playerCamera.gameObject.AddComponent<SgtFloatingOrbit>();
+            //SgtFloatingOrbit _playerOrbitTemp = _playerCamera.gameObject.AddComponent<SgtFloatingOrbit>();
 
             RadarUI radarUI = _player.GetComponentInChildren<RadarUI>();
 
+
+            _player.GetComponentInChildren<Spaceship>().EnableGravity = EnableGravity;
+
+            _player.GetComponentInChildren<Spaceship>().UseRadar = UseRadar;
+
             //radarUI.FloatingObjectsList = FloatingObjectsList;
 
-            _playerOrbitTemp.ParentPoint = objectComp;
+            /*_playerOrbitTemp.ParentPoint = objectComp;
 
             _playerOrbitTemp.Radius = 10f;
             _playerOrbitTemp.Angle = 0f;
             _playerOrbitTemp.DegreesPerSecond = 0f;
 
-            //_playerOrbitTemp.enabled = false;
+            _playerOrbitTemp.enabled = false;*/
 
-            //CwFollow _playerFollowComp = _playerCamera.gameObject.AddComponent<CwFollow>();
+            /*CwFollow _playerFollowComp = _player.AddComponent<CwFollow>();
 
-            //_playerFollowComp.Target = newWarpGate.transform;
-            //_playerFollowComp.Damping = 10f;
+            _playerFollowComp.Target = newWarpGate.transform;
 
-            //_playerFollowComp.enabled = false;
+            _playerFollowComp.enabled = false;*/
 
             //Transform starField = GameObject.FindGameObjectWithTag("Starfield").transform;
             //Transform background = GameObject.FindGameObjectWithTag("Background").transform;
