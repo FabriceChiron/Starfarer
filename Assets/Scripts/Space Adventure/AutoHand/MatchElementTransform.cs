@@ -29,30 +29,34 @@ public class MatchElementTransform : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(useGlobal)
+        if(elementToMatch != null)
         {
-            if (matchPosition)
+            if(useGlobal)
             {
-                transform.position = elementToMatch.position;
+                if (matchPosition)
+                {
+                    transform.position = elementToMatch.position;
+                }
+
+                if (matchRotation)
+                {
+                    transform.rotation = elementToMatch.rotation;
+                }
             }
 
-            if (matchRotation)
+            else
             {
-                transform.rotation = elementToMatch.rotation;
+                if (matchPosition)
+                {
+                    transform.localPosition = elementToMatch.localPosition;
+                }
+
+                if (matchRotation)
+                {
+                    transform.localRotation = elementToMatch.localRotation;
+                }
             }
         }
 
-        else
-        {
-            if (matchPosition)
-            {
-                transform.localPosition = elementToMatch.localPosition;
-            }
-
-            if (matchRotation)
-            {
-                transform.localRotation = elementToMatch.localRotation;
-            }
-        }
     }
 }

@@ -15,7 +15,7 @@ public class StellarSystemGenerator : MonoBehaviour
     private Scales _scales;
 
     [SerializeField]
-    private GameObject _playerPrefab, _forRadarPrefab;
+    private GameObject _playerPrefab, _forRadarPrefab, _followWarpGatePrefab;
 
     [SerializeField]
     private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab;
@@ -149,7 +149,7 @@ public class StellarSystemGenerator : MonoBehaviour
         //Debug.Log($"{stellarBodyData.Prefab}");
         //Debug.Log($"{stellarSystemContainer}");
 
-        Debug.Log(stellarBodyData.Prefab);
+        //Debug.Log(stellarBodyData.Prefab);
 
         GameObject stellarBody = Instantiate(stellarBodyData.Prefab, stellarSystemContainer);
 
@@ -266,6 +266,7 @@ public class StellarSystemGenerator : MonoBehaviour
 
         SgtFloatingOrbit orbitComp = newWarpGate.GetComponent<SgtFloatingOrbit>();
 
+
         orbitComp.ParentPoint = thisCenter;
 
         orbitComp.Radius = (warpGateData.Orbit * _scales.Orbit) + thisCenter.transform.localScale.x;
@@ -279,45 +280,51 @@ public class StellarSystemGenerator : MonoBehaviour
         //orbitComp.DegreesPerSecond = revolutionPeriod;
         orbitComp.DegreesPerSecond = 0;
 
+
         if (warpGateData.spawnsPlayer && _playerPrefab != null)
         {
+            /*GameObject _followWarpGate = Instantiate(_followWarpGatePrefab);
+            SgtFloatingCamera warpGateFloatingCamera = _followWarpGate.AddComponent<SgtFloatingCamera>();
+
+            _followWarpGate.GetComponent<MatchElementTransform>().elementToMatch = newWarpGate.transform;*/
+
             _player = Instantiate(_playerPrefab);
+
+
+
+
 
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 
-            //SgtFloatingOrbit _playerOrbitTemp = _playerCamera.gameObject.AddComponent<SgtFloatingOrbit>();
-
             RadarUI radarUI = _player.GetComponentInChildren<RadarUI>();
 
+            Spaceship _spaceship = _player.GetComponentInChildren<Spaceship>();
 
-            _player.GetComponentInChildren<Spaceship>().EnableGravity = EnableGravity;
+            SgtFloatingOrbit spaceshipOrbitComp = _spaceship.gameObject.AddComponent<SgtFloatingOrbit>();
 
-            _player.GetComponentInChildren<Spaceship>().UseRadar = UseRadar;
+            spaceshipOrbitComp.ParentPoint = orbitComp.ParentPoint;
+            spaceshipOrbitComp.Radius = orbitComp.Radius;
+            spaceshipOrbitComp.Angle = orbitComp.Angle;
+            spaceshipOrbitComp.Tilt = orbitComp.Tilt;
+            spaceshipOrbitComp.DegreesPerSecond = spaceshipOrbitComp.DegreesPerSecond;
 
-            //radarUI.FloatingObjectsList = FloatingObjectsList;
+            _spaceship.EnableGravity = EnableGravity;
 
-            /*_playerOrbitTemp.ParentPoint = objectComp;
+            _spaceship.UseRadar = UseRadar;
 
-            _playerOrbitTemp.Radius = 10f;
-            _playerOrbitTemp.Angle = 0f;
-            _playerOrbitTemp.DegreesPerSecond = 0f;
+            /*
+            _player.transform.position = _followWarpGate.transform.position;
+            _spaceship.transform.localPosition = Vector3.zero;
 
-            _playerOrbitTemp.enabled = false;*/
 
-            /*CwFollow _playerFollowComp = _player.AddComponent<CwFollow>();
+            Debug.Log(warpGateFloatingCamera.Position);
 
-            _playerFollowComp.Target = newWarpGate.transform;
 
-            _playerFollowComp.enabled = false;*/
 
-            //Transform starField = GameObject.FindGameObjectWithTag("Starfield").transform;
-            //Transform background = GameObject.FindGameObjectWithTag("Background").transform;
+            _playerCamera.SetPosition(warpGateFloatingCamera.Position);
+            _playerCamera.ApplyPosition();
 
-            _playerCamera.transform.position = new Vector3(newWarpGate.transform.position.x, newWarpGate.transform.position.y, newWarpGate.transform.position.z + 20f);
-            //_playerCamera.SetPosition(new SgtPosition(_playerCamera.transform.position));
-            
-            //_playerCamera.UpdatePositionNow();
-
+            warpGateFloatingCamera.enabled = false;*/
             _playerCamera.enabled = true;
         }
     }

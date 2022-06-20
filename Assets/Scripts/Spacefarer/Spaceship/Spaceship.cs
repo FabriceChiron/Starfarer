@@ -203,6 +203,10 @@ public class Spaceship : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+    }
+
     private void Update()
     {
         rotationZTmp = ((roll1D != 0) ? roll1D : rollXR1D) * -1f;
@@ -284,6 +288,7 @@ public class Spaceship : MonoBehaviour
         if(spaceShipOrbitComp != null)
         {
             spaceShipOrbitComp.enabled = false;
+            Destroy(spaceShipOrbitComp);
         }
 
         CwFollow spaceShipFollowComp = transform.GetComponent<CwFollow>();
