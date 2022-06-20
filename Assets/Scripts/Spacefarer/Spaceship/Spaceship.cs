@@ -151,6 +151,7 @@ public class Spaceship : MonoBehaviour
     public StellarSystemGenerator StellarSystemGenerator { get => stellarSystemGenerator; set => stellarSystemGenerator = value; }
     public Camera CameraVR { get => _cameraVR; set => _cameraVR = value; }
     public Camera CameraFlat { get => _cameraFlat; set => _cameraFlat = value; }
+    public Vector2 PitchYaw { get => pitchYaw; set => pitchYaw = value; }
 
     void Start()
     {
@@ -235,7 +236,7 @@ public class Spaceship : MonoBehaviour
 
         if (JoystickGrabbed && !SpaceShipLocked && UseXR)
         {
-            pitchYaw = getInputValues.joystickValues;
+            PitchYaw = getInputValues.joystickValues.normalized;
         }
 
         switch (_controlType)
@@ -250,13 +251,13 @@ public class Spaceship : MonoBehaviour
                 //rotationZTmp = ((roll1D != 0) ? roll1D : rollXR1D) * -1f;
 
 
-                mouseXSmooth = Mathf.Lerp(mouseXSmooth, pitchYaw.x * rotationSpeed, Time.deltaTime * cameraSmooth);
+                mouseXSmooth = Mathf.Lerp(mouseXSmooth, PitchYaw.x * rotationSpeed, Time.deltaTime * cameraSmooth);
                 //Debug.Log($"pitchYaw.x: {pitchYaw.x}");
                 //Debug.Log($"mouseXSmooth: {mouseXSmooth}");
 
                 mouseXSmooth = Mathf.Round(mouseXSmooth * 100f) / 100f;
 
-                mouseYSmooth = Mathf.Lerp(mouseYSmooth, -pitchYaw.y * rotationSpeed, Time.deltaTime * cameraSmooth);
+                mouseYSmooth = Mathf.Lerp(mouseYSmooth, -PitchYaw.y * rotationSpeed, Time.deltaTime * cameraSmooth);
 
                 mouseYSmooth = Mathf.Round(mouseYSmooth * 100f) / 100f;
 
@@ -437,9 +438,9 @@ public class Spaceship : MonoBehaviour
         // Roll
         rb.AddRelativeTorque(Vector3.back * roll1D * rollTorque * Time.deltaTime);
         // Pitch
-        rb.AddRelativeTorque(Vector3.right * Mathf.Clamp(pitchYaw.y, -1f, 1f) * pitchTorque * Time.deltaTime);
+        rb.AddRelativeTorque(Vector3.right * Mathf.Clamp(PitchYaw.y, -1f, 1f) * pitchTorque * Time.deltaTime);
         // Yaw
-        rb.AddRelativeTorque(Vector3.up * Mathf.Clamp(pitchYaw.x, -1f, 1f) * yawTorque * Time.deltaTime);
+        rb.AddRelativeTorque(Vector3.up * Mathf.Clamp(PitchYaw.x, -1f, 1f) * yawTorque * Time.deltaTime);
 
 
         // THRUST
@@ -535,7 +536,8 @@ public class Spaceship : MonoBehaviour
     {
         if(lockPitchYawDurationOnStart < 0f)
         {
-            pitchYaw = (JoystickGrabbed) ? getInputValues.joystickValues :  context.ReadValue<Vector2>();
+            PitchYaw = (JoystickGrabbed) ? getInputValues.joystickValues :  context.ReadValue<Vector2>();
+            PitchYaw = PitchYaw.normalized;
         }
     }
 

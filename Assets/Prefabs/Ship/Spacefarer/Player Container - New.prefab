@@ -220,8 +220,9 @@ GameObject:
   - component: {fileID: 7724019575579000537}
   - component: {fileID: 1057407612359172618}
   - component: {fileID: 7533184082012434938}
+  - component: {fileID: 4208048220621445313}
   m_Layer: 5
-  m_Name: Warp Gate Infos
+  m_Name: Debug Infos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,12 +333,29 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4208048220621445313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364615923293912841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04784e9f65b72f54082a4e065351719d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spaceship: {fileID: 0}
+  _label: {fileID: 0}
+  _infoLine1: {fileID: 0}
+  _infoLine2: {fileID: 0}
+  _infoLine3: {fileID: 0}
 --- !u!1 &369650736622533006
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +736,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: 'Y: {}'
+  m_Text: Info 2
 --- !u!114 &8161237627798956682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2399,7 +2417,7 @@ GameObject:
   - component: {fileID: 4858375530195100805}
   - component: {fileID: 5814177118748878072}
   m_Layer: 5
-  m_Name: Warp Gate position
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2466,7 +2484,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: 'Warp Gate Position:'
+  m_Text: 'Label:'
 --- !u!114 &5814177118748878072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4451,7 +4469,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: 'X: {}'
+  m_Text: Info 1
 --- !u!114 &8532429775722308089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5285,7 +5303,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: 'Z: {}'
+  m_Text: Info 3
 --- !u!114 &7149275285359627610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46294,7 +46312,7 @@ MonoBehaviour:
   _maxSpeed: 0
   spaceshipRoot: {fileID: 2833926900359592966}
   rotationSpeed: 0.5
-  cameraSmoothFlat: 0.05
+  cameraSmoothFlat: 1
   cameraSmoothXR: 2
   cameraSmooth: 2
   crosshairTexture: {fileID: 0}

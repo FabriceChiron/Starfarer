@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class InputSystemFirstPersonCharacter : MonoBehaviour
 {
+    [SerializeField]
     private InputSystemFirstPersonControls inputActions;
 
     private CharacterController controller;
