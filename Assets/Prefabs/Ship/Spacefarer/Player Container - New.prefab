@@ -46444,7 +46444,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 61c8dbeb-9ce4-4bb8-bbc3-801660c1db52
+    m_ActionId: 3e4b6a4f-e992-4490-9e21-4617d73f5605
     m_ActionName: Ship Controls/Thrust[/Keyboard/s,/Keyboard/w]
   - m_PersistentCalls:
       m_Calls:
@@ -46460,7 +46460,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: e1debd8b-587e-470e-970e-edaa94c7c986
+    m_ActionId: 37671e2b-2f23-4a5c-a3a5-1117b755ef55
     m_ActionName: Ship Controls/Strafe[/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
@@ -46476,8 +46476,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: c5db96cc-e6b0-41de-b7aa-e4c6e1cf8310
-    m_ActionName: Ship Controls/UpDown[/Keyboard/leftCtrl,/Keyboard/space]
+    m_ActionId: 30290e36-35c5-44a3-9232-bf4e9b972cbf
+    m_ActionName: Ship Controls/UpDown[/Keyboard/f,/Keyboard/r]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4096531722522075296}
@@ -46492,7 +46492,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 6fcb6622-7de9-4d64-8b77-786ea78e1772
+    m_ActionId: 2f8f889a-0179-4ec9-8c19-191d68ed2f96
     m_ActionName: Ship Controls/Roll[/Keyboard/q,/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
@@ -46508,7 +46508,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: bde6e687-f04c-418a-a915-342123c4897a
+    m_ActionId: e1b1f677-eeaa-49e5-bc1e-9c6c87fda565
     m_ActionName: Ship Controls/RollXR
   - m_PersistentCalls:
       m_Calls:
@@ -46524,7 +46524,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: fddae19c-c9fe-4b5e-9d72-e5c61e9cdd57
+    m_ActionId: 56405431-e4e3-4b75-9e0f-c57bb340d2e2
     m_ActionName: Ship Controls/PitchYaw[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
@@ -46540,24 +46540,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 06ad0108-b304-4d2c-8890-fac48f1570dc
+    m_ActionId: b21a6d12-b762-498c-a480-103c475028ed
     m_ActionName: Ship Controls/Boost[/Keyboard/shift]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4096531722522075296}
-        m_TargetAssemblyTypeName: Spaceship, Assembly-CSharp
-        m_MethodName: OnUpDownStrafeXR
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: f1670f46-9f59-45a3-b8f6-256960a0826c
-    m_ActionName: Ship Controls/UpDownStrafeXR
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4096531722522075296}
@@ -46572,8 +46556,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: bce89c0d-ea2b-4f3d-9d24-637c06162c7a
+    m_ActionId: f143b3da-a12c-4766-9242-47c1f06cd7a6
     m_ActionName: Ship Controls/Warp[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4096531722522075296}
+        m_TargetAssemblyTypeName: Spaceship, Assembly-CSharp
+        m_MethodName: OnUpDownStrafeXR
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 66fedfaf-2a32-4b13-89b5-87ae6b5ef7e5
+    m_ActionName: Ship Controls/UpDownStrafeXR
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4096531722522075296}
@@ -46588,47 +46588,47 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 44eb4a7c-8ab6-4c98-b0b9-32f3bc7c98cb
+    m_ActionId: f5aaf6dc-48d1-45c7-904a-f662a7ece878
     m_ActionName: Ship Controls/ToggleCockpitRadar[/Keyboard/v]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2d3bf73f-18d0-4472-bf60-8aba4cc32a66
+    m_ActionId: 98948dac-efec-4064-89bc-772373a09ce1
     m_ActionName: Ship Controls - All/Thrust[/Keyboard/s,/Keyboard/w]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2c0306b8-eed3-4867-88f0-305b3cf3202b
+    m_ActionId: d6f0accc-d2b8-4e66-bc76-a1692b911a78
     m_ActionName: Ship Controls - All/ThrustRoll
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 6f67c826-6bd7-4b92-a1cc-7d074a9dccff
+    m_ActionId: 65de6317-1979-4b64-9dd4-57fa364683fd
     m_ActionName: Ship Controls - All/Roll[/Keyboard/q,/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 5face907-0720-479f-8ce4-450967af211f
+    m_ActionId: 28f0b9ec-3399-4539-bfd1-2e92d21b8a0c
     m_ActionName: Ship Controls - All/Strafe[/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: c841d002-6f8b-4adb-a084-f1ab9bb6a121
+    m_ActionId: 3b212305-95a8-4f63-ae59-816a72dc2ea9
     m_ActionName: Ship Controls - All/UpDown[/Keyboard/f,/Keyboard/r]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 92109fdf-02d0-4aaa-9fe1-5bc03899cf5e
+    m_ActionId: 070d827b-2c77-4741-8603-44efed00984a
     m_ActionName: Ship Controls - All/UpDownStrafe
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 60262771-0260-43c1-9ffe-acdf83d0259d
+    m_ActionId: 391f736a-214d-4582-972e-ea44f7784293
     m_ActionName: Ship Controls - All/PitchYaw[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 6586eb56-97b9-48aa-851c-692c06338da9
+    m_ActionId: f894daa6-e34a-4ed1-8fd6-4acacfea8316
     m_ActionName: Ship Controls - All/Boost[/Keyboard/shift]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 8e28fe4b-99cd-458d-be59-bace0c374806
+    m_ActionId: de3bcc2c-46c2-4d2d-a6aa-3f680b050d82
     m_ActionName: Ship Controls - All/Warp[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 75a02509-4396-44d8-9e56-3ab051b4ea5f
+    m_ActionId: 2278991a-535b-4440-93be-bab5146923d6
     m_ActionName: Ship Controls - All/EnterLeaveShip[/Keyboard/x]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
