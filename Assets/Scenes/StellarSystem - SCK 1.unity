@@ -503,6 +503,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24efe119bf6e96d4c9fc610ec8f95ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &893503867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893503847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b55940b618403d40b83c5c1a50174c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEnginesActivated:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnginesDeactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  controlsDisabled: 0
+  activateEnginesAtStart: 1
+  steeringInputs: {x: 0, y: 0, z: 0}
+  movementInputs: {x: 0, y: 0, z: 0}
+  boostInputs: {x: 0, y: 0, z: 0}
+  minMovementInputs: {x: -1, y: -1, z: -0.1}
+  maxMovementInputs: {x: 1, y: 1, z: 1}
+  m_rigidbody: {fileID: 893503886}
+  maxMovementForces: {x: 125000, y: 125000, z: 125000}
+  maxSteeringForces: {x: 16, y: 16, z: 25}
+  maxBoostForces: {x: 250000, y: 250000, z: 250000}
+  warpMultiplier: 100
+  movementInputResponseSpeed: 5
+  steeringBySpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boostSteeringCoefficient: 1
+  boostResourceHandlers: []
+--- !u!54 &893503886 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 54219335505582196, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+  m_PrefabInstance: {fileID: 963513755}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &963513755
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -562,6 +624,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: dc852430244be7643ad377badcfd3b4d, type: 2}
+    - target: {fileID: 54219335505582196, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+      propertyPath: m_AngularDrag
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 604457030926481386, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -608,31 +674,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296440638984868363, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: maxBoostForces.x
-      value: 38793104
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: maxBoostForces.y
-      value: 38793104
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: maxBoostForces.z
-      value: 38793104
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: maxMovementForces.x
-      value: 387931.03
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: maxMovementForces.y
-      value: 387931.03
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: maxMovementForces.z
-      value: 387931.03
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+      propertyPath: maxSteeringForces.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+      propertyPath: maxSteeringForces.y
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+      propertyPath: maxSteeringForces.z
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+      propertyPath: movementInputResponseSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006432058888483048, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
+      propertyPath: boostResourceHandlers.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3207605997711714685, guid: 7717c1f923fa4db45bd617b52a631fcc, type: 3}
       propertyPath: m_AnchorMax.y

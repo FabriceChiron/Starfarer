@@ -36,13 +36,29 @@ namespace VSX.UniversalVehicleCombat
             get { return maxSteeringForces; }
         }
 
+
         [Tooltip("The movement forces applied for each axis when boosting.")]
         [SerializeField]
-        protected Vector3 maxBoostForces = new Vector3(800, 800, 800);
-        public Vector3 MaxBoostForces
-        {
-            get { return maxBoostForces; }
-        }
+        private Vector3 maxBoostForces = new Vector3(800, 800, 800);
+        private Vector3 initialMaxBoostForces;
+        public Vector3 MaxBoostForces { get => maxBoostForces; set => maxBoostForces = value; }
+        public Vector3 InitialMaxBoostForces { get => initialMaxBoostForces; set => initialMaxBoostForces = value; }
+
+        [SerializeField]
+        private float warpMultiplier = 100;
+        public float WarpMultiplier { get => warpMultiplier; set => warpMultiplier = value; }
+        public bool IsWarping { get => _isWarping; set => _isWarping = value; }
+
+        [SerializeField]
+        private bool _isWarping;
+
+        /*public Vector3 MaxBoostForces
+{
+get { return maxBoostForces; }
+set { }
+}*/
+
+
 
         [SerializeField]
         protected float movementInputResponseSpeed = 5;
@@ -82,7 +98,9 @@ namespace VSX.UniversalVehicleCombat
         {
             // Cache the rigidbody
             m_rigidbody = GetComponent<Rigidbody>();
-        }
+
+            InitialMaxBoostForces = MaxBoostForces;
+    }
 
 
         /// <summary>
@@ -92,7 +110,7 @@ namespace VSX.UniversalVehicleCombat
         /// <returns>The maximum speed on each axis.</returns>
         public override Vector3 GetDefaultMaxSpeedByAxis(bool withBoost)
 		{
-            Vector3 maxForces = maxMovementForces + (withBoost ? maxBoostForces : Vector3.zero);
+            Vector3 maxForces = maxMovementForces + (withBoost ? MaxBoostForces : Vector3.zero);
             
 			return (new Vector3(GetSpeedFromForce(maxForces.x, m_rigidbody), GetSpeedFromForce(maxForces.y, m_rigidbody), GetSpeedFromForce(maxForces.z, m_rigidbody)));
 
@@ -105,7 +123,7 @@ namespace VSX.UniversalVehicleCombat
         /// <returns>The maximum speed on each axis.</returns>
         public override Vector3 GetCurrentMaxSpeedByAxis(bool withBoost)
         {
-            Vector3 maxForces = maxMovementForces + (withBoost ? maxBoostForces : Vector3.zero);
+            Vector3 maxForces = maxMovementForces + (withBoost ? MaxBoostForces : Vector3.zero);
 
             return (new Vector3(GetSpeedFromForce(maxForces.x, m_rigidbody), GetSpeedFromForce(maxForces.y, m_rigidbody), GetSpeedFromForce(maxForces.z, m_rigidbody)));
 
@@ -197,7 +215,7 @@ namespace VSX.UniversalVehicleCombat
 
         protected virtual Vector3 GetCurrentMaxBoostForces()
         {
-            return maxBoostForces;
+            return MaxBoostForces;
         }
 
         public override void SetBoostInputs(Vector3 newValuesByAxis)

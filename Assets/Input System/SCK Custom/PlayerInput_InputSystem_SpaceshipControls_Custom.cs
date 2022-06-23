@@ -125,10 +125,12 @@ namespace VSX.UniversalVehicleCombat
 
         [SerializeField]
         protected float boostChangeSpeed = 3;
+
+        [SerializeField]
         protected Vector3 boostTarget = Vector3.zero;
 
         // Reference to the engines component on the current vehicle
-        protected VehicleEngines3D spaceVehicleEngines;
+        protected VehicleEngines3DCustom spaceVehicleEngines;
 
         protected HUDCursor hudCursor;
         protected Vector3 reticuleViewportPosition = new Vector3(0.5f, 0.5f, 0);
@@ -186,7 +188,7 @@ namespace VSX.UniversalVehicleCombat
             spaceVehicleEngines = null;
 
             // Make sure the vehicle has a space vehicle engines component
-            spaceVehicleEngines = vehicle.GetComponent<VehicleEngines3D>();
+            spaceVehicleEngines = vehicle.GetComponent<VehicleEngines3DCustom>();
 
             hudCursor = vehicle.GetComponentInChildren<HUDCursor>();
 
@@ -391,9 +393,26 @@ namespace VSX.UniversalVehicleCombat
             // Up / down movement
             movementInputs.y = strafing.y;
 
+            spaceVehicleEngines.IsWarping = input.SpacefighterControls.Warp.IsPressed();
+
+            spaceVehicleEngines.MaxBoostForces = spaceVehicleEngines.IsWarping
+                ? spaceVehicleEngines.InitialMaxBoostForces * spaceVehicleEngines.WarpMultiplier
+                : spaceVehicleEngines.InitialMaxBoostForces;
+
+            /*if (input.SpacefighterControls.Warp.IsPressed())
+            {
+                spaceVehicleEngines.MaxBoostForces = spaceVehicleEngines.InitialMaxBoostForces * spaceVehicleEngines.WarpMultiplier;
+            }
+            else
+            {
+                spaceVehicleEngines.MaxBoostForces = spaceVehicleEngines.InitialMaxBoostForces;
+            }*/
+
+
             spaceVehicleEngines.SetMovementInputs(movementInputs);
 
-            boostInputs = Vector3.Lerp(input.SpacefighterControls.Warp.IsPressed() ? boostInputs * 100 : boostInputs, input.SpacefighterControls.Warp.IsPressed() ? boostTarget * 100 : boostTarget, boostChangeSpeed * Time.deltaTime);
+
+            boostInputs = Vector3.Lerp(boostInputs, boostTarget, boostChangeSpeed * Time.deltaTime);
             if (boostInputs.magnitude < 0.0001f) boostInputs = Vector3.zero;
             spaceVehicleEngines.SetBoostInputs(boostInputs);
         }
