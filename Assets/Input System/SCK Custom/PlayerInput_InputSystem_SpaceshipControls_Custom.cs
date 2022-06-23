@@ -393,7 +393,7 @@ namespace VSX.UniversalVehicleCombat
 
             spaceVehicleEngines.SetMovementInputs(movementInputs);
 
-            boostInputs = Vector3.Lerp(boostInputs, boostTarget, boostChangeSpeed * Time.deltaTime);
+            boostInputs = Vector3.Lerp(input.SpacefighterControls.Warp.IsPressed() ? boostInputs * 100 : boostInputs, input.SpacefighterControls.Warp.IsPressed() ? boostTarget * 100 : boostTarget, boostChangeSpeed * Time.deltaTime);
             if (boostInputs.magnitude < 0.0001f) boostInputs = Vector3.zero;
             spaceVehicleEngines.SetBoostInputs(boostInputs);
         }
@@ -480,6 +480,8 @@ namespace VSX.UniversalVehicleCombat
             if (autoRollEnabled) AutoRoll();
 
             spaceVehicleEngines.SetSteeringInputs(steeringInputs);
+
         }
+
     }
 }
