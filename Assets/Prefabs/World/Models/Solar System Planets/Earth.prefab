@@ -111,6 +111,9 @@ GameObject:
   - component: {fileID: -8029953171946296040}
   - component: {fileID: -2829271572238315516}
   - component: {fileID: -872124902045867025}
+  - component: {fileID: 7171103209955019186}
+  - component: {fileID: 716136623106613538}
+  - component: {fileID: 233823647727755251}
   m_Layer: 0
   m_Name: Earth
   m_TagString: Planet
@@ -154,8 +157,8 @@ MonoBehaviour:
     GlobalY: 0
     GlobalZ: 0
   expectedPosition: {x: 0, y: 0, z: 0}
-  expectedPositionSet: 0
-  positionSet: 0
+  expectedPositionSet: 1
+  positionSet: 1
   seed: 0
 --- !u!114 &-2829271572238315516
 MonoBehaviour:
@@ -190,6 +193,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85d53ea066b9cb46a54d26db74d2659, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7171103209955019186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927338795248942147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e074ba7a2424c46bd4665dff58d6d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  label: Target
+  trackableType: {fileID: 11400000, guid: be8fc168a746ab148ae6be61a23d735c, type: 2}
+  team: {fileID: 11400000, guid: 8799821b43f226c4fa80c7d344bdbb5b, type: 2}
+  trackingBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
+  m_Rigidbody: {fileID: 233823647727755251}
+  isRootTrackable: 1
+  activated: 1
+  ignoreTrackingDistance: 1
+  registrationOrder: 0
+  rootTransform: {fileID: 6927338795248942268}
+  childTrackables: []
+  variables: []
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnselected:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &716136623106613538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927338795248942147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfb1d3dd33d1443bdea6dd00ce03d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 100
+  autoSetMass: 0
+--- !u!54 &233823647727755251
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927338795248942147}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6927338795365770138
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,7 +622,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8027548475197536673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.41575e-12, y: 2.7532789e-11, z: 4.0507726e-11}
+  m_LocalPosition: {x: 0.00091033446, y: 0.00026074506, z: -0.00032140833}
   m_LocalScale: {x: 1.005, y: 1.005, z: 1.005}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -393,7 +393,7 @@ namespace VSX.UniversalVehicleCombat
             // Up / down movement
             movementInputs.y = strafing.y;
 
-            spaceVehicleEngines.IsWarping = input.SpacefighterControls.Warp.IsPressed();
+            spaceVehicleEngines.IsWarping = input.SpacefighterControls.Warp.IsPressed() && input.SpacefighterControls.Boost.IsPressed();
 
             spaceVehicleEngines.MaxBoostForces = spaceVehicleEngines.IsWarping
                 ? spaceVehicleEngines.InitialMaxBoostForces * spaceVehicleEngines.WarpMultiplier

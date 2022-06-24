@@ -5,6 +5,7 @@ using SpaceGraphicsToolkit;
 using SpaceGraphicsToolkit.Starfield;
 using SpaceGraphicsToolkit.Belt;
 using CW.Common;
+using VSX.UniversalVehicleCombat.Radar;
 
 public class StellarSystemGeneratorSCK : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
     private GameObject _playerPrefab, _forRadarPrefab, _followWarpGatePrefab;
 
     [SerializeField]
-    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab;
+    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _trackablePrefab;
 
     [SerializeField]
     private StellarSystemData _currentSystemData;
@@ -176,13 +177,11 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
             }
         }
 
-
-
         SphereCollider stellarBodyCollider = stellarBody.AddComponent<SphereCollider>();
 
         stellarBodyCollider.radius = stellarBodyData.Gaseous ? 0.9f : 1f;
 
-        Rigidbody stellarBodyRb = stellarBody.AddComponent<Rigidbody>();
+        Rigidbody stellarBodyRb = stellarBody.GetComponent<Rigidbody>();
 
         stellarBodyRb.useGravity = false;
         stellarBodyRb.isKinematic = true;
@@ -200,6 +199,9 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
                 stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
             }
         }
+
+        Trackable stellarBodyTrackable = stellarBody.GetComponent<Trackable>();
+        stellarBodyTrackable.Rigidbody = stellarBodyRb;
 
         stellarBody.name = stellarBodyData.Name;
 
