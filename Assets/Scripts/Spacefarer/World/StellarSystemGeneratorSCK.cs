@@ -6,6 +6,7 @@ using SpaceGraphicsToolkit.Starfield;
 using SpaceGraphicsToolkit.Belt;
 using CW.Common;
 using VSX.UniversalVehicleCombat.Radar;
+using VSX.FloatingOriginSystem;
 
 public class StellarSystemGeneratorSCK : MonoBehaviour
 {
@@ -199,6 +200,8 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
                 stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
             }
         }
+
+        stellarBody.AddComponent<FloatingOriginObject>();
 
         Trackable stellarBodyTrackable = stellarBody.GetComponent<Trackable>();
         stellarBodyTrackable.Rigidbody = stellarBodyRb;

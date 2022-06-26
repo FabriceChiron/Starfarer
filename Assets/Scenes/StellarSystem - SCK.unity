@@ -6788,6 +6788,34 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &881375147 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4900146004884779581, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+  m_PrefabInstance: {fileID: 1139933903}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &881375168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881375147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dafcadce2aec5dc4b8dde998829302c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position:
+    LocalX: 0
+    LocalY: 0
+    LocalZ: 100
+    GlobalX: 0
+    GlobalY: 0
+    GlobalZ: 0
+  expectedPosition: {x: 0, y: 0, z: 100}
+  expectedPositionSet: 1
+  positionSet: 1
+  seed: 0
 --- !u!1 &894793138
 GameObject:
   m_ObjectHideFlags: 0
@@ -7611,6 +7639,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2747935578450057294, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747935578450057294, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747935578450057294, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2759886556298176051, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7798,6 +7838,22 @@ PrefabInstance:
     - target: {fileID: 7181577354985978260, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532091010209426818, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532091010209426818, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532091010209426818, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532091010209426818, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7559549500056474623, guid: 0cf3581f1155fb84f8eca656a6870178, type: 3}
       propertyPath: m_AnchorMax.y
@@ -31970,6 +32026,7 @@ GameObject:
   - component: {fileID: 675901945}
   - component: {fileID: 8651973186863254452}
   - component: {fileID: 8651973186863254458}
+  - component: {fileID: 8651973186863254459}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Untagged
@@ -78282,10 +78339,10 @@ MonoBehaviour:
   minMovementInputs: {x: -1, y: -1, z: -0.1}
   maxMovementInputs: {x: 1, y: 1, z: 1}
   m_rigidbody: {fileID: 7040557244148984150}
-  maxMovementForces: {x: 387931, y: 387931, z: 387931}
+  maxMovementForces: {x: 125000, y: 125000, z: 125000}
   maxSteeringForces: {x: 8, y: 8, z: 8}
-  maxBoostForces: {x: 38793100, y: 38793100, z: 38793100}
-  warpMultiplier: 25
+  maxBoostForces: {x: 1250000, y: 1250000, z: 1250000}
+  warpMultiplier: 250
   _isWarping: 0
   movementInputResponseSpeed: 5
   steeringBySpeedCurve:
@@ -78618,6 +78675,25 @@ MonoBehaviour:
   targetSelector: {fileID: 1030256377}
   weapons: {fileID: 8651973186863254454}
   m_Rigidbody: {fileID: 7040557244148984150}
+--- !u!114 &8651973186863254459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2194890344323892893}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76f755fa7dc98d49962c622a8c72f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manageTrailRenderers: 1
+  onPreOriginShift:
+    m_PersistentCalls:
+      m_Calls: []
+  onPostOriginShift:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8659921440612830565
 MonoBehaviour:
   m_ObjectHideFlags: 0
