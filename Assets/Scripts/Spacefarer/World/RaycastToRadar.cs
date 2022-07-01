@@ -2,14 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using SpaceGraphicsToolkit;
 
 public class RaycastToRadar : MonoBehaviour
 {
 
     private RadarUI _radarUI;
-    private Spaceship _spaceship;
+    private SpaceshipLocator _spaceshipLocator;
+    private SpaceshipWarp _spaceshipWarp;
+    private SgtFloatingTarget _floatingTarget;
+    private SgtFloatingWarpSmoothstep _warpSmoothStep;
 
     private bool IsRadarFound, IsSpaceshipFound;
+
+    [SerializeField]
+    private Transform _nullifyWarp;
 
     LayerMask mask;
 
@@ -49,6 +56,7 @@ public class RaycastToRadar : MonoBehaviour
     public bool UseCockpitProjection { get => _useCockpitProjection; set => _useCockpitProjection = value; }
     public StellarBodyData StellarBodyData { get => _stellarBodyData; set => _stellarBodyData = value; }
     public StarData StarData { get => _starData; set => _starData = value; }
+    public Transform NullifyWarp { get => _nullifyWarp; set => _nullifyWarp = value; }
 
     private bool isIconSpawned, isCockpitIconSpawned;
 
@@ -74,18 +82,28 @@ public class RaycastToRadar : MonoBehaviour
 
         _textComp = transform.GetComponentInChildren<TextMeshPro>();
 
+        _floatingTarget = transform.GetComponentInParent<SgtFloatingTarget>();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        _radarUI = GameObject.FindObjectOfType<RadarUI>();
+        if (UseRadar && _radarUI == null)
+        {
+            _radarUI = FindObjectOfType<RadarUI>();
+        }
 
-        _spaceship = GameObject.FindObjectOfType<Spaceship>();
+        if (UseCockpitProjection && _spaceshipLocator == null)
+        {
+            _spaceshipLocator = FindObjectOfType<SpaceshipLocator>();
+
+            _spaceshipWarp = FindObjectOfType<SpaceshipWarp>();
+
+            _warpSmoothStep = FindObjectOfType<SgtFloatingWarpSmoothstep>();
+        }
 
         _angleThreshold = UseXR ? 9f : 3f;
         
-
         if (_radarUI != null && UseRadar)
         {
             IsRadarFound = true;
@@ -104,10 +122,10 @@ public class RaycastToRadar : MonoBehaviour
             }
         }
 
-        if(_spaceship != null && UseCockpitProjection)
+        if(_spaceshipLocator != null && UseCockpitProjection)
         {
             IsSpaceshipFound = true;
-            _cameraTransform = UseXR ? _spaceship.CameraVR.transform : _spaceship.CameraFlat.transform;
+            _cameraTransform = UseXR ? _spaceshipLocator.CameraVR.transform : _spaceshipLocator.CameraFlat.transform;
 
             if (!isCockpitIconSpawned)
             {
@@ -135,12 +153,27 @@ public class RaycastToRadar : MonoBehaviour
 
             stellarBodyDistance = Mathf.Round(Vector3.Distance(_cameraTransform.position, transform.position) / _currentScales.Orbit * 100f) / 100f;
 
-            radarCockpitIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon") && _spaceship.ShowCockpitRadar);
+            radarCockpitIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon") && _spaceshipLocator.ShowCockpitRadar);
 
             //radarCockpitIcon.SetActive(_spaceship.ShowCockpitRadar);
 
-            Vector3 direction = transform.position - _spaceship.transform.position;
+            Vector3 direction = transform.position - _spaceshipLocator.transform.position;
             float Angle = Vector3.Angle(_cameraTransform.forward, direction);
+
+            if(Angle <= _angleThreshold && !_warpSmoothStep.Warping && Type != "Moon")
+            {
+                _spaceshipWarp.WarpTarget = _floatingTarget;
+                //_spaceshipWarp.WarpTime = stellarBodyDistance * 10f;
+                //_spaceshipWarp.WarpTime = 3f;
+                _spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+            }
+
+            //if(NullifyWarp != null)
+            //{
+            //    Vector3 nullifyWarpDirection = _spaceshipLocator.transform.position - transform.position;
+            //    //NullifyWarp.position = transform.position + Vector3.Normalize(nullifyWarpDirection) * Mathf.Min(StellarBodyData.Size * _currentScales.Planet * 3f, stellarBodyDistance * 0.9f);
+            //    NullifyWarp.position = transform.position + Vector3.Normalize(nullifyWarpDirection) * StellarBodyData.Size * _currentScales.Planet * 3f;
+            //}
 
             radarCockpitIcon.transform.position = _cameraTransform.position + Vector3.Normalize(direction) * 7.5f;
             _nameCockpitComp.text = $"{(Type == "Moon" ? StellarBodyName : StellarBodyName.ToUpper())} \n {stellarBodyDistance} AU";

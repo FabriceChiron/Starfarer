@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 8135586339062755628}
   - component: {fileID: 8589605981869892794}
   - component: {fileID: 5793198447847959388}
-  - component: {fileID: 8622274213876574141}
   - component: {fileID: 106934158610092277}
   m_Layer: 0
   m_Name: Gliese-667Cb
@@ -190,38 +189,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
---- !u!114 &8622274213876574141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6150491343142762108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8e074ba7a2424c46bd4665dff58d6d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: Target
-  trackableType: {fileID: 11400000, guid: be8fc168a746ab148ae6be61a23d735c, type: 2}
-  team: {fileID: 11400000, guid: 8799821b43f226c4fa80c7d344bdbb5b, type: 2}
-  trackingBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1, y: 1, z: 1}
-  m_Rigidbody: {fileID: 106934158610092277}
-  isRootTrackable: 1
-  activated: 1
-  ignoreTrackingDistance: 1
-  registrationOrder: 0
-  rootTransform: {fileID: 6150491343142762109}
-  childTrackables: []
-  variables: []
-  onSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  onUnselected:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!54 &106934158610092277
 Rigidbody:
   m_ObjectHideFlags: 0

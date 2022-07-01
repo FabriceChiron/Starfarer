@@ -11,18 +11,15 @@ using VSX.UniversalVehicleCombat.Radar;
     RequireComponent(typeof(SgtFloatingOrbit)),
     /*RequireComponent(typeof(CwRotate)),*/
     RequireComponent(typeof(Rigidbody)),
-    RequireComponent(typeof(SgtGravitySource)),
-    RequireComponent(typeof(Trackable))
+    RequireComponent(typeof(SgtGravitySource))
 ]
 public class SetupStellarBody : MonoBehaviour
 {
 
-    Trackable _trackable;
-
     // Start is called before the first frame update
     void Start()
     {
-        _trackable = GetComponent<Trackable>();
+ 
     }
 
     // Update is called once per frame

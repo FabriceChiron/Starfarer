@@ -20,7 +20,7 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
     private GameObject _playerPrefab, _forRadarPrefab, _followWarpGatePrefab;
 
     [SerializeField]
-    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _trackablePrefab;
+    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _zoneDisableCruiseSpeedPrefab;
 
     [SerializeField]
     private StellarSystemData _currentSystemData;
@@ -156,6 +156,11 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
         //Debug.Log(stellarBodyData.Prefab);
 
         GameObject stellarBody = Instantiate(stellarBodyData.Prefab, stellarSystemContainer);
+
+        if(_zoneDisableCruiseSpeedPrefab != null)
+        {
+            GameObject zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
+        }
 
         if (UseRadar)
         {
@@ -293,18 +298,14 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
 
         if (warpGateData.spawnsPlayer && _playerPrefab != null)
         {
-            /*GameObject _followWarpGate = Instantiate(_followWarpGatePrefab);
-            SgtFloatingCamera warpGateFloatingCamera = _followWarpGate.AddComponent<SgtFloatingCamera>();
 
-            _followWarpGate.GetComponent<MatchElementTransform>().elementToMatch = newWarpGate.transform;*/
-
-            _player = _playerPrefab;
-
+            if(_playerPrefab != null)
+            {
+                _player = Instantiate(_playerPrefab, newWarpGate.transform);
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 
-            /*RadarUI radarUI = _player.GetComponentInChildren<RadarUI>();
-
-            Spaceship _spaceship = _player.GetComponentInChildren<Spaceship>();
+            
+            GameObject _spaceship = _player.transform.GetChild(0).gameObject;
 
             SgtFloatingOrbit spaceshipOrbitComp = _spaceship.gameObject.AddComponent<SgtFloatingOrbit>();
 
@@ -314,24 +315,10 @@ public class StellarSystemGeneratorSCK : MonoBehaviour
             spaceshipOrbitComp.Tilt = orbitComp.Tilt;
             spaceshipOrbitComp.DegreesPerSecond = spaceshipOrbitComp.DegreesPerSecond;
 
-            _spaceship.EnableGravity = EnableGravity;
-
-            _spaceship.UseRadar = UseRadar;*/
-
-            /*
-            _player.transform.position = _followWarpGate.transform.position;
-            _spaceship.transform.localPosition = Vector3.zero;
-
-
-            Debug.Log(warpGateFloatingCamera.Position);
-
-
-
-            _playerCamera.SetPosition(warpGateFloatingCamera.Position);
-            _playerCamera.ApplyPosition();
-
-            warpGateFloatingCamera.enabled = false;*/
+           
             _playerCamera.enabled = true;
+            }
+
         }
     }
 }

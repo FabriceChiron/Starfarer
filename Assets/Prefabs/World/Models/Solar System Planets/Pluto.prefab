@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2191669412423574710}
   - component: {fileID: 5589482771170272824}
   - component: {fileID: 4769940553223912862}
-  - component: {fileID: 3135300093618343811}
   m_Layer: 0
   m_Name: Pluto
   m_TagString: Planet
@@ -124,38 +123,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
---- !u!114 &3135300093618343811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4208482054774832623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8e074ba7a2424c46bd4665dff58d6d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: Target
-  trackableType: {fileID: 11400000, guid: be8fc168a746ab148ae6be61a23d735c, type: 2}
-  team: {fileID: 11400000, guid: 8799821b43f226c4fa80c7d344bdbb5b, type: 2}
-  trackingBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1, y: 1, z: 1}
-  m_Rigidbody: {fileID: 5589482771170272824}
-  isRootTrackable: 1
-  activated: 1
-  ignoreTrackingDistance: 1
-  registrationOrder: 0
-  rootTransform: {fileID: 4208482054774832400}
-  childTrackables: []
-  variables: []
-  onSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  onUnselected:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4208482055378155126
 GameObject:
   m_ObjectHideFlags: 0

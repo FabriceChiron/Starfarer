@@ -204,7 +204,6 @@ GameObject:
   - component: {fileID: 2723649581676839777}
   - component: {fileID: 1816054064532775938}
   - component: {fileID: 4075231464354897629}
-  - component: {fileID: 1688472052619879316}
   m_Layer: 0
   m_Name: Sun
   m_TagString: Planet
@@ -314,38 +313,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
---- !u!114 &1688472052619879316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1369684632855935477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8e074ba7a2424c46bd4665dff58d6d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: Target
-  trackableType: {fileID: 0}
-  team: {fileID: 0}
-  trackingBounds:
-    m_Center: {x: -0.0004777796, y: -0.0000047539042, z: -0.00014732307}
-    m_Extent: {x: 0.0004777796, y: 0.0000047539042, z: 0.00014732307}
-  m_Rigidbody: {fileID: 1816054064532775938}
-  isRootTrackable: 1
-  activated: 1
-  ignoreTrackingDistance: 1
-  registrationOrder: 0
-  rootTransform: {fileID: 1369684632855935242}
-  childTrackables: []
-  variables: []
-  onSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  onUnselected:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1369684632869181935
 GameObject:
   m_ObjectHideFlags: 0

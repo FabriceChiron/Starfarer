@@ -400,7 +400,6 @@ GameObject:
   - component: {fileID: 8044151378944083463}
   - component: {fileID: 9139191141400317999}
   - component: {fileID: 4398593058156743056}
-  - component: {fileID: 7245721178080971272}
   m_Layer: 0
   m_Name: Uranus
   m_TagString: Planet
@@ -510,38 +509,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
---- !u!114 &7245721178080971272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8891740539130532313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8e074ba7a2424c46bd4665dff58d6d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: Target
-  trackableType: {fileID: 11400000, guid: be8fc168a746ab148ae6be61a23d735c, type: 2}
-  team: {fileID: 11400000, guid: 8799821b43f226c4fa80c7d344bdbb5b, type: 2}
-  trackingBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1, y: 1, z: 1}
-  m_Rigidbody: {fileID: 9139191141400317999}
-  isRootTrackable: 1
-  activated: 1
-  ignoreTrackingDistance: 1
-  registrationOrder: 0
-  rootTransform: {fileID: 8891740539130532134}
-  childTrackables: []
-  variables: []
-  onSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  onUnselected:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8891740539336568146
 GameObject:
   m_ObjectHideFlags: 0
