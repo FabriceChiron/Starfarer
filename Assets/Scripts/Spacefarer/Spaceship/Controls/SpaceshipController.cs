@@ -17,10 +17,13 @@ public class SpaceshipController : MonoBehaviour
 
     public Transform cameraPosition;
     public Camera mainCamera;
-    public Transform spaceshipRoot;
-    public float rotationSpeed = 2.0f;
+    public Transform spaceshipRoot, seatBase;
+    public float rotationSpeed = 2.0f, warpRotationSpeed = 0.02f, currentRotationSpeed;
     public float cameraSmooth = 4f;
     public RectTransform crosshairTexture;
+
+    [SerializeField]
+    float pitchYawMagnitude;
 
     [SerializeField]
     float speed, lateralSpeed;
@@ -42,13 +45,21 @@ public class SpaceshipController : MonoBehaviour
     float roll, forwardThrust, lateralThrust;
 
     [SerializeField]
-    bool _boosting, _warping, _invertYAxis;
+    bool _boosting, _warpButtonPressed, _warping, _invertYAxis;
+
+    [SerializeField]
+    private SgtFloatingWarpSmoothstep _warpSmoothstep;
+
+    public Vector2 PitchYaw { get => pitchYaw; set => pitchYaw = value; }
 
     // Start is called before the first frame update
     void Start()
     {
         r = GetComponent<Rigidbody>();
         r.useGravity = false;
+
+        _warpSmoothstep = FindObjectOfType<SgtFloatingWarpSmoothstep>();
+
         lookRotation = transform.rotation;
         defaultShipRotation = spaceshipRoot.localEulerAngles;
         rotationZ = defaultShipRotation.z;
@@ -106,16 +117,20 @@ public class SpaceshipController : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
 
+        //currentRotationSpeed = _warpSmoothstep.Warping ? warpRotationSpeed : rotationSpeed;
 
+        currentRotationSpeed = Mathf.Lerp(currentRotationSpeed, _warpSmoothstep.Warping ? warpRotationSpeed : rotationSpeed, Time.deltaTime * cameraSmooth);
 
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, pitchYaw.x * rotationSpeed, Time.deltaTime * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, pitchYaw.y * (_invertYAxis ? -1f : 1f) * rotationSpeed, Time.deltaTime * cameraSmooth);
-        Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, roll * -1f * rotationSpeed);
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, PitchYaw.x * currentRotationSpeed, Time.deltaTime * cameraSmooth);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, PitchYaw.y * (_invertYAxis ? -1f : 1f) * currentRotationSpeed, Time.deltaTime * cameraSmooth);
+        
+        Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, roll * -1f * currentRotationSpeed);
         lookRotation = lookRotation * localRotation;
         transform.rotation = lookRotation;
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);
-        spaceshipRoot.transform.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
+        seatBase.localEulerAngles = new Vector3(0f, 0f, rotationZ * -0.75f);
+        spaceshipRoot.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
         rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.deltaTime * cameraSmooth);
     }
 
@@ -163,7 +178,9 @@ public class SpaceshipController : MonoBehaviour
 
     public void OnPitchYaw(InputAction.CallbackContext context)
     {
-        pitchYaw = context.ReadValue<Vector2>().normalized;
+        PitchYaw = context.ReadValue<Vector2>();
+
+        pitchYawMagnitude = PitchYaw.magnitude;
     }
 
     public void OnBoost(InputAction.CallbackContext context)
@@ -175,6 +192,7 @@ public class SpaceshipController : MonoBehaviour
     public void OnWarp(InputAction.CallbackContext context)
     {
         //context.performed;
+        _warpButtonPressed = context.started;
         _warping = context.performed;
     }
 }

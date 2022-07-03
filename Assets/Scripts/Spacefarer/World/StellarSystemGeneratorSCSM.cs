@@ -279,6 +279,8 @@ public class StellarSystemGeneratorSCSM : MonoBehaviour
         //Assign scale: Stellar Body Size * desired scale;
         stellarBody.transform.localScale *= stellarBodyData.Size * _scales.Planet;
 
+        stellarBody.transform.localEulerAngles = new Vector3(stellarBodyData.BodyTilt, stellarBody.transform.localEulerAngles.y, stellarBody.transform.localEulerAngles.z);
+
         SgtFloatingTarget warpComp = stellarBody.AddComponent<SgtFloatingTarget>();
         warpComp.WarpName = stellarBodyData.Name;
         warpComp.WarpDistance = stellarBodyData.Size * _scales.Planet * 3f;

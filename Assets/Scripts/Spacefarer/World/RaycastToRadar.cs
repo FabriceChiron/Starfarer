@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using SpaceGraphicsToolkit;
 
@@ -57,10 +58,14 @@ public class RaycastToRadar : MonoBehaviour
     public StellarBodyData StellarBodyData { get => _stellarBodyData; set => _stellarBodyData = value; }
     public StarData StarData { get => _starData; set => _starData = value; }
     public Transform NullifyWarp { get => _nullifyWarp; set => _nullifyWarp = value; }
+    public GameObject RadarWarpPrompt { get => radarWarpPrompt; set => radarWarpPrompt = value; }
 
     private bool isIconSpawned, isCockpitIconSpawned;
 
-    GameObject radarIcon, radarCockpitIcon;
+    [SerializeField]
+    GameObject radarIcon, radarCockpitIcon, radarWarpPrompt;
+
+    RectTransform radarWarpPromptProgressBar;
 
     private int layer = 11;
     private LayerMask layerMask;
@@ -69,7 +74,7 @@ public class RaycastToRadar : MonoBehaviour
 
     private GameObject _infosCockpitComp;
 
-    private TextMeshPro _name, _distance, _bodyType, _orbit, _orbitTilt, _radius, _bodyTilt, _mass, _revolution, _rotation, _details;
+    private TextMeshPro _name, _distance, _bodyType, _orbit, _orbitTilt, _radius, _bodyTilt, _mass, _revolution, _rotation, _details, _warpPromptName;
 
     // Start is called before the first frame update
     void Start()
@@ -113,6 +118,9 @@ public class RaycastToRadar : MonoBehaviour
                 radarIcon = Instantiate(RadarPrefab, _radarUI.transform.GetChild(0));
                 _textComp = radarIcon.GetComponentInChildren<TextMeshPro>();
                 radarIcon.transform.GetChild(1).gameObject.SetActive(false);
+
+                Destroy(radarIcon.GetComponentInChildren<WarpPrompt>()?.transform.parent.gameObject);
+
                 if (Type == "Moon")
                 {
                     radarIcon.transform.localScale *= 0.75f;
@@ -135,11 +143,10 @@ public class RaycastToRadar : MonoBehaviour
                 _nameCockpitComp = radarCockpitIcon.GetComponentsInChildren<TextMeshPro>()[0];
                 _infosCockpitComp = radarCockpitIcon.transform.GetChild(1).gameObject;
 
-                /*if (Type == "Moon")
-                {
-                    radarCockpitIcon.transform.localScale *= 0.75f;
-                    _nameCockpitComp.fontSize *= 1.25f;
-                }*/
+                RadarWarpPrompt = radarCockpitIcon.GetComponentInChildren<WarpPrompt>(true)?.transform.parent.gameObject;
+                radarWarpPromptProgressBar = RadarWarpPrompt?.GetComponentInChildren<RectMask2D>().rectTransform;
+
+                RadarWarpPrompt.SetActive(false);
 
                 FillDetails();
 
@@ -160,12 +167,17 @@ public class RaycastToRadar : MonoBehaviour
             Vector3 direction = transform.position - _spaceshipLocator.transform.position;
             float Angle = Vector3.Angle(_cameraTransform.forward, direction);
 
-            if(Angle <= _angleThreshold && !_warpSmoothStep.Warping && Type != "Moon")
+            if(Angle <= _angleThreshold && !_warpSmoothStep.Warping && Type != "Moon" && !_spaceshipWarp.WarpTargetLocked)
             {
                 _spaceshipWarp.WarpTarget = _floatingTarget;
-                //_spaceshipWarp.WarpTime = stellarBodyDistance * 10f;
-                //_spaceshipWarp.WarpTime = 3f;
                 _spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+                _spaceshipWarp.CanWarp = true;
+
+                if(RadarWarpPrompt != null)
+                {
+                    _spaceshipWarp.RadarWarpPrompt = RadarWarpPrompt.GetComponentInChildren<WarpPrompt>();
+                    _spaceshipWarp.ProgressBar = radarWarpPromptProgressBar;
+                }
             }
 
             //if(NullifyWarp != null)
@@ -213,6 +225,7 @@ public class RaycastToRadar : MonoBehaviour
     private void FillDetails()
     {
         Transform _infos = radarCockpitIcon.GetComponentInChildren<Infos>(true).transform;
+
         
         radarCockpitIcon.name = $"{StellarBodyName} - Cockpit Icon";
 
@@ -257,6 +270,11 @@ public class RaycastToRadar : MonoBehaviour
 
             _details = _infos.Find("Description").GetComponent<TextMeshPro>();
             _details.text = StellarBodyData.Details;
+
+            Transform _warpPrompt = radarCockpitIcon.GetComponentInChildren<WarpPrompt>(true).transform;
+
+            _warpPromptName = _warpPrompt.Find("Message").GetComponent<TextMeshPro>();
+            _warpPromptName.text = _warpPromptName.text.Replace("{}", $"{StellarBodyData.Name}");
         }
 
         else
