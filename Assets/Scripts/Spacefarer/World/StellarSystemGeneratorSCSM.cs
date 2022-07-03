@@ -150,10 +150,16 @@ public class StellarSystemGeneratorSCSM : MonoBehaviour
 
         GameObject newStarFlare = Instantiate(starData.FlarePrefab, stellarSystemContainer);
 
+
+
         newStarFlare.name = $"{starData.Name} - Flare";
 
         newStarFlare.transform.localScale = new Vector3(1f, 1f, 1f);
         newStarFlare.transform.localScale *= starData.Size * _scales.Planet / 109f;
+
+        SgtFloatingTarget warpComp = newStarFlare.AddComponent<SgtFloatingTarget>();
+        warpComp.WarpName = starData.Name;
+        warpComp.WarpDistance = starData.Size * _scales.Planet * 3f / 109f;
 
         SgtFloatingOrbit orbitFlareComp = newStarFlare.GetComponent<SgtFloatingOrbit>();
 
@@ -178,7 +184,15 @@ public class StellarSystemGeneratorSCSM : MonoBehaviour
             starRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
             starRaycastToRadar.StarData = starData;
             starRaycastToRadar.UseXR = UseXR;
+
+            if (_nullifyWarpPrefab != null)
+            {
+                GameObject nullifyWarp = Instantiate(_nullifyWarpPrefab, newStarFlare.transform.GetChild(0));
+                //nullifyWarp.transform.localScale *= 0.1f;
+                starRaycastToRadar.NullifyWarp = nullifyWarp.transform;
+            }
         }
+        
 
         if (starData.warpGate != null)
         {
@@ -360,6 +374,11 @@ public class StellarSystemGeneratorSCSM : MonoBehaviour
 
         //orbitComp.DegreesPerSecond = revolutionPeriod;
         orbitComp.DegreesPerSecond = 0;
+
+        if(newWarpGate.GetComponentInChildren<AnchorSpawn>() == null)
+        {
+            newWarpGate.AddComponent<AnchorSpawn>();
+        }
 
 
         if (warpGateData.spawnsPlayer && _playerPrefab != null)

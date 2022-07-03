@@ -15,7 +15,7 @@ public class SpaceshipWarp : MonoBehaviour
     private SpaceshipController _spaceshipController;
 
     [SerializeField]
-    private SgtFloatingTarget _warpTarget, _previousWarpTarget;
+    private SgtFloatingTarget _warpTarget, _previousWarpTarget, _isInsideSphere;
 
     [SerializeField]
     private float 
@@ -24,8 +24,6 @@ public class SpaceshipWarp : MonoBehaviour
         _warpCameraFOV = 90f, 
         _targetFOV, 
         _warpEffectLerpDuration = 1f,
-        _warpParticleSpeed = 20f,
-        _targetParticleSpeed,
         _progressBarLerpDuration = 2f;
 
     [SerializeField]
@@ -72,7 +70,8 @@ public class SpaceshipWarp : MonoBehaviour
             }
 
             _radarWarpPrompt = value;
-            ToggleWarpPrompt(_radarWarpPrompt, true);
+
+            ToggleWarpPrompt(_radarWarpPrompt, CanWarp);
         }
     }
     public RectTransform ProgressBar { get => _progressBar; set => _progressBar = value; }
@@ -82,6 +81,7 @@ public class SpaceshipWarp : MonoBehaviour
     {
         _warpEffect = Instantiate(_warpEffectPrefab, FindObjectOfType<SpaceshipController>().cameraPosition);
         _warpParticleSystem = _warpEffect.GetComponentInChildren<ParticleSystem>();
+        _warpParticleSystem.Stop();
 
         _warpSmoothstep = FindObjectOfType<SgtFloatingWarpSmoothstep>();
         _spaceshipController = GetComponent<SpaceshipController>();
@@ -96,15 +96,16 @@ public class SpaceshipWarp : MonoBehaviour
         _warpSmoothstep.WarpTime = WarpTime;
         if (_warpSmoothstep.Warping)
         {
-            TurnTowardsWarpTarget();
             _warpEffect.transform.LookAt(WarpTarget.transform);
+            //TurnTowardsWarpTarget();
+            //_warpEffect.transform.LookAt(WarpTarget.transform);
         }
 
         LerpCameraFOV(_targetFOV);
         
         _warpTargetLocked = _warpSmoothstep.Warping;
 
-        CanWarp = _previousWarpTarget != WarpTarget;
+        CanWarp = (_previousWarpTarget != WarpTarget) && (_isInsideSphere != WarpTarget);
 
 
     }
@@ -116,7 +117,7 @@ public class SpaceshipWarp : MonoBehaviour
 
     private void TurnTowardsWarpTarget()
     {
-        transform.LookAt(_warpTarget.transform);
+        StartCoroutine(TurnTowardsTarget(_warpTarget.transform, 1f));
     }
 
     public void WarpTo()
@@ -129,6 +130,22 @@ public class SpaceshipWarp : MonoBehaviour
 
             _warpSmoothstep.WarpTo(WarpTarget.GetComponent<SgtFloatingObject>().Position);
             _warpParticleSystem.Play();
+        }
+    }
+
+    IEnumerator TurnTowardsTarget(Transform target, float duration)
+    {
+        float time = 0;
+        Quaternion targetRotation = Quaternion.identity;
+        Quaternion startValue = transform.rotation;
+        while (time < duration)
+        {
+            Vector3 targetDirection = (target.position - transform.position).normalized;
+            targetRotation = Quaternion.LookRotation(targetDirection);
+
+            _spaceshipController.LookRotation = Quaternion.Lerp(startValue, targetRotation, time / duration);
+            time += Time.deltaTime;
+            yield return null;
         }
     }
 
@@ -226,7 +243,7 @@ public class SpaceshipWarp : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
             Debug.Log($"{other.transform.GetComponentInParent<SgtFloatingObject>()} - NullifyWarp");
-
+            _isInsideSphere = other.transform.GetComponentInParent<SgtFloatingTarget>();
             AbortWarp();
         }
     }
@@ -235,6 +252,7 @@ public class SpaceshipWarp : MonoBehaviour
     {
         if(context.ReadValue<Vector2>().y < 0)
         {
+            _isInsideSphere = null;
             AbortWarp();
         }
     }
@@ -255,6 +273,7 @@ public class SpaceshipWarp : MonoBehaviour
             //StopCoroutine(coCanceled);
             _stopProgressBar = false;
             StartCoroutine(coStarted);
+            TurnTowardsWarpTarget();
         }
         if (context.canceled)
         {

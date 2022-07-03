@@ -44,6 +44,7 @@ public class SpaceshipController : MonoBehaviour
     [SerializeField]
     float roll, forwardThrust, lateralThrust;
 
+
     [SerializeField]
     bool _boosting, _warpButtonPressed, _warping, _invertYAxis;
 
@@ -51,6 +52,8 @@ public class SpaceshipController : MonoBehaviour
     private SgtFloatingWarpSmoothstep _warpSmoothstep;
 
     public Vector2 PitchYaw { get => pitchYaw; set => pitchYaw = value; }
+    public float Roll { get => roll; set => roll = value; }
+    public Quaternion LookRotation { get => lookRotation; set => lookRotation = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +63,7 @@ public class SpaceshipController : MonoBehaviour
 
         _warpSmoothstep = FindObjectOfType<SgtFloatingWarpSmoothstep>();
 
-        lookRotation = transform.rotation;
+        LookRotation = transform.rotation;
         defaultShipRotation = spaceshipRoot.localEulerAngles;
         rotationZ = defaultShipRotation.z;
 
@@ -124,9 +127,9 @@ public class SpaceshipController : MonoBehaviour
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, PitchYaw.x * currentRotationSpeed, Time.deltaTime * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, PitchYaw.y * (_invertYAxis ? -1f : 1f) * currentRotationSpeed, Time.deltaTime * cameraSmooth);
         
-        Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, roll * -1f * currentRotationSpeed);
-        lookRotation = lookRotation * localRotation;
-        transform.rotation = lookRotation;
+        Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, Roll * -1f * currentRotationSpeed);
+        LookRotation = LookRotation * localRotation;
+        transform.rotation = LookRotation;
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);
         seatBase.localEulerAngles = new Vector3(0f, 0f, rotationZ * -0.75f);
@@ -166,8 +169,7 @@ public class SpaceshipController : MonoBehaviour
 
     public void OnRoll(InputAction.CallbackContext context)
     {
-        roll = context.ReadValue<float>();
-        //context.ReadValue<float>();
+        Roll = context.ReadValue<float>();
     }
 
     //public void OnRollXR(InputAction.CallbackContext context)

@@ -146,7 +146,7 @@ public class RaycastToRadar : MonoBehaviour
                 RadarWarpPrompt = radarCockpitIcon.GetComponentInChildren<WarpPrompt>(true)?.transform.parent.gameObject;
                 radarWarpPromptProgressBar = RadarWarpPrompt?.GetComponentInChildren<RectMask2D>().rectTransform;
 
-                RadarWarpPrompt.SetActive(false);
+                RadarWarpPrompt?.SetActive(false);
 
                 FillDetails();
 
@@ -300,6 +300,11 @@ public class RaycastToRadar : MonoBehaviour
 
             _details = _infos.Find("Description").GetComponent<TextMeshPro>();
             _details.text = StarData.StarDescription;
+
+            Transform _warpPrompt = radarCockpitIcon.GetComponentInChildren<WarpPrompt>(true).transform;
+
+            _warpPromptName = _warpPrompt.Find("Message").GetComponent<TextMeshPro>();
+            _warpPromptName.text = _warpPromptName.text.Replace("{}", $"{StarData.Name}");
         }
     }
 }

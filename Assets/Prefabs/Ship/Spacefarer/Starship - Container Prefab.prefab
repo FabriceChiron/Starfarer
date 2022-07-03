@@ -1763,6 +1763,7 @@ MonoBehaviour:
   currentRotationSpeed: 0
   cameraSmooth: 4
   crosshairTexture: {fileID: 0}
+  pitchYawMagnitude: 0
   speed: 0
   lateralSpeed: 0
   lookRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -2013,16 +2014,19 @@ MonoBehaviour:
   _spaceshipController: {fileID: 0}
   _warpTarget: {fileID: 0}
   _previousWarpTarget: {fileID: 0}
+  _isInsideSphere: {fileID: 0}
   _warpTime: 0
   _initialCameraFOV: 0
-  _warpCameraFOV: 90
+  _warpCameraFOV: 75
   _targetFOV: 0
   _warpEffectLerpDuration: 1
   _warpParticleSpeed: 20
   _targetParticleSpeed: 0
+  _progressBarLerpDuration: 2
   _canWarp: 0
   _warpTargetLocked: 0
   _showWarpEffect: 0
+  _stopProgressBar: 0
   _radarWarpPrompt: {fileID: 0}
   _progressBar: {fileID: 0}
   _activeCamera: {fileID: 0}
