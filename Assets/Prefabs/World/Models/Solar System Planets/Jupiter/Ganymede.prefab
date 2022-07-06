@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5871392234393726656}
   - component: {fileID: -3167852204080006386}
   - component: {fileID: 7831884757490966336}
-  - component: {fileID: 3315709587734227694}
   - component: {fileID: 5589482771170272824}
   - component: {fileID: 4769940553223912862}
+  - component: {fileID: 6226862944936336600}
   m_Layer: 0
   m_Name: Ganymede
   m_TagString: Moon
@@ -94,20 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85d53ea066b9cb46a54d26db74d2659, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3315709587734227694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4208482054774832623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92ede0252ef7e92459ff5df2a16cd28e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angularVelocity: {x: 0, y: 1, z: 0}
-  relativeTo: 0
 --- !u!54 &5589482771170272824
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -138,6 +124,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &6226862944936336600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4208482054774832623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &4208482055378155126
 GameObject:
   m_ObjectHideFlags: 0

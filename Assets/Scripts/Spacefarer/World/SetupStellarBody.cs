@@ -9,6 +9,7 @@ using VSX.UniversalVehicleCombat.Radar;
 [
     RequireComponent(typeof(SgtFloatingObject)), 
     RequireComponent(typeof(SgtFloatingOrbit)),
+    RequireComponent(typeof(ToggleOrbitRevolution)),
     /*RequireComponent(typeof(CwRotate)),*/
     RequireComponent(typeof(Rigidbody)),
     RequireComponent(typeof(SgtGravitySource))

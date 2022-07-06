@@ -13,16 +13,13 @@ MonoBehaviour:
   m_Name: Solar System
   m_EditorClassIdentifier: 
   Name: Solar System
-  StarName: 
   StarSize: 0
-  StarDescription: 
   StarsItem:
   - {fileID: 11400000, guid: ef9d6761253b1c8428152248e1e33563, type: 2}
   ScaleFactor: 1
-  Texture: {fileID: 0}
-  Material: {fileID: 0}
   Top: 0
   Left: 0
+  warpGate: {fileID: 0}
   ChildrenItem:
   - {fileID: 11400000, guid: c776cdc40d5b863459dbdfe4de6533d9, type: 2}
   - {fileID: 11400000, guid: 445f16a17f857134baec63caacc827bd, type: 2}
@@ -33,6 +30,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 67dcc3b5e836b0b4d9859c946cd3ffb3, type: 2}
   - {fileID: 11400000, guid: 61606396759c6d447bc32b5b6cdb3cba, type: 2}
   - {fileID: 11400000, guid: 74ba8e570613b0345874f5010b1fbffc, type: 2}
-  AsteroidBeltItem: []
+  AsteroidBeltItem:
+  - {fileID: 0}
   Platinum: 0
   Turrets: 0

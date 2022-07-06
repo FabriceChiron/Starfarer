@@ -18,7 +18,6 @@ public class WarpGateData : ScriptableObject
     [Tooltip("Orbit Tilt (in degrees)")]
     public float OrbitTilt;
 
-
     [Tooltip("Scale")]
     public float Scale;
 

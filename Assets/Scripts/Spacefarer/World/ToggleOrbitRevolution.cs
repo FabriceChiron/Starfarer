@@ -11,19 +11,45 @@ public class ToggleOrbitRevolution : MonoBehaviour
     SgtFloatingOrbit orbitComp;
 
     [SerializeField]
+    private OrbitsActive _orbitsActive;
+
+    [SerializeField]
+    private bool _isOrbiting;
+
+    [SerializeField]
     private double _degreesPerSecond;
 
     public double DegreesPerSecond { get => _degreesPerSecond; set => _degreesPerSecond = value; }
     public SgtFloatingOrbit OrbitComp { get => orbitComp; set => orbitComp = value; }
 
+    public bool IsOrbiting { 
+        get => _isOrbiting;
+        set
+        {
+            if (_isOrbiting != value)
+            {
+                ToggleOrbit(value);
+            }
+            _isOrbiting = value;
+        }
+    }
+
+    public OrbitsActive OrbitsActive { get => _orbitsActive; set => _orbitsActive = value; }
+
     void OnEnable()
     {
-        OrbitComp = transform.GetComponent<SgtFloatingOrbit>();
+        OrbitComp = GetComponent<SgtFloatingOrbit>();
+        DegreesPerSecond = OrbitComp.DegreesPerSecond;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        IsOrbiting = OrbitsActive.IsOrbiting;
+    }
+
+    private void ToggleOrbit(bool isActive)
+    {
+        OrbitComp.DegreesPerSecond = isActive ? DegreesPerSecond : 0;
     }
 }

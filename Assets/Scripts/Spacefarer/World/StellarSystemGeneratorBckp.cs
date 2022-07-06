@@ -251,7 +251,7 @@ public class StellarSystemGeneratorBckp : MonoBehaviour
 
             _player.transform.LookAt(thisCenter.transform);
 
-            _playerSpaceship.StellarSystemGenerator = stellarSystemContainer.GetComponent<StellarSystemGenerator>();
+            _playerSpaceship.StellarSystemGenerator = stellarSystemContainer.GetComponent<StellarSystemGeneratorOld>();
 
             SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 

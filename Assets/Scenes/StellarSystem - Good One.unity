@@ -202,20 +202,23 @@ MonoBehaviour:
   _rockyPlanetRadarPrefab: {fileID: 5528104762121936031, guid: 9bbcb8b6dc0363f4886e79f539121223, type: 3}
   _gaseousPlanetRadarPrefab: {fileID: 5528104762121936031, guid: 02b54d2d7e6993b428f484111a134f6c, type: 3}
   _starRadarPrefab: {fileID: 5528104762121936031, guid: 37188b1678891584f9de40473b530f43, type: 3}
+  _spaceStationRadarPrefab: {fileID: 5528104762121936031, guid: 807ce896e3107db4da78df9e5f580a95, type: 3}
   _zoneDisableCruiseSpeedPrefab: {fileID: 70786363163459014, guid: c0e45e03b50fe6c489ea415c40ab18dc, type: 3}
   _nullifyWarpPrefab: {fileID: 70786363163459014, guid: 4b8799152fbf4724191f4e84f50be224, type: 3}
-  _currentSystemData: {fileID: 11400000, guid: 1294bf3e7199fa54793e2d15fc8125f4, type: 2}
+  _currentSystemData: {fileID: 11400000, guid: b402e4039db779640a904d17b1d0bf27, type: 2}
+  _orbitsActive: {fileID: 11400000, guid: 1c71ec7c7f7a3f84ea238f0ea8cd9902, type: 2}
   stellarSystemContainer: {fileID: 287828930}
   stellarSystemCenter: {fileID: 1605411512}
   initialFloatingCamera: {fileID: 1616772968}
   _floatingObjectsList: []
+  _isOrbiting: 0
   _useXR: 0
   _useRadar: 1
   _useCockpitProjection: 1
   _enableGravity: 1
   _canSpawnPlayer: 0
   _isPlayerSpawned: 0
-  _spawnerFloatingObject: {fileID: 0}
+  _spawnerFloatingObjects: []
 --- !u!1 &363207314
 GameObject:
   m_ObjectHideFlags: 0

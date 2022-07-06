@@ -15,19 +15,19 @@ public class SpaceshipWarp : MonoBehaviour
     private SpaceshipController _spaceshipController;
 
     [SerializeField]
-    private SgtFloatingTarget _warpTarget, _previousWarpTarget, _isInsideSphere;
+    private SgtFloatingTarget _warpTarget, _previousWarpTarget, _isInsideNoWarpSphere;
 
     [SerializeField]
     private float 
         _warpTime, 
         _initialCameraFOV, 
-        _warpCameraFOV = 90f, 
+        _warpCameraFOV = 75f, 
         _targetFOV, 
         _warpEffectLerpDuration = 1f,
         _progressBarLerpDuration = 2f;
 
     [SerializeField]
-    private bool _canWarp, _warpTargetLocked, _showWarpEffect, _stopProgressBar;
+    private bool _canWarp, _warping, _warpInitiated, _warpTargetLocked, _showWarpEffect, _stopProgressBar;
 
     [SerializeField]
     private WarpPrompt _radarWarpPrompt;
@@ -38,13 +38,14 @@ public class SpaceshipWarp : MonoBehaviour
     [SerializeField]
     private Camera _activeCamera;
 
+    [SerializeField]
+    FTL_Infos _FTLInfos;
+
     private GameObject _warpEffect;
 
     private ParticleSystem _warpParticleSystem;
 
-    private float currentWarpLerpTime, currentProgressBarLerpTime;
-
-    private Vector3 _targetWidth;
+    private float currentWarpLerpTime;
 
     public SgtFloatingTarget WarpTarget { 
         get => _warpTarget;
@@ -75,37 +76,60 @@ public class SpaceshipWarp : MonoBehaviour
         }
     }
     public RectTransform ProgressBar { get => _progressBar; set => _progressBar = value; }
+    public SgtFloatingTarget IsInsideNoWarpSphere { get => _isInsideNoWarpSphere; set => _isInsideNoWarpSphere = value; }
+    public bool Warping { 
+        get => _warping;
+        set {
+            _warping = value;
+
+            _showWarpEffect = value;
+
+            if (_warping)
+            {
+                _warpParticleSystem.Play();
+            }
+            else
+            {
+                _warpParticleSystem.Stop();
+            }
+        }
+    }
+
+    public bool WarpInitiated { get => _warpInitiated; set => _warpInitiated = value; }
 
     // Start is called before the first frame update
     void Start()
     {
-        _warpEffect = Instantiate(_warpEffectPrefab, FindObjectOfType<SpaceshipController>().cameraPosition);
+        _spaceshipController = GetComponent<SpaceshipController>();
+        _warpEffect = Instantiate(_warpEffectPrefab, _spaceshipController.cameraPosition);
         _warpParticleSystem = _warpEffect.GetComponentInChildren<ParticleSystem>();
         _warpParticleSystem.Stop();
 
         _warpSmoothstep = FindObjectOfType<SgtFloatingWarpSmoothstep>();
-        _spaceshipController = GetComponent<SpaceshipController>();
         _activeCamera = transform.parent.gameObject.GetComponentInChildren<Camera>();
         _initialCameraFOV = _activeCamera.fieldOfView;
         _targetFOV = _activeCamera.fieldOfView;
+
+        _FTLInfos = GetComponentInChildren<FTL_Infos>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        Warping = _warpSmoothstep.Warping;
+
         _warpSmoothstep.WarpTime = WarpTime;
         if (_warpSmoothstep.Warping)
         {
+            _FTLInfos.WarpState = WarpStates.ENGAGED;
             _warpEffect.transform.LookAt(WarpTarget.transform);
-            //TurnTowardsWarpTarget();
-            //_warpEffect.transform.LookAt(WarpTarget.transform);
         }
 
         LerpCameraFOV(_targetFOV);
         
         _warpTargetLocked = _warpSmoothstep.Warping;
 
-        CanWarp = (_previousWarpTarget != WarpTarget) && (_isInsideSphere != WarpTarget);
+        CanWarp = (_previousWarpTarget != WarpTarget) && (IsInsideNoWarpSphere != WarpTarget);
 
 
     }
@@ -117,7 +141,10 @@ public class SpaceshipWarp : MonoBehaviour
 
     private void TurnTowardsWarpTarget()
     {
-        StartCoroutine(TurnTowardsTarget(_warpTarget.transform, 1f));
+        if(WarpTarget != null)
+        {
+            StartCoroutine(TurnTowardsTarget(WarpTarget.transform, 1f));
+        }
     }
 
     public void WarpTo()
@@ -125,11 +152,8 @@ public class SpaceshipWarp : MonoBehaviour
         if(WarpTarget != null && CanWarp)
         {
             _targetFOV = _warpCameraFOV;
-            _showWarpEffect = true;
-
 
             _warpSmoothstep.WarpTo(WarpTarget.GetComponent<SgtFloatingObject>().Position);
-            _warpParticleSystem.Play();
         }
     }
 
@@ -177,31 +201,6 @@ public class SpaceshipWarp : MonoBehaviour
         }
     }
 
-    //public void LerpWarpProgressBar(float targetWidth)
-    //{
-    //    if(_progressBar != null)
-    //    {
-    //        currentProgressBarLerpTime += Time.deltaTime;
-
-    //        if(currentProgressBarLerpTime > _progressBarLerpDuration)
-    //        {
-    //            currentProgressBarLerpTime = _progressBarLerpDuration;
-    //        }
-
-    //        float perc = currentProgressBarLerpTime / _progressBarLerpDuration;
-
-    //        _progressBar.localScale = new Vector3(
-    //            Mathf.Lerp(_progressBar.localScale.x, targetWidth, perc),
-    //            1f,
-    //            1f
-    //        );
-    //    }
-    //    else
-    //    {
-    //        currentProgressBarLerpTime = 0f;
-    //    }
-    //}
-
     public void LerpCameraFOV(float targetFOV)
     {
         if(targetFOV != 0f)
@@ -233,26 +232,38 @@ public class SpaceshipWarp : MonoBehaviour
 
     public void AbortWarp()
     {
+        Debug.Log($"Aborting Warp");
         _warpSmoothstep.AbortWarp();
         _targetFOV = _initialCameraFOV;
-        _warpParticleSystem.Stop();
+        //_warpParticleSystem.Stop();
+        _FTLInfos.WarpState = WarpStates.CANCELED;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
-            Debug.Log($"{other.transform.GetComponentInParent<SgtFloatingObject>()} - NullifyWarp");
-            _isInsideSphere = other.transform.GetComponentInParent<SgtFloatingTarget>();
-            AbortWarp();
+            //Debug.Log($"{other.transform.GetComponentInParent<SgtFloatingObject>()} - NullifyWarp");
+            IsInsideNoWarpSphere = other.transform.GetComponentInParent<SgtFloatingTarget>();
+            if (Warping)
+            {
+                AbortWarp();
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
+        {
+            IsInsideNoWarpSphere = null;
         }
     }
 
     public void OnThrust(InputAction.CallbackContext context)
     {
-        if(context.ReadValue<Vector2>().y < 0)
+        if(context.ReadValue<Vector2>().y < 0 && Warping)
         {
-            _isInsideSphere = null;
             AbortWarp();
         }
     }
@@ -262,26 +273,35 @@ public class SpaceshipWarp : MonoBehaviour
         //context.performed;
         //_warpButtonPressed = context.started;
 
+
+
         IEnumerator coStarted, coCanceled;
         coStarted = LerpProgressBar(new Vector3(1f, 1f, 1f), 2f, ProgressBar);
         coCanceled = LerpProgressBar(new Vector3(0f, 1f, 1f), 2f, ProgressBar);
 
+        WarpInitiated = context.started;
+
         if (context.started)
         {
-            Debug.Log($"Warp started");
+            //Debug.Log($"Warp started");
             //LerpWarpProgressBar(1f);
             //StopCoroutine(coCanceled);
             _stopProgressBar = false;
             StartCoroutine(coStarted);
+
+            _FTLInfos.WarpState = WarpStates.STARTED;
+
             TurnTowardsWarpTarget();
         }
         if (context.canceled)
         {
-            Debug.Log($"Warp canceled");
+            //Debug.Log($"Warp canceled");
             //LerpWarpProgressBar(0f);
             _stopProgressBar = true;
             ProgressBar.localScale = new Vector3(0f, 1f, 1f);
             StopCoroutine(coStarted);
+
+            _FTLInfos.WarpState = WarpStates.CANCELED;
         }
 
         if(context.performed)

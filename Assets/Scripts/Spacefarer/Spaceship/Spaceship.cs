@@ -25,7 +25,7 @@ public class Spaceship : MonoBehaviour
     private bool _useXR;
 
     [SerializeField]
-    private StellarSystemGenerator stellarSystemGenerator;
+    private StellarSystemGeneratorOld stellarSystemGenerator;
 
     [SerializeField]
     private PlayerInput _playerInput;
@@ -148,7 +148,7 @@ public class Spaceship : MonoBehaviour
     public bool ShowCockpitRadar { get => _showCockpitRadar; set => _showCockpitRadar = value; }
     public bool EnableGravity { get => _enableGravity; set => _enableGravity = value; }
     public bool UseRadar { get => _useRadar; set => _useRadar = value; }
-    public StellarSystemGenerator StellarSystemGenerator { get => stellarSystemGenerator; set => stellarSystemGenerator = value; }
+    public StellarSystemGeneratorOld StellarSystemGenerator { get => stellarSystemGenerator; set => stellarSystemGenerator = value; }
     public Camera CameraVR { get => _cameraVR; set => _cameraVR = value; }
     public Camera CameraFlat { get => _cameraFlat; set => _cameraFlat = value; }
     public Vector2 PitchYaw { get => pitchYaw; set => pitchYaw = value; }
@@ -159,7 +159,7 @@ public class Spaceship : MonoBehaviour
 
         _radar.SetActive(UseRadar);
 
-        StellarSystemGenerator _stellarSystemGenerator = GameObject.FindObjectOfType<StellarSystemGenerator>();
+        StellarSystemGeneratorOld _stellarSystemGenerator = GameObject.FindObjectOfType<StellarSystemGeneratorOld>();
 
         if (EnableGravity)
         {

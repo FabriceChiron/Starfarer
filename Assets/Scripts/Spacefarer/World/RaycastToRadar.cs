@@ -33,6 +33,9 @@ public class RaycastToRadar : MonoBehaviour
     [SerializeField]
     private StarData _starData;
 
+    [SerializeField]
+    private WarpGateData _warpGateData;
+
     private LineRenderer _lineRenderer;
 
     private Scales _currentScales;
@@ -58,6 +61,7 @@ public class RaycastToRadar : MonoBehaviour
     public StellarBodyData StellarBodyData { get => _stellarBodyData; set => _stellarBodyData = value; }
     public StarData StarData { get => _starData; set => _starData = value; }
     public Transform NullifyWarp { get => _nullifyWarp; set => _nullifyWarp = value; }
+    public WarpGateData WarpGateData { get => _warpGateData; set => _warpGateData = value; }
     public GameObject RadarWarpPrompt { get => radarWarpPrompt; set => radarWarpPrompt = value; }
 
     private bool isIconSpawned, isCockpitIconSpawned;
@@ -113,11 +117,23 @@ public class RaycastToRadar : MonoBehaviour
         {
             IsRadarFound = true;
         
-            if(!isIconSpawned)
+            if(!isIconSpawned && Type != "Space Station")
             {
                 radarIcon = Instantiate(RadarPrefab, _radarUI.transform.GetChild(0));
                 _textComp = radarIcon.GetComponentInChildren<TextMeshPro>();
                 radarIcon.transform.GetChild(1).gameObject.SetActive(false);
+
+                GameObject spaceStationIcon = radarIcon.transform.Find("Picto").GetComponentInChildren<SpaceStationIcon>(true)?.gameObject;
+
+                if(spaceStationIcon != null)
+                {
+                    if((StarData != null && StarData.warpGate != null) || (StellarBodyData != null && StellarBodyData.warpGate != null))
+                    {
+                        spaceStationIcon.SetActive(true);
+                    }
+
+                }
+
 
                 Destroy(radarIcon.GetComponentInChildren<WarpPrompt>()?.transform.parent.gameObject);
 
@@ -160,32 +176,100 @@ public class RaycastToRadar : MonoBehaviour
 
             stellarBodyDistance = Mathf.Round(Vector3.Distance(_cameraTransform.position, transform.position) / _currentScales.Orbit * 100f) / 100f;
 
-            radarCockpitIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon") && _spaceshipLocator.ShowCockpitRadar);
+            if (_spaceshipLocator.ShowCockpitRadar)
+            {
+                bool toggleActive;
+                //If distance is greater than 1AU
+                if(stellarBodyDistance > 1f)
+                {
+                    switch (Type)
+                    {
+                        case "Moon":
+                            toggleActive = false;
+                            break;
+
+                        case "Planet":
+                            toggleActive = !(StellarBodyData.warpGate != null);
+                            break;
+
+                        case "Star":
+                            toggleActive = !(StarData.warpGate != null);
+                            break;
+
+                        default: //Space Station
+                            toggleActive = true;
+                            break;
+                    }
+                }
+                //If distance is lower than 1AU
+                else
+                {
+                    switch (Type)
+                    {
+                        case "Moon":
+                            toggleActive = true;
+                            break;
+
+                        case "Planet":
+                            toggleActive = true;
+                            break;
+
+                        case "Star":
+                            toggleActive = true;
+                            break;
+
+                        default: //Space Station
+                            toggleActive = true;
+                            break;
+                    }
+                }
+                radarCockpitIcon.SetActive(toggleActive);
+            }
+
+
+            //radarCockpitIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon") && _spaceshipLocator.ShowCockpitRadar);
 
             //radarCockpitIcon.SetActive(_spaceship.ShowCockpitRadar);
 
             Vector3 direction = transform.position - _spaceshipLocator.transform.position;
             float Angle = Vector3.Angle(_cameraTransform.forward, direction);
 
-            if(Angle <= _angleThreshold && !_warpSmoothStep.Warping && Type != "Moon" && !_spaceshipWarp.WarpTargetLocked)
+            if(Angle <= _angleThreshold && !_warpSmoothStep.Warping && radarCockpitIcon.activeSelf && !_spaceshipWarp.WarpTargetLocked)
             {
-                _spaceshipWarp.WarpTarget = _floatingTarget;
-                _spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
-                _spaceshipWarp.CanWarp = true;
-
-                if(RadarWarpPrompt != null)
+                if (_spaceshipWarp.IsInsideNoWarpSphere != null)
                 {
-                    _spaceshipWarp.RadarWarpPrompt = RadarWarpPrompt.GetComponentInChildren<WarpPrompt>();
-                    _spaceshipWarp.ProgressBar = radarWarpPromptProgressBar;
+                    if ((_floatingTarget.name == _spaceshipWarp.IsInsideNoWarpSphere.name) || (_floatingTarget.name.Contains(_spaceshipWarp.IsInsideNoWarpSphere.name)) || (_spaceshipWarp.IsInsideNoWarpSphere.name.Contains(_floatingTarget.name)))
+                    {
+                        
+                    }
+                    else
+                    {
+                        _spaceshipWarp.WarpTarget = _floatingTarget;
+                        _spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+                        _spaceshipWarp.CanWarp = true;
+
+                        if (RadarWarpPrompt != null)
+                        {
+
+                            _spaceshipWarp.RadarWarpPrompt = RadarWarpPrompt.GetComponentInChildren<WarpPrompt>();
+                            _spaceshipWarp.ProgressBar = radarWarpPromptProgressBar;
+                        }
+                    }
+                }
+                else
+                {
+                    _spaceshipWarp.WarpTarget = _floatingTarget;
+                    _spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+                    _spaceshipWarp.CanWarp = true;
+
+                    if (RadarWarpPrompt != null)
+                    {
+
+                        _spaceshipWarp.RadarWarpPrompt = RadarWarpPrompt.GetComponentInChildren<WarpPrompt>();
+                        _spaceshipWarp.ProgressBar = radarWarpPromptProgressBar;
+                    }
                 }
             }
-
-            //if(NullifyWarp != null)
-            //{
-            //    Vector3 nullifyWarpDirection = _spaceshipLocator.transform.position - transform.position;
-            //    //NullifyWarp.position = transform.position + Vector3.Normalize(nullifyWarpDirection) * Mathf.Min(StellarBodyData.Size * _currentScales.Planet * 3f, stellarBodyDistance * 0.9f);
-            //    NullifyWarp.position = transform.position + Vector3.Normalize(nullifyWarpDirection) * StellarBodyData.Size * _currentScales.Planet * 3f;
-            //}
 
             radarCockpitIcon.transform.position = _cameraTransform.position + Vector3.Normalize(direction) * 7.5f;
             _nameCockpitComp.text = $"{(Type == "Moon" ? StellarBodyName : StellarBodyName.ToUpper())} \n {stellarBodyDistance} AU";
@@ -212,7 +296,7 @@ public class RaycastToRadar : MonoBehaviour
 
             float stellarBodyDistance = Mathf.Round(Vector3.Distance(_radarUI.transform.position, transform.position) / _currentScales.Orbit * 100f) /100f;
 
-            radarIcon.SetActive(!(stellarBodyDistance > 1f && Type == "Moon"));
+            radarIcon.SetActive(!(stellarBodyDistance > 1f && (Type == "Moon" || Type == "Space Station")));
 
             //radarIcon.transform.position = _radarUI.transform.position + Vector3.Normalize(transform.position - _radarUI.transform.position) * 0.1f;
             radarIcon.transform.position = _radarUI.transform.position + Vector3.Normalize(transform.position - _radarUI.transform.position) * (stellarBodyDistance < 2.5f ? stellarBodyDistance : 2.5f) * 0.05f;
@@ -277,7 +361,7 @@ public class RaycastToRadar : MonoBehaviour
             _warpPromptName.text = _warpPromptName.text.Replace("{}", $"{StellarBodyData.Name}");
         }
 
-        else
+        else if(StarData != null)
         {
             _name = _infos.GetChild(0).Find("Name").GetComponent<TextMeshPro>();
             _name.text = StarData.Name;
@@ -305,6 +389,26 @@ public class RaycastToRadar : MonoBehaviour
 
             _warpPromptName = _warpPrompt.Find("Message").GetComponent<TextMeshPro>();
             _warpPromptName.text = _warpPromptName.text.Replace("{}", $"{StarData.Name}");
+        }
+
+        else
+        {
+            _name = _infos.GetChild(0).Find("Name").GetComponent<TextMeshPro>();
+            _name.text = WarpGateData.Name;
+
+            _distance = _infos.GetChild(0).Find("Distance").GetComponent<TextMeshPro>();
+
+            _bodyType = _infos.Find("Type").GetComponent<TextMeshPro>();
+            _bodyType.text = Type;
+
+            _orbit = _infos.Find("Orbit").GetComponent<TextMeshPro>();
+            _orbit.gameObject.SetActive(WarpGateData.Orbit != 0f);
+            _orbit.text = _orbit.text.Replace("{}", $"{WarpGateData.Orbit}");
+
+            Transform _warpPrompt = radarCockpitIcon.GetComponentInChildren<WarpPrompt>(true).transform;
+
+            _warpPromptName = _warpPrompt.Find("Message").GetComponent<TextMeshPro>();
+            _warpPromptName.text = _warpPromptName.text.Replace("{}", $"{WarpGateData.Name}");
         }
     }
 }

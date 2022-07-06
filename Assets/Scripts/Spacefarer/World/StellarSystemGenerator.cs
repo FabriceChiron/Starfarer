@@ -4,7 +4,11 @@ using UnityEngine;
 using SpaceGraphicsToolkit;
 using SpaceGraphicsToolkit.Starfield;
 using SpaceGraphicsToolkit.Belt;
+using SpaceGraphicsToolkit.Atmosphere;
+using SpaceGraphicsToolkit.Jovian;
 using CW.Common;
+using VSX.UniversalVehicleCombat.Radar;
+using VSX.FloatingOriginSystem;
 
 public class StellarSystemGenerator : MonoBehaviour
 {
@@ -15,13 +19,16 @@ public class StellarSystemGenerator : MonoBehaviour
     private Scales _scales;
 
     [SerializeField]
-    private GameObject _playerPrefab, _forRadarPrefab, _followWarpGatePrefab;
+    private GameObject _playerPrefab, _forRadarPrefab;
 
     [SerializeField]
-    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab;
+    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _spaceStationRadarPrefab, _zoneDisableCruiseSpeedPrefab, _nullifyWarpPrefab;
 
     [SerializeField]
     private StellarSystemData _currentSystemData;
+
+    [SerializeField]
+    private OrbitsActive _orbitsActive;
 
     [SerializeField]
     private Transform stellarSystemContainer;
@@ -30,13 +37,21 @@ public class StellarSystemGenerator : MonoBehaviour
     private SgtFloatingObject stellarSystemCenter;
 
     [SerializeField]
+    private SgtFloatingCamera initialFloatingCamera;
+
+    [SerializeField]
     private List<SgtFloatingObject> _floatingObjectsList;
 
     [SerializeField]
     private bool _useXR;
 
     [SerializeField]
-    private bool _useRadar, _useCockpitProjection, _enableGravity;
+    private bool _useRadar, _useCockpitProjection, _enableGravity, _canSpawnPlayer, _isPlayerSpawned;
+
+    [SerializeField]
+    private List<SgtFloatingObject> _spawnerFloatingObjects;
+    
+    CwFollow playerFollow;
 
     private GameObject _player;
 
@@ -56,12 +71,54 @@ public class StellarSystemGenerator : MonoBehaviour
     private void OnEnable()
     {
         GenerateStellarSystem(_currentSystemData);
+
+        foreach (ToggleOrbitRevolution toggleOrbitRevolution in FindObjectsOfType<ToggleOrbitRevolution>())
+        {
+            SgtFloatingOrbit floatingOrbit = toggleOrbitRevolution.GetComponent<SgtFloatingOrbit>();
+            toggleOrbitRevolution.DegreesPerSecond = floatingOrbit.DegreesPerSecond;
+
+            toggleOrbitRevolution.OrbitsActive = _orbitsActive;
+
+            floatingOrbit.DegreesPerSecond = 0;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_canSpawnPlayer)
+        {
+            if (!_isPlayerSpawned)
+            {
+                SpawnPlayer();
+            }
+            else
+            {
+                SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
 
+                initialFloatingCamera.gameObject.SetActive(false);
+                _playerCamera.enabled = true;
+                playerFollow.enabled = false;
+            }
+        }
+    }
+
+    private void SpawnPlayer()
+    {
+        if (_playerPrefab != null)
+        {
+            _player = Instantiate(_playerPrefab);
+
+            playerFollow = _player.transform.GetChild(0).gameObject.AddComponent<CwFollow>();
+
+            playerFollow.Target = _spawnerFloatingObjects[Random.Range(0, _spawnerFloatingObjects.Count)].gameObject.GetComponentInChildren<AnchorSpawn>().transform;
+
+            _player.transform.GetChild(0).localRotation = playerFollow.Target.localRotation;
+
+
+            _isPlayerSpawned = true;
+
+        }
     }
 
     private void GenerateStellarSystem(StellarSystemData stellarSystemData)
@@ -94,7 +151,6 @@ public class StellarSystemGenerator : MonoBehaviour
 
         SgtFloatingOrbit orbitComp = newStar.GetComponent<SgtFloatingOrbit>();
 
-
         orbitComp.ParentPoint = stellarSystemCenter;
 
         orbitComp.Radius = starData.Orbit * _scales.Orbit + newStar.transform.localScale.x;
@@ -109,10 +165,16 @@ public class StellarSystemGenerator : MonoBehaviour
 
         GameObject newStarFlare = Instantiate(starData.FlarePrefab, stellarSystemContainer);
 
+
+
         newStarFlare.name = $"{starData.Name} - Flare";
 
         newStarFlare.transform.localScale = new Vector3(1f, 1f, 1f);
         newStarFlare.transform.localScale *= starData.Size * _scales.Planet / 109f;
+
+        SgtFloatingTarget warpComp = newStarFlare.AddComponent<SgtFloatingTarget>();
+        warpComp.WarpName = starData.Name;
+        warpComp.WarpDistance = starData.Size * _scales.Planet * 3f / 109f;
 
         SgtFloatingOrbit orbitFlareComp = newStarFlare.GetComponent<SgtFloatingOrbit>();
 
@@ -124,18 +186,29 @@ public class StellarSystemGenerator : MonoBehaviour
 
         orbitFlareComp.DegreesPerSecond = (starData.YearLength != 0f) ? 360f / (starData.YearLength * _scales.Year) : 0;
 
-        GameObject starToRadar = Instantiate(_forRadarPrefab, newStarFlare.transform);
 
 
-        RaycastToRadar starRaycastToRadar = starToRadar.GetComponent<RaycastToRadar>();
-        starRaycastToRadar.RadarPrefab = _starRadarPrefab;
-        starRaycastToRadar.StellarBodyName = starData.Name;
-        starRaycastToRadar.CurrentScales = _scales;
-        starRaycastToRadar.Type = "Star";
-        starRaycastToRadar.UseRadar = UseRadar;
-        starRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
-        starRaycastToRadar.StarData = starData;
-        starRaycastToRadar.UseXR = UseXR;
+        if(UseRadar)
+        {
+            GameObject starToRadar = Instantiate(_forRadarPrefab, newStarFlare.transform);
+            RaycastToRadar starRaycastToRadar = starToRadar.GetComponent<RaycastToRadar>();
+            starRaycastToRadar.RadarPrefab = _starRadarPrefab;
+            starRaycastToRadar.StellarBodyName = starData.Name;
+            starRaycastToRadar.CurrentScales = _scales;
+            starRaycastToRadar.Type = "Star";
+            starRaycastToRadar.UseRadar = UseRadar;
+            starRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
+            starRaycastToRadar.StarData = starData;
+            starRaycastToRadar.UseXR = UseXR;
+
+            if (_nullifyWarpPrefab != null)
+            {
+                GameObject nullifyWarp = Instantiate(_nullifyWarpPrefab, newStarFlare.transform.GetChild(0));
+                //nullifyWarp.transform.localScale *= 0.1f;
+                starRaycastToRadar.NullifyWarp = nullifyWarp.transform;
+            }
+        }
+        
 
         if (starData.warpGate != null)
         {
@@ -153,31 +226,61 @@ public class StellarSystemGenerator : MonoBehaviour
 
         GameObject stellarBody = Instantiate(stellarBodyData.Prefab, stellarSystemContainer);
 
-        
-
-        GameObject stellarBodyToRadar = Instantiate(_forRadarPrefab, stellarBody.transform);
-
-        RaycastToRadar stellarBodyRaycastToRadar = stellarBodyToRadar.GetComponent<RaycastToRadar>();
-
-        stellarBodyRaycastToRadar.RadarPrefab = stellarBodyData.Gaseous ? _gaseousPlanetRadarPrefab : _rockyPlanetRadarPrefab;
-        stellarBodyRaycastToRadar.StellarBodyName = stellarBodyData.Name;
-        stellarBodyRaycastToRadar.CurrentScales = _scales;
-        stellarBodyRaycastToRadar.Type = Type;
-        stellarBodyRaycastToRadar.UseRadar = UseRadar;
-        stellarBodyRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
-        stellarBodyRaycastToRadar.StellarBodyData = stellarBodyData;
-        stellarBodyRaycastToRadar.UseXR= UseXR;
-
-        if(Type == "Moon")
+        if(_zoneDisableCruiseSpeedPrefab != null)
         {
-            stellarBodyRaycastToRadar.ParentName = thisCenter.name;
+            GameObject zoneDisableCruiseSpeed;
+
+            if (stellarBody.GetComponentInChildren<SgtAtmosphere>())
+            {
+                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.GetComponentInChildren<SgtAtmosphere>().transform.GetChild(0));
+                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2f, 2f, 2f);
+            }
+            else if (stellarBody.GetComponentInChildren<SgtJovian>())
+            {
+                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
+                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2f, 2f, 2f);
+            }
+            else
+            {
+                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform); 
+            }
+
+        }
+
+
+        if (UseRadar)
+        {
+            GameObject stellarBodyToRadar = Instantiate(_forRadarPrefab, stellarBody.transform);
+
+            RaycastToRadar stellarBodyRaycastToRadar = stellarBodyToRadar.GetComponent<RaycastToRadar>();
+
+            stellarBodyRaycastToRadar.RadarPrefab = stellarBodyData.Gaseous ? _gaseousPlanetRadarPrefab : _rockyPlanetRadarPrefab;
+            stellarBodyRaycastToRadar.StellarBodyName = stellarBodyData.Name;
+            stellarBodyRaycastToRadar.CurrentScales = _scales;
+            stellarBodyRaycastToRadar.Type = Type;
+            stellarBodyRaycastToRadar.UseRadar = UseRadar;
+            stellarBodyRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
+            stellarBodyRaycastToRadar.StellarBodyData = stellarBodyData;
+            stellarBodyRaycastToRadar.UseXR= UseXR;
+
+            if (_nullifyWarpPrefab != null)
+            {
+                GameObject nullifyWarp = Instantiate(_nullifyWarpPrefab, stellarBody.transform.GetChild(0));
+                //nullifyWarp.transform.localScale *= 0.1f;
+                stellarBodyRaycastToRadar.NullifyWarp = nullifyWarp.transform;
+            }
+
+            if (Type == "Moon")
+            {
+                stellarBodyRaycastToRadar.ParentName = thisCenter.name;
+            }
         }
 
         SphereCollider stellarBodyCollider = stellarBody.AddComponent<SphereCollider>();
 
         stellarBodyCollider.radius = stellarBodyData.Gaseous ? 0.9f : 1f;
 
-        Rigidbody stellarBodyRb = stellarBody.AddComponent<Rigidbody>();
+        Rigidbody stellarBodyRb = stellarBody.GetComponent<Rigidbody>();
 
         stellarBodyRb.useGravity = false;
         stellarBodyRb.isKinematic = true;
@@ -196,6 +299,8 @@ public class StellarSystemGenerator : MonoBehaviour
             }
         }
 
+        stellarBody.AddComponent<FloatingOriginObject>();
+
         stellarBody.name = stellarBodyData.Name;
 
         //Reset prefab scale to 1;
@@ -203,6 +308,12 @@ public class StellarSystemGenerator : MonoBehaviour
 
         //Assign scale: Stellar Body Size * desired scale;
         stellarBody.transform.localScale *= stellarBodyData.Size * _scales.Planet;
+
+        stellarBody.transform.localEulerAngles = new Vector3(stellarBodyData.BodyTilt, stellarBody.transform.localEulerAngles.y, stellarBody.transform.localEulerAngles.z);
+
+        SgtFloatingTarget warpComp = stellarBody.AddComponent<SgtFloatingTarget>();
+        warpComp.WarpName = stellarBodyData.Name;
+        warpComp.WarpDistance = stellarBodyData.Size * _scales.Planet * 3f;
 
         SgtFloatingOrbit orbitComp = stellarBody.GetComponent<SgtFloatingOrbit>();
 
@@ -258,7 +369,7 @@ public class StellarSystemGenerator : MonoBehaviour
 
         newWarpGate.name = warpGateData.Name;
 
-        newWarpGate.transform.localScale *= warpGateData.Scale;
+        newWarpGate.transform.GetChild(0).localScale *= warpGateData.Scale;
 
         newWarpGate.AddComponent<SetupStellarBody>();
 
@@ -267,9 +378,36 @@ public class StellarSystemGenerator : MonoBehaviour
         SgtFloatingOrbit orbitComp = newWarpGate.GetComponent<SgtFloatingOrbit>();
 
 
+        if (UseRadar)
+        {
+            GameObject spaceStationToRadar = Instantiate(_forRadarPrefab, newWarpGate.transform);
+
+            RaycastToRadar spaceStationRaycastToRadar = spaceStationToRadar.GetComponent<RaycastToRadar>();
+
+            spaceStationRaycastToRadar.RadarPrefab = _spaceStationRadarPrefab;
+            spaceStationRaycastToRadar.StellarBodyName = warpGateData.Name;
+            spaceStationRaycastToRadar.CurrentScales = _scales;
+            spaceStationRaycastToRadar.Type = "Space Station";
+            spaceStationRaycastToRadar.UseRadar = UseRadar;
+            spaceStationRaycastToRadar.UseCockpitProjection = UseCockpitProjection;
+            spaceStationRaycastToRadar.WarpGateData = warpGateData;
+            spaceStationRaycastToRadar.UseXR = UseXR;
+        }
+
+
+        SgtFloatingTarget warpComp = newWarpGate.AddComponent<SgtFloatingTarget>();
+        warpComp.WarpName = warpGateData.Name;
+        warpComp.WarpDistance = 300f;
+
+        Rigidbody warpGateRb = newWarpGate.GetComponent<Rigidbody>();
+
+        warpGateRb.isKinematic = true;
+        warpGateRb.useGravity = false;
+        warpGateRb.angularDrag = 0f;
+
         orbitComp.ParentPoint = thisCenter;
 
-        orbitComp.Radius = (warpGateData.Orbit * _scales.Orbit) + thisCenter.transform.localScale.x;
+        orbitComp.Radius = (warpGateData.Orbit * _scales.Orbit) + (thisCenter.transform.localScale.x * 1.5f);
 
         orbitComp.Angle = warpGateData.AngleOnPlane;
 
@@ -280,52 +418,17 @@ public class StellarSystemGenerator : MonoBehaviour
         //orbitComp.DegreesPerSecond = revolutionPeriod;
         orbitComp.DegreesPerSecond = 0;
 
+        if(newWarpGate.GetComponentInChildren<AnchorSpawn>() == null)
+        {
+            newWarpGate.AddComponent<AnchorSpawn>();
+        }
+
 
         if (warpGateData.spawnsPlayer && _playerPrefab != null)
         {
-            /*GameObject _followWarpGate = Instantiate(_followWarpGatePrefab);
-            SgtFloatingCamera warpGateFloatingCamera = _followWarpGate.AddComponent<SgtFloatingCamera>();
+            _spawnerFloatingObjects.Add(newWarpGate.GetComponent<SgtFloatingObject>());
 
-            _followWarpGate.GetComponent<MatchElementTransform>().elementToMatch = newWarpGate.transform;*/
-
-            _player = Instantiate(_playerPrefab);
-
-
-
-
-
-            SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
-
-            RadarUI radarUI = _player.GetComponentInChildren<RadarUI>();
-
-            Spaceship _spaceship = _player.GetComponentInChildren<Spaceship>();
-
-            SgtFloatingOrbit spaceshipOrbitComp = _spaceship.gameObject.AddComponent<SgtFloatingOrbit>();
-
-            spaceshipOrbitComp.ParentPoint = orbitComp.ParentPoint;
-            spaceshipOrbitComp.Radius = orbitComp.Radius;
-            spaceshipOrbitComp.Angle = orbitComp.Angle;
-            spaceshipOrbitComp.Tilt = orbitComp.Tilt;
-            spaceshipOrbitComp.DegreesPerSecond = spaceshipOrbitComp.DegreesPerSecond;
-
-            _spaceship.EnableGravity = EnableGravity;
-
-            _spaceship.UseRadar = UseRadar;
-
-            /*
-            _player.transform.position = _followWarpGate.transform.position;
-            _spaceship.transform.localPosition = Vector3.zero;
-
-
-            Debug.Log(warpGateFloatingCamera.Position);
-
-
-
-            _playerCamera.SetPosition(warpGateFloatingCamera.Position);
-            _playerCamera.ApplyPosition();
-
-            warpGateFloatingCamera.enabled = false;*/
-            _playerCamera.enabled = true;
+            _canSpawnPlayer = true;
         }
     }
 }
