@@ -15,7 +15,7 @@ public class SpaceshipWarp : MonoBehaviour
     private SpaceshipController _spaceshipController;
 
     [SerializeField]
-    private SgtFloatingTarget _warpTarget, _previousWarpTarget, _isInsideNoWarpSphere;
+    private SgtFloatingTarget _warpTarget, _previousWarpTarget, _noWarpSphere;
 
     [SerializeField]
     private float 
@@ -76,7 +76,7 @@ public class SpaceshipWarp : MonoBehaviour
         }
     }
     public RectTransform ProgressBar { get => _progressBar; set => _progressBar = value; }
-    public SgtFloatingTarget IsInsideNoWarpSphere { get => _isInsideNoWarpSphere; set => _isInsideNoWarpSphere = value; }
+    public SgtFloatingTarget NoWarpSphere { get => _noWarpSphere; set => _noWarpSphere = value; }
     public bool Warping { 
         get => _warping;
         set {
@@ -129,7 +129,7 @@ public class SpaceshipWarp : MonoBehaviour
         
         _warpTargetLocked = _warpSmoothstep.Warping;
 
-        CanWarp = (_previousWarpTarget != WarpTarget) && (IsInsideNoWarpSphere != WarpTarget);
+        CanWarp = (_previousWarpTarget != WarpTarget) && (NoWarpSphere != WarpTarget);
 
 
     }
@@ -244,7 +244,7 @@ public class SpaceshipWarp : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
             //Debug.Log($"{other.transform.GetComponentInParent<SgtFloatingObject>()} - NullifyWarp");
-            IsInsideNoWarpSphere = other.transform.GetComponentInParent<SgtFloatingTarget>();
+            NoWarpSphere = other.transform.GetComponentInParent<SgtFloatingTarget>();
             if (Warping)
             {
                 AbortWarp();
@@ -256,7 +256,7 @@ public class SpaceshipWarp : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
-            IsInsideNoWarpSphere = null;
+            NoWarpSphere = null;
         }
     }
 

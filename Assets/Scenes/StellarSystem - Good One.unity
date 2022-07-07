@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 287828931}
   - component: {fileID: 287828934}
   - component: {fileID: 287828936}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: World
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,6 @@ MonoBehaviour:
   stellarSystemCenter: {fileID: 1605411512}
   initialFloatingCamera: {fileID: 1616772968}
   _floatingObjectsList: []
-  _isOrbiting: 0
   _useXR: 0
   _useRadar: 1
   _useCockpitProjection: 1
@@ -755,7 +754,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1605411513}
   - component: {fileID: 1605411512}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: StellarSystemCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -810,7 +809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1616772969}
   - component: {fileID: 1616772968}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Initial Floating Cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}

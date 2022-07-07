@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7223405269211396684}
   - component: {fileID: 7179203838956547325}
   - component: {fileID: 3353391630074100140}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtRingModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 9179214300410773045}
   - component: {fileID: 4415644022455060323}
   - component: {fileID: 211801330388067469}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtRingModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 8492217475740543358}
   - component: {fileID: 4465504484884540798}
   - component: {fileID: 5935292642447396058}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtJovianModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 8891740537753982704}
   - component: {fileID: 8891740537753982718}
   - component: {fileID: 475099986697027440}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,8 @@ GameObject:
   - component: {fileID: 8044151378944083463}
   - component: {fileID: 9139191141400317999}
   - component: {fileID: 4398593058156743056}
-  m_Layer: 0
+  - component: {fileID: 1541101943422284713}
+  m_Layer: 15
   m_Name: Uranus
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -509,6 +510,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &1541101943422284713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8891740539130532313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &8891740539336568146
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +540,7 @@ GameObject:
   - component: {fileID: 8891740539336568157}
   - component: {fileID: 8891740539336568158}
   - component: {fileID: 3576816518093487912}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Jovian
   m_TagString: Untagged
   m_Icon: {fileID: 0}

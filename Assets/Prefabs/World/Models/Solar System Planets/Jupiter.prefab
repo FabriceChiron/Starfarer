@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2340900096951773426}
   - component: {fileID: 864263560990706473}
   - component: {fileID: 8463174494350111096}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtJovianModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,8 @@ GameObject:
   - component: {fileID: -194583691767768810}
   - component: {fileID: 8568861081449935624}
   - component: {fileID: 8651712779371695178}
-  m_Layer: 0
+  - component: {fileID: 7000161420338355506}
+  m_Layer: 15
   m_Name: Jupiter
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -222,6 +223,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &7000161420338355506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5779849372627932684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &5779849373110390752
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +252,7 @@ GameObject:
   - component: {fileID: 5779849373110390757}
   - component: {fileID: 5779849373110390756}
   - component: {fileID: 5779849373110390759}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Jovian
   m_TagString: Untagged
   m_Icon: {fileID: 0}

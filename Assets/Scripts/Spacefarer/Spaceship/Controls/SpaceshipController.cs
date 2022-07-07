@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using CW.Common;
 using SpaceGraphicsToolkit;
@@ -45,8 +46,24 @@ public class SpaceshipController : MonoBehaviour
     [Header("Necessary Game Objects")]
     public Transform cameraPosition;
     public Camera mainCamera;
+    public Camera flatScreenCamera;
+    public Camera XRCamera;
     public Transform spaceshipRoot, seatBase;
-    
+
+    [SerializeField]
+    private BoolVariable _useXRStoredInfo, _useHandsStoredInfo;
+
+    [SerializeField]
+    private bool _useXR, _useHands;
+
+    [SerializeField]
+    private GetInputValues _XRControlValues;
+
+    [SerializeField]
+    private bool joystickGrabbed, throttleGrabbed;
+
+
+
     [Header("Damping")]
     public float rotationSpeed = 2.0f, warpRotationSpeed = 0.02f, currentRotationSpeed;
     public float cameraSmooth = 4f;
@@ -57,6 +74,9 @@ public class SpaceshipController : MonoBehaviour
     private bool _isInSlowZone;
     [SerializeField]
     private bool _isInSlowZoneBuffer;
+
+    [Header("Debug")]
+    private RectTransform _infos;
 
     Rigidbody r;
 
@@ -71,7 +91,17 @@ public class SpaceshipController : MonoBehaviour
 
     Vector2 pitchYaw;
 
-    float roll, forwardThrust, lateralThrust, upDownThrust;
+    float 
+        roll, 
+        rollXR, 
+        rollXRControls, 
+        forwardThrust,
+        lateralThrust, 
+        lateralThrustXR, 
+        lateralThrustXRControls, 
+        upDownThrust,
+        upDownThrustXR,
+        upDownThrustXRControls;
 
     bool _boosting, _superBoosting; 
     
@@ -97,6 +127,32 @@ public class SpaceshipController : MonoBehaviour
         }
     }
     public bool IsInSlowZoneBuffer { get => _isInSlowZoneBuffer; set => _isInSlowZoneBuffer = value; }
+    public bool JoystickGrabbed { get => joystickGrabbed; set => joystickGrabbed = value; }
+    public bool ThrottleGrabbed { get => throttleGrabbed; set => throttleGrabbed = value; }
+
+    public bool UseXR
+    {
+        get => _useXR;
+        set
+        {
+            if (_useXR != _useXRStoredInfo.BoolValue)
+            {
+                _useXRStoredInfo.BoolValue = value;
+                mainCamera = value ? XRCamera : flatScreenCamera;
+            }
+
+            _useXR = value;
+
+        }
+    }
+
+    public bool UseHands { get => _useHands; set => _useHands = value; }
+    public float ForwardThrust { get => forwardThrust; set => forwardThrust = value; }
+
+    private void OnEnable()
+    {
+        UseXR = _useXRStoredInfo.BoolValue;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -114,6 +170,8 @@ public class SpaceshipController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        _infos = GetComponentInChildren<InfoValues>()?.GetComponent<RectTransform>();
     }
 
 
@@ -122,19 +180,19 @@ public class SpaceshipController : MonoBehaviour
         float maxSpeed;
 
         //maxSpeed = forwardThrust * (IsInSlowZone ? normalSpeedSlowZone : normalSpeed);
-        maxSpeed = forwardThrust * GetSpeedStage(normalSpeed, normalSpeedSlowZone);
+        maxSpeed = ForwardThrust * GetSpeedStage(normalSpeed, normalSpeedSlowZone);
 
-        if(forwardThrust > 0f)
+        if(ForwardThrust > 0f)
         {
             if (_superBoosting)
             {
                 //maxSpeed = forwardThrust * (IsInSlowZone ? superBoostSpeedSlowZone : superBoostSpeed);
-                maxSpeed = forwardThrust * forwardThrust * GetSpeedStage(superBoostSpeed, superBoostSpeedSlowZone);
+                maxSpeed = ForwardThrust * ForwardThrust * GetSpeedStage(superBoostSpeed, superBoostSpeedSlowZone);
             }
             else if (_boosting)
             {
                 //maxSpeed = forwardThrust * (IsInSlowZone ? boostSpeedSlowZone : boostSpeed);
-                maxSpeed = forwardThrust * forwardThrust * GetSpeedStage(boostSpeed, boostSpeedSlowZone);
+                maxSpeed = ForwardThrust * ForwardThrust * GetSpeedStage(boostSpeed, boostSpeedSlowZone);
             }
 
         }
@@ -170,6 +228,9 @@ public class SpaceshipController : MonoBehaviour
 
     void FixedUpdate()
     {
+        //Override Control inputs
+        PitchYaw = JoystickGrabbed ? _XRControlValues.joystickValues.normalized * 0.3f : PitchYaw;
+        ForwardThrust = ThrottleGrabbed ? _XRControlValues.throttleValue : ForwardThrust;
 
         if (IsInSlowZoneBuffer)
         {
@@ -209,14 +270,28 @@ public class SpaceshipController : MonoBehaviour
         transform.rotation = LookRotation;
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -30, 30);
-        seatBase.localEulerAngles = new Vector3(0f, 0f, rotationZ * -0.75f);
+        if (!UseXR)
+        {
+            seatBase.localEulerAngles = new Vector3(0f, 0f, rotationZ * -0.75f);
+        }
         spaceshipRoot.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
         rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.deltaTime * cameraSmooth);
+
+        if(_infos != null)
+        {
+            _infos.GetComponentsInChildren<Text>()[0].text = $"Joystick Value: \n{_XRControlValues.joystickValues}";
+            _infos.GetComponentsInChildren<Text>()[1].text = $"PitchYaw: \n{PitchYaw}";
+            _infos.GetComponentsInChildren<Text>()[2].text = $"Throttle Value: \n{_XRControlValues.throttleValue}";
+            _infos.GetComponentsInChildren<Text>()[3].text = $"ForwardThrust: \n{ForwardThrust}";
+        }
     }
 
     public void OnThrust(InputAction.CallbackContext context)
     {
-        forwardThrust = context.ReadValue<Vector2>().y;
+        if (!ThrottleGrabbed)
+        {
+            ForwardThrust = context.ReadValue<Vector2>().y;
+        }
     }
 
     public void OnStrafe(InputAction.CallbackContext context)
@@ -229,11 +304,46 @@ public class SpaceshipController : MonoBehaviour
         upDownThrust = context.ReadValue<float>();
     }
 
-    //public void OnUpDownStrafeXR(InputAction.CallbackContext context)
-    //{
-    //    upDownXR1D = context.ReadValue<Vector2>().y;
-    //    strafeXR1D = context.ReadValue<Vector2>().x;
-    //}
+    public void OnUpDownStrafeXR(InputAction.CallbackContext context)
+    {
+        //upDownXR1D = context.ReadValue<Vector2>().y;
+        //strafeXR1D = context.ReadValue<Vector2>().x;
+        if (UseHands)
+        {
+            if (JoystickGrabbed)
+            {
+                lateralThrust = context.ReadValue<Vector2>().x;
+                upDownThrust = context.ReadValue<Vector2>().y;
+            }
+            else
+            {
+
+            }
+        }
+        else
+        {
+            PitchYaw = context.ReadValue<Vector2>();
+        }
+    }
+
+    public void OnUpDownStrafeXRPressed(InputAction.CallbackContext context)
+    {
+        if (!UseHands && !JoystickGrabbed)
+        {
+            lateralThrust = context.ReadValue<Vector2>().x;
+            upDownThrust = context.ReadValue<Vector2>().y;
+        }
+    }
+
+    public void OnThrustRollXR(InputAction.CallbackContext context)
+    {
+        //forwardThrust = context.ReadValue<Vector2>().y;
+        if (ThrottleGrabbed)
+        {
+            ForwardThrust = _XRControlValues.throttleValue;
+            Roll = context.ReadValue<Vector2>().x;
+        }
+    }
 
     //public void OnUpDownStrafe(InputAction.CallbackContext context)
     //{
@@ -243,7 +353,10 @@ public class SpaceshipController : MonoBehaviour
 
     public void OnRoll(InputAction.CallbackContext context)
     {
-        Roll = context.ReadValue<float>();
+        if (!ThrottleGrabbed)
+        {
+            Roll = context.ReadValue<float>();
+        }
     }
 
     //public void OnRollXR(InputAction.CallbackContext context)

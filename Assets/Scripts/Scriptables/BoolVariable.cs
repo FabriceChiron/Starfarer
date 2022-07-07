@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class OrbitsActive : ScriptableObject
+public class BoolVariable : ScriptableObject
 {
-    public bool IsOrbiting;
+    public bool BoolValue;
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowConstruct : MonoBehaviour
+public class AnchorThrottle : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

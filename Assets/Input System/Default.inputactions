@@ -103,6 +103,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ThrustRollXR",
+                    "type": "Value",
+                    "id": "c1656eb6-7d37-49ce-81eb-ea4514004f8a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "UpDownStrafeXR",
+                    "type": "Value",
+                    "id": "f80ef318-6608-4909-96f4-a3ce623b1c15",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "UpDownStrafeXRPressed",
+                    "type": "Value",
+                    "id": "62e6329a-cf64-403b-b63c-34819c2b4a62",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -460,6 +487,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e4157438-959f-44a3-9a2c-1dae93d13a7d",
+                    "path": "<XRController>{LeftHand}/primaryTouched",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "Boost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5ab74bab-2c21-4b7d-a32e-272d09c370ef",
                     "path": "<XRController>{RightHand}/thumbstickClicked",
                     "interactions": "",
@@ -515,6 +553,17 @@
                 },
                 {
                     "name": "",
+                    "id": "75a84208-e8ca-4ca7-aca6-adae6b5b932a",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SuperBoost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "685eaf6e-c675-4df8-b4bc-01dc2e4172c2",
                     "path": "<Keyboard>/x",
                     "interactions": "",
@@ -531,6 +580,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Warp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97c3cb97-0535-477a-a613-6c10ded17192",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
                     "action": "Warp",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -598,6 +658,61 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "UpDown",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b4656d32-293f-4153-b4c0-cbcb62d9c088",
+                    "path": "<XRController>{LeftHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "ThrustRollXR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfa1d56b-be20-4e98-a899-5750935679dd",
+                    "path": "<XRController>{RightHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "UpDownStrafeXR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "8ebc5200-d987-4c74-94bf-91106a4b64f1",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpDownStrafeXRPressed",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "4d8ef034-d085-4be6-aa1e-e39889932bba",
+                    "path": "<XRController>{RightHand}/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "UpDownStrafeXRPressed",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "cdd02af6-b170-46d3-8cc3-a7387f432172",
+                    "path": "<XRController>{RightHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "UpDownStrafeXRPressed",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

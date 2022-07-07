@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1369684632270687482}
   - component: {fileID: 1369684632270687460}
   - component: {fileID: 1369684632270687483}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Corona
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 1369684632541355188}
   - component: {fileID: 1369684632541355210}
   - component: {fileID: 1369684632541355211}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,8 @@ GameObject:
   - component: {fileID: 2723649581676839777}
   - component: {fileID: 1816054064532775938}
   - component: {fileID: 4075231464354897629}
-  m_Layer: 0
+  - component: {fileID: 1396729069762149874}
+  m_Layer: 15
   m_Name: Sun
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -313,6 +314,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &1396729069762149874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369684632855935477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &1369684632869181935
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1369684632869181934}
   - component: {fileID: 1369684632869181933}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Prominence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +396,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1369684633859177619}
   - component: {fileID: 1369684633859177618}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Prominence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +454,7 @@ GameObject:
   - component: {fileID: 7009227161522745756}
   - component: {fileID: 5769965779288773826}
   - component: {fileID: 1087566940101085681}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtAtmosphereModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,7 +553,7 @@ GameObject:
   - component: {fileID: 71848935253792796}
   - component: {fileID: 1447024160673318350}
   - component: {fileID: 5495297232884763675}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtProminenceModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +652,7 @@ GameObject:
   - component: {fileID: 1592171439379478188}
   - component: {fileID: 1749369288992215510}
   - component: {fileID: 6425102502513444912}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtProminenceModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

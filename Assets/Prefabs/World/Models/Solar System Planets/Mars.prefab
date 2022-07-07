@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3060271399861953081}
   - component: {fileID: 2096821791927002872}
   - component: {fileID: 1850848571293789982}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtAtmosphereModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 7591701472296254596}
   - component: {fileID: 7591701472296254597}
   - component: {fileID: 7591701472296254598}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Atmosphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,8 @@ GameObject:
   - component: {fileID: 2801735230901281737}
   - component: {fileID: 1734184639093068913}
   - component: {fileID: 1547763365225506513}
-  m_Layer: 0
+  - component: {fileID: 3672857511725147103}
+  m_Layer: 15
   m_Name: Mars
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -378,6 +379,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &3672857511725147103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7591701472406057301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &7591701473364837334
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7591701473364837333}
   - component: {fileID: 7591701473364837332}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

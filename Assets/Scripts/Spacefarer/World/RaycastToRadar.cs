@@ -45,6 +45,9 @@ public class RaycastToRadar : MonoBehaviour
     private LineRenderer cockpitLineRenderer;
 
     [SerializeField]
+    private BoolVariable _useXRStoredInfo;
+
+    [SerializeField]
     private bool _useXR, _useRadar, _useCockpitProjection;
 
     [SerializeField]
@@ -80,9 +83,14 @@ public class RaycastToRadar : MonoBehaviour
 
     private TextMeshPro _name, _distance, _bodyType, _orbit, _orbitTilt, _radius, _bodyTilt, _mass, _revolution, _rotation, _details, _warpPromptName;
 
+    private void OnEnable()
+    {
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        UseXR = _useXRStoredInfo.BoolValue;
         Physics.queriesHitBackfaces = true;
 
         layerMask = 1 << (int)layer;
@@ -236,9 +244,9 @@ public class RaycastToRadar : MonoBehaviour
 
             if(Angle <= _angleThreshold && !_warpSmoothStep.Warping && radarCockpitIcon.activeSelf && !_spaceshipWarp.WarpTargetLocked)
             {
-                if (_spaceshipWarp.IsInsideNoWarpSphere != null)
+                if (_spaceshipWarp.NoWarpSphere != null)
                 {
-                    if ((_floatingTarget.name == _spaceshipWarp.IsInsideNoWarpSphere.name) || (_floatingTarget.name.Contains(_spaceshipWarp.IsInsideNoWarpSphere.name)) || (_spaceshipWarp.IsInsideNoWarpSphere.name.Contains(_floatingTarget.name)))
+                    if ((_floatingTarget.name == _spaceshipWarp.NoWarpSphere.name) || (_floatingTarget.name.Contains(_spaceshipWarp.NoWarpSphere.name)) || (_spaceshipWarp.NoWarpSphere.name.Contains(_floatingTarget.name)))
                     {
                         
                     }

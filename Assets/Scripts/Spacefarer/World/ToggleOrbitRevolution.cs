@@ -11,7 +11,7 @@ public class ToggleOrbitRevolution : MonoBehaviour
     SgtFloatingOrbit orbitComp;
 
     [SerializeField]
-    private OrbitsActive _orbitsActive;
+    private BoolVariable _orbitsActive;
 
     [SerializeField]
     private bool _isOrbiting;
@@ -34,7 +34,7 @@ public class ToggleOrbitRevolution : MonoBehaviour
         }
     }
 
-    public OrbitsActive OrbitsActive { get => _orbitsActive; set => _orbitsActive = value; }
+    public BoolVariable OrbitsActive { get => _orbitsActive; set => _orbitsActive = value; }
 
     void OnEnable()
     {
@@ -45,7 +45,7 @@ public class ToggleOrbitRevolution : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        IsOrbiting = OrbitsActive.IsOrbiting;
+        IsOrbiting = OrbitsActive.BoolValue;
     }
 
     private void ToggleOrbit(bool isActive)

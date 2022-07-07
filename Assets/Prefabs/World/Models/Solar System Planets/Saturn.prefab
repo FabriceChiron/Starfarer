@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 611632468746035502}
   - component: {fileID: 7412477436109230204}
   - component: {fileID: 7769628005966964036}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtJovianModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 1957650593092196979}
   - component: {fileID: 1957026704731813941}
   - component: {fileID: 278833181493795591}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtRingModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 2329714762761251554}
   - component: {fileID: 7192316360638513877}
   - component: {fileID: 79418730330859205}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 7192316361031706299}
   - component: {fileID: 7192316361031706300}
   - component: {fileID: 7353769583265793400}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Jovian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,8 @@ GameObject:
   - component: {fileID: 7455797367757816675}
   - component: {fileID: 6224004292629061017}
   - component: {fileID: 249331673167958690}
-  m_Layer: 0
+  - component: {fileID: 7472480285640797727}
+  m_Layer: 15
   m_Name: Saturn
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -540,6 +541,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &7472480285640797727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7192316361646330921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &7556091518713808169
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,7 +569,7 @@ GameObject:
   - component: {fileID: 1891002251794006244}
   - component: {fileID: 2371886972611229064}
   - component: {fileID: 7642563748320250105}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SgtRingModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

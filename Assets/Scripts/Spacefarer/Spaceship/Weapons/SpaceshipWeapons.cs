@@ -24,9 +24,13 @@ public class SpaceshipWeapons : MonoBehaviour
 
     public float BlasterSpeed { get => _blasterSpeed; set => _blasterSpeed = value; }
 
+
+
     // Start is called before the first frame update
     void Start()
     {
+        GetComponentInChildren<WeaponsContainer>().transform.SetParent(transform);
+
         foreach(BlasterMount blasterMount in GetComponentsInChildren<BlasterMount>())
         {
             _blasterMounts.Add(blasterMount);

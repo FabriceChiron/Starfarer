@@ -28,7 +28,7 @@ public class StellarSystemGenerator : MonoBehaviour
     private StellarSystemData _currentSystemData;
 
     [SerializeField]
-    private OrbitsActive _orbitsActive;
+    private BoolVariable _orbitsActive;
 
     [SerializeField]
     private Transform stellarSystemContainer;
@@ -91,6 +91,7 @@ public class StellarSystemGenerator : MonoBehaviour
             if (!_isPlayerSpawned)
             {
                 SpawnPlayer();
+                LinkPortals();
             }
             else
             {
@@ -101,6 +102,11 @@ public class StellarSystemGenerator : MonoBehaviour
                 playerFollow.enabled = false;
             }
         }
+    }
+
+    private void LinkPortals()
+    {
+
     }
 
     private void SpawnPlayer()
@@ -238,11 +244,12 @@ public class StellarSystemGenerator : MonoBehaviour
             else if (stellarBody.GetComponentInChildren<SgtJovian>())
             {
                 zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
-                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2f, 2f, 2f);
+                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
             }
             else
             {
-                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform); 
+                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
+                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
             }
 
         }

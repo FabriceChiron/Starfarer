@@ -9,7 +9,7 @@ public class SpaceshipCollisions : MonoBehaviour
     private bool _isInSlowZone, _isInSlowZoneBuffer, _enableOrbiting;
 
     [SerializeField]
-    private OrbitsActive _orbitsActive;
+    private BoolVariable _orbitsActive;
 
     [SerializeField]
     private SpaceshipController _spaceshipController;
@@ -42,7 +42,7 @@ public class SpaceshipCollisions : MonoBehaviour
             //When value changes
             if(_enableOrbiting != value)
             {
-                _orbitsActive.IsOrbiting = value;
+                _orbitsActive.BoolValue = value;
 
                 foreach (SgtGravitySource gravitySource in FindObjectsOfType<SgtGravitySource>())
                 {
@@ -94,7 +94,7 @@ public class SpaceshipCollisions : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
             //Debug.Log($"{other.transform.GetComponentInParent<SgtFloatingObject>()} - NullifyWarp");
-            _spaceshipWarp.IsInsideNoWarpSphere = other.transform.GetComponentInParent<SgtFloatingTarget>();
+            _spaceshipWarp.NoWarpSphere = other.transform.GetComponentInParent<SgtFloatingTarget>();
             if (_spaceshipWarp.Warping)
             {
                 _spaceshipWarp.AbortWarp();
@@ -119,7 +119,7 @@ public class SpaceshipCollisions : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
-            _spaceshipWarp.IsInsideNoWarpSphere = null;
+            _spaceshipWarp.NoWarpSphere = null;
         }
     }
 }

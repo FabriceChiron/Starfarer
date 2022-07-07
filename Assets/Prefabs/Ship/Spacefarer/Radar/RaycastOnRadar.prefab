@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6015a99067e52f044839422d9c90065e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nullifyWarp: {fileID: 0}
   _radarPrefab: {fileID: 0}
   _planetNamePrefab: {fileID: 0}
   stellarBodyName: 
@@ -51,6 +52,13 @@ MonoBehaviour:
   _parentName: 
   _stellarBodyData: {fileID: 0}
   _starData: {fileID: 0}
+  _warpGateData: {fileID: 0}
+  _useXRStoredInfo: {fileID: 11400000, guid: fe6355c3c59da0e4da9b2dac8792d88f, type: 2}
   _useXR: 0
   _useRadar: 0
   _useCockpitProjection: 0
+  _angleThreshold: 3
+  stellarBodyDistance: 0
+  radarIcon: {fileID: 0}
+  radarCockpitIcon: {fileID: 0}
+  radarWarpPrompt: {fileID: 0}
