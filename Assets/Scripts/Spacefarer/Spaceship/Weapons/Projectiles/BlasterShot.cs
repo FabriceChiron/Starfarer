@@ -11,15 +11,31 @@ public class BlasterShot : MonoBehaviour
 
     private float lifeTime = 3f;
 
+    [SerializeField]
+    private GameObject _bolt, _explosion;
+
+    private bool _hasExploded;
+
     void Start()
     {
         
     }
 
+    void Explode()
+    {
+        lifeTime = 1f;
+        _bolt.SetActive(false);
+        _explosion.SetActive(true);
+        _hasExploded = true;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.Translate(Vector3.forward * BlasterSpeed * Time.deltaTime, Space.Self);
+        if (!_hasExploded)
+        {
+            transform.Translate(Vector3.forward * BlasterSpeed * Time.deltaTime, Space.Self);
+        }
 
         lifeTime -= Time.deltaTime;
 
@@ -27,5 +43,17 @@ public class BlasterShot : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Collision - Explode!");
+        Explode();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"Trigger - Explode! against {other.gameObject.name}");
+        Explode();
     }
 }
