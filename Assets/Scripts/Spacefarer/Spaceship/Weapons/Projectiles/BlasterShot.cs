@@ -11,6 +11,8 @@ public class BlasterShot : MonoBehaviour
 
     private float lifeTime = 3f;
 
+    public LayerMask IgnoreLayer;
+
     [SerializeField]
     private GameObject _bolt, _explosion;
 
@@ -53,7 +55,10 @@ public class BlasterShot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Trigger - Explode! against {other.gameObject.name}");
-        Explode();
+        if(other.gameObject.layer != IgnoreLayer)
+        {
+            Debug.Log($"Trigger - Explode! against {other.gameObject.name}");
+            Explode();
+        }
     }
 }

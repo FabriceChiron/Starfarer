@@ -11,6 +11,9 @@ public class BlasterMount : MonoBehaviour
     private Transform _blasterPivot;
 
     [SerializeField]
+    private Transform _weaponsAim;
+
+    [SerializeField]
     private float _blasterSpeed = 100f;
 
     public float BlasterSpeed { get => _blasterSpeed; set => _blasterSpeed = value; }
@@ -25,16 +28,18 @@ public class BlasterMount : MonoBehaviour
     void Start()
     {
         //If no pivot is set
-        if(_blasterPivot != null)
+        if(_blasterPivot == null)
         {
             //Search for blasterPivot component in parents, else use this Transform;
             _blasterPivot = (GetComponentInParent<BlasterPivot>() != null) ? GetComponentInParent<BlasterPivot>().transform : transform;
         }
+
+        _weaponsAim = FindObjectOfType<WeaponsAim>().transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        _blasterPivot.LookAt(_weaponsAim);
     }
 }
