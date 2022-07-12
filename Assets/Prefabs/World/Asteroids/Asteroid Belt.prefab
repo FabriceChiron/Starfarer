@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8818894676441931677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4758400958911433232}
+  - component: {fileID: 4635492062975837722}
+  - component: {fileID: 6035454514512598443}
+  - component: {fileID: 1094307230042839852}
+  m_Layer: 15
+  m_Name: Asteroid Belt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4758400958911433232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818894676441931677}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4635492062975837722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818894676441931677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8604437435960354da525f9dca6a7f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _asteroidPrefabs: []
+  _asteroidBeltData: {fileID: 0}
+  _center: {fileID: 0}
+  _scales: {fileID: 0}
+--- !u!114 &6035454514512598443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818894676441931677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2927631b10c2f4b9ce492ed53fd69b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  follow: 0
+  target: {fileID: 0}
+  damping: -1
+  rotate: 1
+  ignoreZ: 0
+  followIn: 1
+  localPosition: {x: 0, y: 0, z: 0}
+  localRotation: {x: 0, y: 0, z: 0}
+--- !u!114 &1094307230042839852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818894676441931677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b220dd2819bc3174c88961ba7777cd3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  spawnInside: {fileID: 0}
+  showDistance: 100000000
+  hideDistance: 150000000
+  cellCount: 30
+  cellNoise: 0.5
+  debrisCountTarget: 100
+  scaleMin: 1000
+  scaleMax: 50000
+  scaleBias: 0
+  randomRotation: 1
+  seed: 0
+  prefabs:
+  - {fileID: 2637227400457161508, guid: e17fe5f06025e1b4a80733034b7eafca, type: 3}
+  - {fileID: -7755361778297787326, guid: 76a1df7d1e77a6943939b88b6747aa4a, type: 3}
+  - {fileID: 6919996371350750786, guid: dadb4747c2a681d48b97b905d1ab5fb1, type: 3}
+  - {fileID: -4619909120669648671, guid: cf8f299c1ed68f342b158c6f1a7d118a, type: 3}
+  - {fileID: -5833088701195410613, guid: 7870bb23064037b4fb77849471fbbd40, type: 3}
+  - {fileID: -7471392627954753451, guid: 7cf26db9879ea4e459d090f872481940, type: 3}
+  spawnedDebris: []
+  bounds:
+    minX: 0
+    minY: 0
+    minZ: 0
+    maxX: 0
+    maxY: 0
+    maxZ: 0

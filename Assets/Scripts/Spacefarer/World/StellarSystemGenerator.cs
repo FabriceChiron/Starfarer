@@ -22,7 +22,7 @@ public class StellarSystemGenerator : MonoBehaviour
     private GameObject _playerPrefab, _forRadarPrefab;
 
     [SerializeField]
-    private GameObject _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _spaceStationRadarPrefab, _zoneDisableCruiseSpeedPrefab, _nullifyWarpPrefab;
+    private GameObject _asteroidBeltPrefab, _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _spaceStationRadarPrefab, _zoneDisableCruiseSpeedPrefab, _nullifyWarpPrefab;
 
     [SerializeField]
     private StellarSystemData _currentSystemData;
@@ -41,6 +41,9 @@ public class StellarSystemGenerator : MonoBehaviour
 
     [SerializeField]
     private List<SgtFloatingObject> _floatingObjectsList;
+
+    [SerializeField]
+    private bool _randomizeOrbitAngles;
 
     [SerializeField]
     private bool _useXR;
@@ -140,6 +143,14 @@ public class StellarSystemGenerator : MonoBehaviour
             foreach (StellarBodyData stellarBodyData in stellarSystemData.ChildrenItem)
             {
                 CreateStellarObject(stellarBodyData, stellarSystemCenter, "Planet");
+            }
+        }
+
+        if(stellarSystemData.AsteroidBeltItem.Length > 0)
+        {
+            foreach (AsteroidBeltData asteroidBeltData in stellarSystemData.AsteroidBeltItem)
+            {
+                CreateAsteroidBelt(asteroidBeltData, stellarSystemCenter);
             }
         }
 
@@ -273,7 +284,7 @@ public class StellarSystemGenerator : MonoBehaviour
             if (_nullifyWarpPrefab != null)
             {
                 GameObject nullifyWarp = Instantiate(_nullifyWarpPrefab, stellarBody.transform.GetChild(0));
-                //nullifyWarp.transform.localScale *= 0.1f;
+                nullifyWarp.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
                 stellarBodyRaycastToRadar.NullifyWarp = nullifyWarp.transform;
             }
 
@@ -336,9 +347,11 @@ public class StellarSystemGenerator : MonoBehaviour
 
         orbitComp.Radius = stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (orbitComp.ParentPoint.transform.localScale.x + stellarBody.transform.localScale.x) * 5f : orbitComp.ParentPoint.transform.localScale.x);
 
+        //orbitComp.Radius = stellarBodyData.Orbit * _scales.Orbit;
+
         //Debug.Log($"{stellarBodyData.name} orbit: {stellarBodyData.Orbit * _scales.Orbit + ((Type == "Moon") ? (thisCenter.transform.localScale.x + stellarBody.transform.localScale.x) * 5f : 0f)}");
 
-        orbitComp.Angle = stellarBodyData.AngleOnPlane;
+        orbitComp.Angle = _randomizeOrbitAngles ? Random.Range(0, 360) : stellarBodyData.AngleOnPlane;
 
         orbitComp.Tilt = new Vector3(stellarBodyData.OrbitTilt, 0f, 0f);
 
@@ -349,7 +362,7 @@ public class StellarSystemGenerator : MonoBehaviour
         CwRotate rotateComp = stellarBody.transform.GetChild(0).gameObject.AddComponent<CwRotate>();
 
         rotateComp.RelativeTo = Space.Self;
-        
+
         //rotateComp.enabled = false;
 
         float rotationY = (stellarBodyData.TidallyLocked) ? (float)orbitComp.DegreesPerSecond : (float)(360 / (stellarBodyData.DayLength * _scales.Day));
@@ -368,6 +381,20 @@ public class StellarSystemGenerator : MonoBehaviour
                 CreateStellarObject(moonBodyData, stellarBody.transform.GetComponent<SgtFloatingObject>(), "Moon");
             }
         }
+    }
+
+    private void CreateAsteroidBelt(AsteroidBeltData asteroidBeltData, SgtFloatingObject thisCenter)
+    {
+        GameObject newAsteroidBelt = Instantiate(_asteroidBeltPrefab, stellarSystemContainer);
+        newAsteroidBelt.name = asteroidBeltData.name;
+
+        newAsteroidBelt.GetComponent<CwFollow>().Target = thisCenter.transform;
+
+        AsteroidBelt asteroidBeltComp = newAsteroidBelt.GetComponent<AsteroidBelt>();
+
+        asteroidBeltComp.AsteroidBeltData = asteroidBeltData;
+        asteroidBeltComp.Center = thisCenter;
+        asteroidBeltComp.Scales = _scales;
     }
 
     private void SpawnWarpGate(WarpGateData warpGateData, SgtFloatingObject thisCenter)
