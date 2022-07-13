@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceGraphicsToolkit;
 
 public class BlasterShot : MonoBehaviour
 {
@@ -18,9 +19,16 @@ public class BlasterShot : MonoBehaviour
 
     private bool _hasExploded;
 
+
+    private void Awake()
+    {
+        //gameObject.GetComponent<SgtFloatingObject>();
+        gameObject.AddComponent<SgtFloatingObject>();
+    }
+
     void Start()
     {
-        
+        //gameObject.GetComponent<SgtFloatingObject>();
     }
 
     void Explode()

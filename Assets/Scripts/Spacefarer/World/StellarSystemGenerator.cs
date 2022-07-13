@@ -284,7 +284,7 @@ public class StellarSystemGenerator : MonoBehaviour
             if (_nullifyWarpPrefab != null)
             {
                 GameObject nullifyWarp = Instantiate(_nullifyWarpPrefab, stellarBody.transform.GetChild(0));
-                nullifyWarp.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
+                //nullifyWarp.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
                 stellarBodyRaycastToRadar.NullifyWarp = nullifyWarp.transform;
             }
 

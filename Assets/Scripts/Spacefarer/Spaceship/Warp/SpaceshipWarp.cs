@@ -15,6 +15,9 @@ public class SpaceshipWarp : MonoBehaviour
     private SpaceshipController _spaceshipController;
 
     [SerializeField]
+    private SpaceshipAudio _spaceshipAudio;
+
+    [SerializeField]
     private SgtFloatingTarget _warpTarget, _previousWarpTarget, _noWarpSphere;
 
     [SerializeField]
@@ -101,6 +104,7 @@ public class SpaceshipWarp : MonoBehaviour
     void Start()
     {
         _spaceshipController = GetComponent<SpaceshipController>();
+        _spaceshipAudio = GetComponent<SpaceshipAudio>();
         _warpEffect = Instantiate(_warpEffectPrefab, _spaceshipController.cameraPosition);
         _warpParticleSystem = _warpEffect.GetComponentInChildren<ParticleSystem>();
         _warpParticleSystem.Stop();
@@ -152,6 +156,9 @@ public class SpaceshipWarp : MonoBehaviour
         if(WarpTarget != null && CanWarp)
         {
             _targetFOV = _warpCameraFOV;
+            _spaceshipAudio.EngineWarp.PlayOneShot(_spaceshipAudio.EngineWarp.clip);
+            //_spaceshipAudio.AudioSource.clip = _spaceshipAudio.WarpClip;
+            //_spaceshipAudio.AudioSource.PlayOneShot(_spaceshipAudio.AudioSource.clip);
 
             _warpSmoothstep.WarpTo(WarpTarget.GetComponent<SgtFloatingObject>().Position);
         }
@@ -237,9 +244,14 @@ public class SpaceshipWarp : MonoBehaviour
         _targetFOV = _initialCameraFOV;
         //_warpParticleSystem.Stop();
         _FTLInfos.WarpState = WarpStates.CANCELED;
+        if (!_spaceshipAudio.EngineStopWarp.isPlaying)
+        {
+            _spaceshipAudio.EngineWarp.Stop();
+            _spaceshipAudio.EngineStopWarp.PlayOneShot(_spaceshipAudio.EngineStopWarp.clip);
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
@@ -258,7 +270,7 @@ public class SpaceshipWarp : MonoBehaviour
         {
             NoWarpSphere = null;
         }
-    }
+    }*/
 
     public void OnThrust(InputAction.CallbackContext context)
     {
@@ -289,6 +301,8 @@ public class SpaceshipWarp : MonoBehaviour
             _stopProgressBar = false;
             StartCoroutine(coStarted);
 
+            _spaceshipAudio.EngineInitWarp.PlayOneShot(_spaceshipAudio.EngineInitWarp.clip);
+
             _FTLInfos.WarpState = WarpStates.STARTED;
 
             TurnTowardsWarpTarget();
@@ -300,6 +314,8 @@ public class SpaceshipWarp : MonoBehaviour
             _stopProgressBar = true;
             ProgressBar.localScale = new Vector3(0f, 1f, 1f);
             StopCoroutine(coStarted);
+
+            _spaceshipAudio.EngineInitWarp.Stop();
 
             _FTLInfos.WarpState = WarpStates.CANCELED;
         }

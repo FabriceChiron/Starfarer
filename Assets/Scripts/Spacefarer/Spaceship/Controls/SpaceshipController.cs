@@ -81,6 +81,7 @@ public class SpaceshipController : MonoBehaviour
     Rigidbody r;
 
     private SpaceshipWeapons _spaceshipWeapons;
+    private SpaceshipAudio _spaceshipAudio;
 
     Quaternion lookRotation;
 
@@ -91,17 +92,28 @@ public class SpaceshipController : MonoBehaviour
 
     Vector2 pitchYaw;
 
-    float 
-        roll, 
-        rollXR, 
-        rollXRControls, 
+    float
+        roll,
+        rollXR,
+        rollXRControls,
         forwardThrust,
-        lateralThrust, 
-        lateralThrustXR, 
-        lateralThrustXRControls, 
+        lateralThrust,
+        lateralThrustXR,
+        lateralThrustXRControls,
         upDownThrust,
         upDownThrustXR,
         upDownThrustXRControls;
+
+    [SerializeField]
+    private float
+        progressiveForwardThrust,
+        progressiveLateralThrust,
+        progressiveUpDownThrust,
+        smoothInputSpeed = 0.2f,
+        smoothInputVelocity;
+
+    [Range(-1f, 1f)]
+    float forwardSpeedRatio;
 
     bool _boosting, _superBoosting; 
     
@@ -148,6 +160,14 @@ public class SpaceshipController : MonoBehaviour
 
     public bool UseHands { get => _useHands; set => _useHands = value; }
     public float ForwardThrust { get => forwardThrust; set => forwardThrust = value; }
+    public float LateralThrust { get => lateralThrust; set => lateralThrust = value; }
+    public float UpDownThrust { get => upDownThrust; set => upDownThrust = value; }
+    public float ForwardSpeedRatio { get => forwardSpeedRatio; set => forwardSpeedRatio = value; }
+    public float ProgressiveForwardThrust { get => progressiveForwardThrust; set => progressiveForwardThrust = value; }
+    public float ProgressiveLateralThrust { get => progressiveLateralThrust; set => progressiveLateralThrust = value; }
+    public float ProgressiveUpDownThrust { get => progressiveUpDownThrust; set => progressiveUpDownThrust = value; }
+    public bool Boosting { get => _boosting; set => _boosting = value; }
+    public bool SuperBoosting { get => _superBoosting; set => _superBoosting = value; }
 
     private void OnEnable()
     {
@@ -161,6 +181,7 @@ public class SpaceshipController : MonoBehaviour
         r.useGravity = false;
 
         _spaceshipWeapons = GetComponent<SpaceshipWeapons>();
+        _spaceshipAudio = GetComponent<SpaceshipAudio>();
 
         _warpSmoothstep = FindObjectOfType<SgtFloatingWarpSmoothstep>();
 
@@ -180,22 +201,34 @@ public class SpaceshipController : MonoBehaviour
         float maxSpeed;
 
         //maxSpeed = forwardThrust * (IsInSlowZone ? normalSpeedSlowZone : normalSpeed);
-        maxSpeed = ForwardThrust * GetSpeedStage(normalSpeed, normalSpeedSlowZone);
-
-        if(ForwardThrust > 0f)
+        //maxSpeed = ProgressiveForwardThrust * GetSpeedStage(normalSpeed, normalSpeedSlowZone);
+        
+        
+        if(Mathf.Abs(ForwardThrust) > 0.025f) 
         {
-            if (_superBoosting)
-            {
-                //maxSpeed = forwardThrust * (IsInSlowZone ? superBoostSpeedSlowZone : superBoostSpeed);
-                maxSpeed = ForwardThrust * ForwardThrust * GetSpeedStage(superBoostSpeed, superBoostSpeedSlowZone);
-            }
-            else if (_boosting)
-            {
-                //maxSpeed = forwardThrust * (IsInSlowZone ? boostSpeedSlowZone : boostSpeed);
-                maxSpeed = ForwardThrust * ForwardThrust * GetSpeedStage(boostSpeed, boostSpeedSlowZone);
-            }
+            maxSpeed = GetSpeedStage(normalSpeed, normalSpeedSlowZone) * (ForwardThrust > 0 ? 1f : -1f);
 
+        
+            if (ForwardThrust > 0f)
+            {
+                if (SuperBoosting)
+                {
+                    //maxSpeed = forwardThrust * (IsInSlowZone ? superBoostSpeedSlowZone : superBoostSpeed);
+                    maxSpeed = GetSpeedStage(superBoostSpeed, superBoostSpeedSlowZone);
+                }
+                else if (Boosting)
+                {
+                    //maxSpeed = forwardThrust * (IsInSlowZone ? boostSpeedSlowZone : boostSpeed);
+                    maxSpeed = GetSpeedStage(boostSpeed, boostSpeedSlowZone);
+                }
+
+            }
         }
+        else
+        {
+            maxSpeed = 0f;
+        }
+
 
         return maxSpeed;
     }
@@ -211,12 +244,12 @@ public class SpaceshipController : MonoBehaviour
 
     private float GetVerticalSpeed()
     {
-        return upDownThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone);
+        return UpDownThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone);
     }
 
     private float GetLateralSpeed()
     {
-        return lateralThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone);
+        return LateralThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone);
     }
 
     private float GetSpeedStage(float speed, float speedSlowZone)
@@ -226,11 +259,32 @@ public class SpaceshipController : MonoBehaviour
             speed;
     }
 
+    private float GetProgressiveThrust(float inputValue, float currentValue)
+    {
+        //if (1f - Mathf.Abs(currentValue) < 0.025f)
+        //{
+        //    currentValue = inputValue;
+        //}
+        //else if(Mathf.Abs(currentValue) > 0.025f)
+        //{
+        //    currentValue = inputValue;
+        //}
+        //currentValue = Mathf.MoveTowards(currentValue, inputValue, 0.25f * Time.deltaTime);
+
+        currentValue = Mathf.SmoothDamp(currentValue, inputValue, ref smoothInputVelocity, smoothInputSpeed);
+
+        return currentValue;
+    }
+
     void FixedUpdate()
     {
         //Override Control inputs
         PitchYaw = JoystickGrabbed ? _XRControlValues.joystickValues.normalized * 0.3f : PitchYaw;
         ForwardThrust = ThrottleGrabbed ? _XRControlValues.throttleValue : ForwardThrust;
+
+        ProgressiveForwardThrust = GetProgressiveThrust(ForwardThrust, ProgressiveForwardThrust);
+        ProgressiveLateralThrust = GetProgressiveThrust(LateralThrust, ProgressiveLateralThrust);
+        ProgressiveUpDownThrust = GetProgressiveThrust(UpDownThrust, ProgressiveUpDownThrust);
 
         if (IsInSlowZoneBuffer)
         {
@@ -242,10 +296,15 @@ public class SpaceshipController : MonoBehaviour
         }
         
         speed = Mathf.Round(Mathf.Lerp(speed, GetMaxSpeed(), Time.deltaTime * 10f));
-        
+        //speed = GetProgressiveThrust(GetMaxSpeed(), speed);
+
+        //ForwardSpeedRatio = (GetMaxSpeed() != 0f) ? speed / GetMaxSpeed() : 0f;
+
         lateralSpeed = Mathf.Round(Mathf.Lerp(lateralSpeed, GetLateralSpeed(), Time.deltaTime * 10f));
-        
+        //lateralSpeed = GetProgressiveThrust(GetLateralSpeed(), lateralSpeed);
+
         verticalSpeed = Mathf.Round(Mathf.Lerp(verticalSpeed, GetVerticalSpeed(), Time.deltaTime * 10f));
+        //verticalSpeed = GetProgressiveThrust(GetVerticalSpeed(), verticalSpeed);
 
         //Set moveDirection to the vertical axis (up and down keys) * speed
         Vector3 moveDirection = new Vector3(lateralSpeed, verticalSpeed, speed);
@@ -296,12 +355,12 @@ public class SpaceshipController : MonoBehaviour
 
     public void OnStrafe(InputAction.CallbackContext context)
     {
-        lateralThrust = context.ReadValue<Vector2>().x;
+        LateralThrust = context.ReadValue<Vector2>().x;
     }
 
     public void OnUpDown(InputAction.CallbackContext context)
     {
-        upDownThrust = context.ReadValue<float>();
+        UpDownThrust = context.ReadValue<float>();
     }
 
     public void OnUpDownStrafeXR(InputAction.CallbackContext context)
@@ -312,8 +371,8 @@ public class SpaceshipController : MonoBehaviour
         {
             if (JoystickGrabbed)
             {
-                lateralThrust = context.ReadValue<Vector2>().x;
-                upDownThrust = context.ReadValue<Vector2>().y;
+                LateralThrust = context.ReadValue<Vector2>().x;
+                UpDownThrust = context.ReadValue<Vector2>().y;
             }
             else
             {
@@ -330,8 +389,8 @@ public class SpaceshipController : MonoBehaviour
     {
         if (!UseHands && !JoystickGrabbed)
         {
-            lateralThrust = context.ReadValue<Vector2>().x;
-            upDownThrust = context.ReadValue<Vector2>().y;
+            LateralThrust = context.ReadValue<Vector2>().x;
+            UpDownThrust = context.ReadValue<Vector2>().y;
         }
     }
 
@@ -372,11 +431,11 @@ public class SpaceshipController : MonoBehaviour
 
     public void OnBoost(InputAction.CallbackContext context)
     {
-        _boosting = context.performed;
+        Boosting = context.performed;
     }
 
     public void OnSuperBoost(InputAction.CallbackContext context)
     {
-        _superBoosting = context.performed;
+        SuperBoosting = context.performed;
     }
 }
