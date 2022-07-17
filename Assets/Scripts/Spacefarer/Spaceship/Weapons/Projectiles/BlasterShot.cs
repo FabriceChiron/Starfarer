@@ -19,6 +19,9 @@ public class BlasterShot : MonoBehaviour
 
     private bool _hasExploded;
 
+    [SerializeField]
+    private int damage = 25;
+
 
     private void Awake()
     {
@@ -65,6 +68,11 @@ public class BlasterShot : MonoBehaviour
     {
         if(other.gameObject.layer != IgnoreLayer)
         {
+            if(other.transform.GetComponentInParent<SetupAsteroid>() != null)
+            {
+                other.transform.GetComponentInParent<SetupAsteroid>().Health -= damage;
+            }
+
             Debug.Log($"Trigger - Explode! against {other.gameObject.name}");
             Explode();
         }

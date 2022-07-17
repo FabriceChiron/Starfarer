@@ -66,7 +66,7 @@ public class SpaceshipController : MonoBehaviour
 
     [Header("Damping")]
     public float rotationSpeed = 2.0f, warpRotationSpeed = 0.02f, currentRotationSpeed;
-    public float cameraSmooth = 4f;
+    public float cameraSmooth = 4f, _starshipLockedTime = 2f;
 
 
     [Header("Zones")]
@@ -90,7 +90,8 @@ public class SpaceshipController : MonoBehaviour
     float mouseYSmooth = 0;
     Vector3 defaultShipRotation;
 
-    Vector2 pitchYaw;
+    [SerializeField]
+    Vector2 pitchYaw, smoothPitchYawVelocity, smoothPitchYaw;
 
     float
         roll,
@@ -110,6 +111,7 @@ public class SpaceshipController : MonoBehaviour
         progressiveLateralThrust,
         progressiveUpDownThrust,
         smoothInputSpeed = 0.2f,
+        smoothForwardVelocity,
         smoothInputVelocity;
 
     [Range(-1f, 1f)]
@@ -278,71 +280,83 @@ public class SpaceshipController : MonoBehaviour
 
     void FixedUpdate()
     {
-        //Override Control inputs
-        PitchYaw = JoystickGrabbed ? _XRControlValues.joystickValues.normalized * 0.3f : PitchYaw;
-        ForwardThrust = ThrottleGrabbed ? _XRControlValues.throttleValue : ForwardThrust;
+        _starshipLockedTime -= Time.deltaTime;
 
-        ProgressiveForwardThrust = GetProgressiveThrust(ForwardThrust, ProgressiveForwardThrust);
-        ProgressiveLateralThrust = GetProgressiveThrust(LateralThrust, ProgressiveLateralThrust);
-        ProgressiveUpDownThrust = GetProgressiveThrust(UpDownThrust, ProgressiveUpDownThrust);
-
-        if (IsInSlowZoneBuffer)
+        if(_starshipLockedTime < 0f)
         {
-            distance = (Vector3.Distance(transform.position, WarpGateCenter.transform.position) - 1000f) / 100;
+            //Override Control inputs
+            PitchYaw = JoystickGrabbed ? _XRControlValues.joystickValues.normalized * 0.3f : PitchYaw;
 
-            normalSpeedSlowZoneBuffer = normalSpeedSlowZone * distance;
-            boostSpeedSlowZoneBuffer = boostSpeedSlowZone * distance;
-            superBoostSpeedSlowZoneBuffer = superBoostSpeedSlowZone * distance;
-        }
+            smoothPitchYaw = Vector2.SmoothDamp(smoothPitchYaw, PitchYaw, ref smoothPitchYawVelocity, (UseXR && UseHands) ? 0.02f : 0.2f);
+
+            ForwardThrust = ThrottleGrabbed ? _XRControlValues.throttleValue : ForwardThrust;
+
+            ProgressiveForwardThrust = GetProgressiveThrust(ForwardThrust, ProgressiveForwardThrust);
+            ProgressiveLateralThrust = GetProgressiveThrust(LateralThrust, ProgressiveLateralThrust);
+            ProgressiveUpDownThrust = GetProgressiveThrust(UpDownThrust, ProgressiveUpDownThrust);
+
+            if (IsInSlowZoneBuffer)
+            {
+                distance = (Vector3.Distance(transform.position, WarpGateCenter.transform.position) - 1000f) / 100;
+
+                normalSpeedSlowZoneBuffer = normalSpeedSlowZone * distance;
+                boostSpeedSlowZoneBuffer = boostSpeedSlowZone * distance;
+                superBoostSpeedSlowZoneBuffer = superBoostSpeedSlowZone * distance;
+            }
         
-        speed = Mathf.Round(Mathf.Lerp(speed, GetMaxSpeed(), Time.deltaTime * 10f));
-        //speed = GetProgressiveThrust(GetMaxSpeed(), speed);
+            //speed = Mathf.Round(Mathf.Lerp(speed, GetMaxSpeed(), Time.deltaTime * 10f));
 
-        //ForwardSpeedRatio = (GetMaxSpeed() != 0f) ? speed / GetMaxSpeed() : 0f;
+            speed = Mathf.SmoothDamp(speed, GetMaxSpeed(), ref smoothForwardVelocity, smoothInputSpeed); 
+            //speed = GetProgressiveThrust(GetMaxSpeed(), speed);
 
-        lateralSpeed = Mathf.Round(Mathf.Lerp(lateralSpeed, GetLateralSpeed(), Time.deltaTime * 10f));
-        //lateralSpeed = GetProgressiveThrust(GetLateralSpeed(), lateralSpeed);
+            //ForwardSpeedRatio = (GetMaxSpeed() != 0f) ? speed / GetMaxSpeed() : 0f;
 
-        verticalSpeed = Mathf.Round(Mathf.Lerp(verticalSpeed, GetVerticalSpeed(), Time.deltaTime * 10f));
-        //verticalSpeed = GetProgressiveThrust(GetVerticalSpeed(), verticalSpeed);
+            lateralSpeed = Mathf.Round(Mathf.Lerp(lateralSpeed, GetLateralSpeed(), Time.deltaTime * 10f));
+            //lateralSpeed = GetProgressiveThrust(GetLateralSpeed(), lateralSpeed);
 
-        //Set moveDirection to the vertical axis (up and down keys) * speed
-        Vector3 moveDirection = new Vector3(lateralSpeed, verticalSpeed, speed);
+            verticalSpeed = Mathf.Round(Mathf.Lerp(verticalSpeed, GetVerticalSpeed(), Time.deltaTime * 10f));
+            //verticalSpeed = GetProgressiveThrust(GetVerticalSpeed(), verticalSpeed);
+
+            //Set moveDirection to the vertical axis (up and down keys) * speed
+            Vector3 moveDirection = new Vector3(lateralSpeed, verticalSpeed, speed);
         
-        //Transform the vector3 to local space
-        moveDirection = transform.TransformDirection(moveDirection);
+            //Transform the vector3 to local space
+            moveDirection = transform.TransformDirection(moveDirection);
 
-        //Set the velocity, so you can move
-        r.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+            //Set the velocity, so you can move
+            r.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
 
-        //Camera follow
-        mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
-        mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
+            //Camera follow
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
+            mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
-        currentRotationSpeed = Mathf.Lerp(currentRotationSpeed, _warpSmoothstep.Warping ? warpRotationSpeed : rotationSpeed, Time.deltaTime * cameraSmooth);
+            currentRotationSpeed = Mathf.Lerp(currentRotationSpeed, _warpSmoothstep.Warping ? warpRotationSpeed : rotationSpeed, Time.deltaTime * cameraSmooth);
 
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, PitchYaw.x * currentRotationSpeed, Time.deltaTime * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, PitchYaw.y * (_invertYAxis ? -1f : 1f) * currentRotationSpeed, Time.deltaTime * cameraSmooth);
+            mouseXSmooth = Mathf.Lerp(mouseXSmooth, smoothPitchYaw.x * currentRotationSpeed, Time.deltaTime * cameraSmooth);
+            mouseYSmooth = Mathf.Lerp(mouseYSmooth, smoothPitchYaw.y * (_invertYAxis ? -1f : 1f) * currentRotationSpeed, Time.deltaTime * cameraSmooth);
         
-        Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, Roll * -1f * currentRotationSpeed);
-        LookRotation = LookRotation * localRotation;
-        transform.rotation = LookRotation;
-        rotationZ -= mouseXSmooth;
-        rotationZ = Mathf.Clamp(rotationZ, -30, 30);
-        if (!UseXR)
-        {
-            seatBase.localEulerAngles = new Vector3(0f, 0f, rotationZ * -0.75f);
-        }
-        spaceshipRoot.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
-        rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.deltaTime * cameraSmooth);
+            Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, Roll * -1f * currentRotationSpeed);
+            LookRotation = LookRotation * localRotation;
+            transform.rotation = LookRotation;
+            rotationZ -= mouseXSmooth;
+            rotationZ = Mathf.Clamp(rotationZ, -30, 30);
+            if (!UseXR)
+            {
+                seatBase.localEulerAngles = new Vector3(0f, 0f, rotationZ * -0.75f);
+            }
+            spaceshipRoot.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
+            rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.deltaTime * cameraSmooth);
 
-        if(_infos != null)
-        {
-            _infos.GetComponentsInChildren<Text>()[0].text = $"Joystick Value: \n{_XRControlValues.joystickValues}";
-            _infos.GetComponentsInChildren<Text>()[1].text = $"PitchYaw: \n{PitchYaw}";
-            _infos.GetComponentsInChildren<Text>()[2].text = $"Throttle Value: \n{_XRControlValues.throttleValue}";
-            _infos.GetComponentsInChildren<Text>()[3].text = $"ForwardThrust: \n{ForwardThrust}";
+            if(_infos != null)
+            {
+                _infos.GetComponentsInChildren<Text>()[0].text = $"Joystick Value: \n{_XRControlValues.joystickValues}";
+                _infos.GetComponentsInChildren<Text>()[1].text = $"PitchYaw: \n{PitchYaw}";
+                _infos.GetComponentsInChildren<Text>()[2].text = $"Throttle Value: \n{_XRControlValues.throttleValue}";
+                _infos.GetComponentsInChildren<Text>()[3].text = $"ForwardThrust: \n{ForwardThrust}";
+            }
+
         }
+
     }
 
     public void OnThrust(InputAction.CallbackContext context)

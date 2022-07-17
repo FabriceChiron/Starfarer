@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8589605981869892794}
   - component: {fileID: 5793198447847959388}
   - component: {fileID: 106934158610092277}
+  - component: {fileID: 205362110576578381}
   m_Layer: 0
   m_Name: Gliese-667Cb
   m_TagString: Planet
@@ -205,6 +206,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &205362110576578381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6150491343142762108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &6150491343642694254
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using SpaceGraphicsToolkit;
 using SpaceGraphicsToolkit.Starfield;
 using SpaceGraphicsToolkit.Belt;
 using SpaceGraphicsToolkit.Atmosphere;
+using SpaceGraphicsToolkit.Shapes;
 using SpaceGraphicsToolkit.Jovian;
 using CW.Common;
 using VSX.UniversalVehicleCombat.Radar;
@@ -22,7 +23,16 @@ public class StellarSystemGenerator : MonoBehaviour
     private GameObject _playerPrefab, _forRadarPrefab;
 
     [SerializeField]
-    private GameObject _asteroidBeltPrefab, _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _spaceStationRadarPrefab, _zoneDisableCruiseSpeedPrefab, _nullifyWarpPrefab;
+    private GameObject _asteroidBeltPrefab, _rockyPlanetRadarPrefab, _gaseousPlanetRadarPrefab, _starRadarPrefab, _spaceStationRadarPrefab, _zoneDisableCruiseSpeedPrefab, _nullifyWarpPrefab, _atmosphereColliderPrefab;
+
+    [SerializeField]
+    private List<SgtFloatingObject> _asteroidBeltCenters;
+
+    [SerializeField]
+    private List<AsteroidBeltData> _asteroidBeltDataList;
+
+    [SerializeField]
+    private List<SgtFloatingObject> _asteroidPrefabsList;
 
     [SerializeField]
     private StellarSystemData _currentSystemData;
@@ -49,7 +59,7 @@ public class StellarSystemGenerator : MonoBehaviour
     private bool _useXR;
 
     [SerializeField]
-    private bool _useRadar, _useCockpitProjection, _enableGravity, _canSpawnPlayer, _isPlayerSpawned;
+    private bool _useRadar, _useCockpitProjection, _enableGravity, _canSpawnPlayer, _isPlayerSpawned, _asteroidBeltsActivated;
 
     [SerializeField]
     private List<SgtFloatingObject> _spawnerFloatingObjects;
@@ -95,15 +105,50 @@ public class StellarSystemGenerator : MonoBehaviour
             {
                 SpawnPlayer();
                 LinkPortals();
+
             }
             else
             {
                 SgtFloatingCamera _playerCamera = _player.GetComponentInChildren<SgtFloatingCamera>();
+                ActivateAsteroidBelts();
 
                 initialFloatingCamera.gameObject.SetActive(false);
                 _playerCamera.enabled = true;
                 playerFollow.enabled = false;
             }
+        }
+    }
+
+    private void ActivateAsteroidBelts()
+    {
+        if (!_asteroidBeltsActivated)
+        {
+            int count = 0;
+            foreach(SgtFloatingObject beltCenter in _asteroidBeltCenters)
+            {
+                Debug.Log($"Activating {beltCenter.name}'s asteroid belt");
+
+                //SgtFloatingSpawnerRing spawnerRing = thisCenter.gameObject.AddComponent<SgtFloatingSpawnerRing>();
+                GameObject newAsteroidBelt = Instantiate(_asteroidBeltPrefab);
+                newAsteroidBelt.name = _asteroidBeltDataList[count].name;
+
+                //newAsteroidBelt.GetComponent<CwFollow>().Target = beltCenter.transform;
+
+                AsteroidBelt asteroidBeltComp = newAsteroidBelt.GetComponent<AsteroidBelt>();
+
+                asteroidBeltComp.AsteroidBeltData = _asteroidBeltDataList[count];
+                asteroidBeltComp.Center = beltCenter;
+                asteroidBeltComp.Scales = _scales;
+
+                //newAsteroidBelt.GetComponent<SgtFloatingSpawnerRing>().enabled = false;
+                newAsteroidBelt.SetActive(true);
+
+
+
+                count++;
+            }
+
+            _asteroidBeltsActivated = true;
         }
     }
 
@@ -170,7 +215,7 @@ public class StellarSystemGenerator : MonoBehaviour
 
         orbitComp.ParentPoint = stellarSystemCenter;
 
-        orbitComp.Radius = starData.Orbit * _scales.Orbit + newStar.transform.localScale.x;
+        orbitComp.Radius = starData.Orbit * _scales.Orbit + ((starData.Orbit > 0f) ? newStar.transform.localScale.x : 0f);
 
         //Debug.Log($"{starData.name} orbit: {starData.Orbit * _scales.Orbit + newStar.transform.localScale.x}");
 
@@ -197,7 +242,7 @@ public class StellarSystemGenerator : MonoBehaviour
 
         orbitFlareComp.ParentPoint = stellarSystemCenter;
 
-        orbitFlareComp.Radius = starData.Orbit * _scales.Orbit + newStar.transform.localScale.x;
+        orbitFlareComp.Radius = starData.Orbit * _scales.Orbit + ((starData.Orbit > 0f) ? newStar.transform.localScale.x : 0f);
 
         orbitFlareComp.Angle = starData.AngleOnPlane;
 
@@ -231,6 +276,14 @@ public class StellarSystemGenerator : MonoBehaviour
         {
             SpawnWarpGate(starData.warpGate, newStar.GetComponent<SgtFloatingObject>());
         }
+
+        if (starData.AsteroidBeltItem.Length > 0)
+        {
+            foreach (AsteroidBeltData asteroidBeltData in starData.AsteroidBeltItem)
+            {
+                CreateAsteroidBelt(asteroidBeltData, newStar.GetComponent<SgtFloatingObject>());
+            }
+        }
     }
 
     private void CreateStellarObject(StellarBodyData stellarBodyData, SgtFloatingObject thisCenter, string Type)
@@ -243,26 +296,46 @@ public class StellarSystemGenerator : MonoBehaviour
 
         GameObject stellarBody = Instantiate(stellarBodyData.Prefab, stellarSystemContainer);
 
-        if(_zoneDisableCruiseSpeedPrefab != null)
+        //if(_zoneDisableCruiseSpeedPrefab != null)
+        //{
+        //    GameObject zoneDisableCruiseSpeed;
+
+        //    if (stellarBody.GetComponentInChildren<SgtAtmosphere>())
+        //    {
+        //        zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.GetComponentInChildren<SgtAtmosphere>().transform.GetChild(0));
+        //        zoneDisableCruiseSpeed.transform.localScale = new Vector3(2f, 2f, 2f);
+        //    }
+        //    else if (stellarBody.GetComponentInChildren<SgtJovian>())
+        //    {
+        //        zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
+        //        zoneDisableCruiseSpeed.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
+        //    }
+        //    else
+        //    {
+        //        zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
+        //        zoneDisableCruiseSpeed.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
+        //    }
+
+        //}
+
+        Transform atmosphereCollider;
+        SgtJovian jovian = stellarBody.GetComponentInChildren<SgtJovian>();
+        SgtAtmosphere atmosphere = stellarBody.GetComponentInChildren<SgtAtmosphere>();
+
+
+        if (jovian != null)
         {
-            GameObject zoneDisableCruiseSpeed;
+            atmosphereCollider = Instantiate(_atmosphereColliderPrefab, stellarBody.transform).transform;
+        }
+        else if (stellarBody.GetComponentInChildren<SgtAtmosphere>() != null)
+        {
+            atmosphereCollider = Instantiate(_atmosphereColliderPrefab, stellarBody.GetComponentInChildren<SgtAtmosphere>().transform).transform;
 
-            if (stellarBody.GetComponentInChildren<SgtAtmosphere>())
-            {
-                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.GetComponentInChildren<SgtAtmosphere>().transform.GetChild(0));
-                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2f, 2f, 2f);
-            }
-            else if (stellarBody.GetComponentInChildren<SgtJovian>())
-            {
-                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
-                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
-            }
-            else
-            {
-                zoneDisableCruiseSpeed = Instantiate(_zoneDisableCruiseSpeedPrefab, stellarBody.transform);
-                zoneDisableCruiseSpeed.transform.localScale = new Vector3(2.1f, 2.1f, 2.1f);
-            }
-
+            atmosphereCollider.localScale = new Vector3(
+                atmosphereCollider.localScale.x + atmosphere.Height,
+                atmosphereCollider.localScale.y + atmosphere.Height,
+                atmosphereCollider.localScale.z + atmosphere.Height
+            );
         }
 
 
@@ -374,6 +447,16 @@ public class StellarSystemGenerator : MonoBehaviour
             SpawnWarpGate(stellarBodyData.warpGate, stellarBody.GetComponent<SgtFloatingObject>());
         }
 
+
+
+        if (stellarBodyData.AsteroidBeltItem.Length > 0)
+        {
+            foreach (AsteroidBeltData asteroidBeltData in stellarBodyData.AsteroidBeltItem)
+            {
+                CreateAsteroidBelt(asteroidBeltData, stellarBody.GetComponent<SgtFloatingObject>());
+            }
+        }
+
         if (stellarBodyData.ChildrenItem.Length > 0)
         {
             foreach (StellarBodyData moonBodyData in stellarBodyData.ChildrenItem)
@@ -385,16 +468,8 @@ public class StellarSystemGenerator : MonoBehaviour
 
     private void CreateAsteroidBelt(AsteroidBeltData asteroidBeltData, SgtFloatingObject thisCenter)
     {
-        GameObject newAsteroidBelt = Instantiate(_asteroidBeltPrefab, stellarSystemContainer);
-        newAsteroidBelt.name = asteroidBeltData.name;
-
-        newAsteroidBelt.GetComponent<CwFollow>().Target = thisCenter.transform;
-
-        AsteroidBelt asteroidBeltComp = newAsteroidBelt.GetComponent<AsteroidBelt>();
-
-        asteroidBeltComp.AsteroidBeltData = asteroidBeltData;
-        asteroidBeltComp.Center = thisCenter;
-        asteroidBeltComp.Scales = _scales;
+        _asteroidBeltCenters.Add(thisCenter);
+        _asteroidBeltDataList.Add(asteroidBeltData);
     }
 
     private void SpawnWarpGate(WarpGateData warpGateData, SgtFloatingObject thisCenter)

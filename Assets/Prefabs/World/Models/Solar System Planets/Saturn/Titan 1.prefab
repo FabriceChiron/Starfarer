@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 6657169333103077432}
   - component: {fileID: 3797192980265282079}
   - component: {fileID: 8719973513906201487}
+  - component: {fileID: 6555966035815829666}
   m_Layer: 0
   m_Name: Titan 1
   m_TagString: Moon
@@ -270,6 +271,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &6555966035815829666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4763894580742127839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
 --- !u!1 &4763894582467370841
 GameObject:
   m_ObjectHideFlags: 0

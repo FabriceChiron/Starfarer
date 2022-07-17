@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CW.Common;
 using SpaceGraphicsToolkit;
 
 public class SpaceshipCollisions : MonoBehaviour
 {
     [SerializeField]
-    private bool _isInSlowZone, _isInSlowZoneBuffer, _enableOrbiting;
+    private bool _isInSlowZone, _isInSlowZoneBuffer, _isInAsteroidBelt, _isInAtmosphere, _enableOrbiting;
 
     [SerializeField]
     private BoolVariable _orbitsActive;
@@ -16,6 +17,7 @@ public class SpaceshipCollisions : MonoBehaviour
 
     [SerializeField]
     private SpaceshipWarp _spaceshipWarp;
+    
 
     public bool IsInSlowZone { 
         get => _isInSlowZone;
@@ -54,15 +56,31 @@ public class SpaceshipCollisions : MonoBehaviour
         }
     }
 
+    public bool IsInAsteroidBelt { 
+        get => _isInAsteroidBelt; 
+        set
+        {
+            _isInAsteroidBelt = value;
+
+            //foreach(SgtFloatingSpawnerRing spawnerRing in FindObjectsOfType<SgtFloatingSpawnerRing>())
+            //{
+            //    Debug.Log($"{spawnerRing.name} activated: {value}");
+            //    spawnerRing.enabled = value;
+            //}
+        }
+    }
+
+    public bool IsInAtmosphere { get => _isInAtmosphere; set => _isInAtmosphere = value; }
+
     private void Awake()
     {
-        _spaceshipController = GetComponent<SpaceshipController>();
-        _spaceshipWarp = GetComponent<SpaceshipWarp>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        _spaceshipController = GetComponent<SpaceshipController>();
+        _spaceshipWarp = GetComponent<SpaceshipWarp>();
     }
 
     // Update is called once per frame
@@ -91,6 +109,11 @@ public class SpaceshipCollisions : MonoBehaviour
             //Debug.Log($"Entered slow zone - IsInSlowZone {IsInSlowZone}");
         }
 
+        if (other.gameObject.layer == LayerMask.NameToLayer("Atmosphere"))
+        {
+            IsInAtmosphere = true;
+        }
+
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
             //Debug.Log($"{other.transform.GetComponentInParent<SgtFloatingObject>()} - NullifyWarp");
@@ -100,6 +123,13 @@ public class SpaceshipCollisions : MonoBehaviour
                 _spaceshipWarp.AbortWarp();
             }
         }
+
+        /*if(other.gameObject.layer == LayerMask.NameToLayer("AsteroidBelt"))
+        {
+            IsInAsteroidBelt = true;
+            //_debrisGrid.gameObject.SetActive(true);
+            Debug.Log($"AsteroidBelt: {other.gameObject.GetComponentInParent<AsteroidBelt>().name}");
+        }*/
 
     }
 
@@ -117,9 +147,21 @@ public class SpaceshipCollisions : MonoBehaviour
             //Debug.Log($"Left slow zone - IsInSlowZone {IsInSlowZone}");
         }
 
+        if (other.gameObject.layer == LayerMask.NameToLayer("Atmosphere"))
+        {
+            IsInAtmosphere = false;
+        }
+
         if (other.gameObject.layer == LayerMask.NameToLayer("NullifyWarp"))
         {
             _spaceshipWarp.NoWarpSphere = null;
         }
+
+        /*if (other.gameObject.layer == LayerMask.NameToLayer("AsteroidBelt"))
+        {
+            IsInAsteroidBelt = false;
+            //_debrisGrid.gameObject.SetActive(false);
+            Debug.Log("Leaving Asteroid Belt");
+        }*/
     }
 }

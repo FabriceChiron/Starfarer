@@ -660,6 +660,9 @@ GameObject:
   - component: {fileID: -3215116750628492009}
   - component: {fileID: 9028924323142867245}
   - component: {fileID: 2095476196589602325}
+  - component: {fileID: 1758594641326786135}
+  - component: {fileID: 5647721767152785332}
+  - component: {fileID: -6933192536038890586}
   m_Layer: 0
   m_Name: Red Dwarf
   m_TagString: Untagged
@@ -774,6 +777,71 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 100
   autoSetMass: 0
+--- !u!114 &1758594641326786135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6417201281091560396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitComp: {fileID: 0}
+  _orbitsActive: {fileID: 0}
+  _isOrbiting: 0
+  _degreesPerSecond: 0
+--- !u!54 &5647721767152785332
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6417201281091560396}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &-6933192536038890586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6417201281091560396}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77da9f66708b21e4dbaae3ad234ed2cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range:
+    Value: 1
+    Scale: 0
+  category: 
+  prefabs:
+  - {fileID: -8090822315172361231, guid: c6155393acbb4fb47a7625b6688ebe89, type: 3}
+  - {fileID: 7651584320221016288, guid: ac2ab8bff06ffad4581626df85a6e93b, type: 3}
+  - {fileID: 8207453982434106982, guid: 4b251793d47b3d8449416808d2b77dcd, type: 3}
+  - {fileID: 3209620287963334975, guid: a08a0e91cea413e4c855e6fc2b7c6fcd, type: 3}
+  - {fileID: 8402028275726461167, guid: d00a725ddfbf4ca48b11d034eaafee27, type: 3}
+  - {fileID: 4511030919572586450, guid: 6666383cde2c1624ebe71a5f5ccf89a0, type: 3}
+  randomizeIndex: 1
+  instances: []
+  inside: 0
+  count: 10
+  radiusMin:
+    Value: 200000
+    Scale: 0
+  radiusMax:
+    Value: 2000000
+    Scale: 0
 --- !u!1 &7920152035512296712
 GameObject:
   m_ObjectHideFlags: 0

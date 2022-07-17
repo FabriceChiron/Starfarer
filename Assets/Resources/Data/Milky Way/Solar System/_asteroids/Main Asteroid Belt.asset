@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b741d97162f44e48ba42e5704d77c33, type: 3}
   m_Name: Main Asteroid Belt
   m_EditorClassIdentifier: 
-  Quantity: 5000
   AsteroidsWithPlatinum: 0
   AsteroidsWithTurrets: 0
   asteroidType: 0
-  Orbit: 0
   OrbitMin: 1.6
   OrbitMax: 5.1
-  HeightMin: 0
-  HeightMax: 0
-  YearLengthMin: 2
-  YearLengthMax: 11
+  Height: 10
+  Density: 100
+  asteroidMinSize: 500
+  asteroidMaxSize: 50000

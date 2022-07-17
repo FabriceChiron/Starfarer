@@ -14,10 +14,13 @@ public class SpaceshipAudio : MonoBehaviour
     private SpaceshipController _spaceshipController;
 
     [SerializeField]
+    private SpaceshipCollisions _spaceshipCollisions;
+
+    [SerializeField]
     protected AnimationCurve throttleToEngineVolumeCurve = AnimationCurve.Linear(0f, 0.2f, 1f, 1f);
 
     [SerializeField]
-    private AudioSource _engineIdle, _engineNormal, _engineBoost, _engineSuperBoost, _engineStrafe, _engineUpDown, _engineWarp, _engineStopWarp, _engineInitWarp, _engineWarpBackground;
+    private AudioSource _engineIdle, _engineNormal, _engineBoost, _engineSuperBoost, _engineRoll, _engineStrafe, _engineUpDown, _engineWarp, _engineStopWarp, _engineInitWarp, _engineWarpBackground;
     public AudioSource EngineIdle { get => _engineIdle; set => _engineIdle = value; }
     public AudioSource EngineNormal { get => _engineNormal; set => _engineNormal = value; }
     public AudioSource EngineBoost { get => _engineBoost; set => _engineBoost = value; }
@@ -28,6 +31,7 @@ public class SpaceshipAudio : MonoBehaviour
     public AudioSource EngineStopWarp { get => _engineStopWarp; set => _engineStopWarp = value; }
     public AudioSource EngineInitWarp { get => _engineInitWarp; set => _engineInitWarp = value; }
     public AudioSource EngineWarpBackground { get => _engineWarpBackground; set => _engineWarpBackground = value; }
+    public AudioSource EngineRoll { get => _engineRoll; set => _engineRoll = value; }
 
     public Vector3 ThrustValues;
 
@@ -48,8 +52,14 @@ public class SpaceshipAudio : MonoBehaviour
     void FixedUpdate()
     {
         UpdateEnginesAudio();
+        if (EngineWarp.loop)
+        {
+            EngineWarp.volume = GoToVolume(EngineWarp.volume, _spaceshipWarp.Warping ? 1f : 0f);
+        }
 
-        EngineWarpBackground.volume = GoToVolume(EngineWarpBackground.volume, _spaceshipWarp.Warping ? 1f : 0f);
+        EngineWarpBackground.volume = GoToVolume(EngineWarpBackground.volume, (_spaceshipWarp.Warping || _spaceshipCollisions.IsInAtmosphere) ? 1f : 0f);
+
+        EngineRoll.volume = GoToVolume(EngineRoll.volume, Mathf.Abs(_spaceshipController.Roll) > 0f ? 0.5f : 0f);
     }
 
     private void UpdateEnginesAudio()

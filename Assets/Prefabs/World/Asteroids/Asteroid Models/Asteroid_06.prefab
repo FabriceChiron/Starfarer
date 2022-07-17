@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6174629613224610179}
   - component: {fileID: 4511030919572586450}
-  - component: {fileID: 8139885946454662243}
-  - component: {fileID: 4854265421864248568}
   - component: {fileID: 7414103829383775325}
+  - component: {fileID: 2495807885460249813}
   m_Layer: 15
   m_Name: Asteroid_06
   m_TagString: Untagged
@@ -60,43 +59,6 @@ MonoBehaviour:
   expectedPositionSet: 1
   positionSet: 0
   seed: 0
---- !u!114 &8139885946454662243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4930734338211130766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b42e1dc0604dde5458e70c58ea9da1c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius:
-    Value: 1
-    Scale: 0
-  oblateness: 0
-  tilt: {x: 0, y: 0, z: 0}
-  offset: {x: 0, y: 0, z: 0}
-  angle: 0
-  degreesPerSecond: 10
-  parentPoint: {fileID: 0}
---- !u!114 &4854265421864248568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4930734338211130766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a03897e7d5dce004eb53b1a43c285940, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orbitComp: {fileID: 8139885946454662243}
-  _orbitsActive: {fileID: 11400000, guid: 1c71ec7c7f7a3f84ea238f0ea8cd9902, type: 2}
-  _isOrbiting: 0
-  _degreesPerSecond: 0
 --- !u!54 &7414103829383775325
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -113,6 +75,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2495807885460249813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4930734338211130766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58dbc1e419fa1aa43b6e5439407329f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleMin: 10000
+  scaleMax: 50000
 --- !u!1001 &7666020869509574047
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -206,7 +206,17 @@ MonoBehaviour:
   _spaceStationRadarPrefab: {fileID: 5528104762121936031, guid: 807ce896e3107db4da78df9e5f580a95, type: 3}
   _zoneDisableCruiseSpeedPrefab: {fileID: 70786363163459014, guid: c0e45e03b50fe6c489ea415c40ab18dc, type: 3}
   _nullifyWarpPrefab: {fileID: 70786363163459014, guid: 4b8799152fbf4724191f4e84f50be224, type: 3}
-  _currentSystemData: {fileID: 11400000, guid: b402e4039db779640a904d17b1d0bf27, type: 2}
+  _atmosphereColliderPrefab: {fileID: 5163834447460204072, guid: f1e5333e16a4af5419bf441050606065, type: 3}
+  _asteroidBeltCenters: []
+  _asteroidBeltDataList: []
+  _asteroidPrefabsList:
+  - {fileID: -8090822315172361231, guid: c6155393acbb4fb47a7625b6688ebe89, type: 3}
+  - {fileID: 7651584320221016288, guid: ac2ab8bff06ffad4581626df85a6e93b, type: 3}
+  - {fileID: 8207453982434106982, guid: 4b251793d47b3d8449416808d2b77dcd, type: 3}
+  - {fileID: 3209620287963334975, guid: a08a0e91cea413e4c855e6fc2b7c6fcd, type: 3}
+  - {fileID: 8402028275726461167, guid: d00a725ddfbf4ca48b11d034eaafee27, type: 3}
+  - {fileID: 4511030919572586450, guid: 6666383cde2c1624ebe71a5f5ccf89a0, type: 3}
+  _currentSystemData: {fileID: 11400000, guid: 1294bf3e7199fa54793e2d15fc8125f4, type: 2}
   _orbitsActive: {fileID: 11400000, guid: 1c71ec7c7f7a3f84ea238f0ea8cd9902, type: 2}
   stellarSystemContainer: {fileID: 287828930}
   stellarSystemCenter: {fileID: 1605411512}
@@ -219,6 +229,7 @@ MonoBehaviour:
   _enableGravity: 1
   _canSpawnPlayer: 0
   _isPlayerSpawned: 0
+  _asteroidBeltsActivated: 0
   _spawnerFloatingObjects: []
 --- !u!1 &363207314
 GameObject:

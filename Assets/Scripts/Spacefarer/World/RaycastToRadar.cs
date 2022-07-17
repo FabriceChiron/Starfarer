@@ -197,7 +197,8 @@ public class RaycastToRadar : MonoBehaviour
                             break;
 
                         case "Planet":
-                            toggleActive = !(StellarBodyData.warpGate != null);
+                            //toggleActive = !(StellarBodyData.warpGate != null);
+                            toggleActive = true;
                             break;
 
                         case "Star":
@@ -258,7 +259,6 @@ public class RaycastToRadar : MonoBehaviour
 
                         if (RadarWarpPrompt != null)
                         {
-
                             _spaceshipWarp.RadarWarpPrompt = RadarWarpPrompt.GetComponentInChildren<WarpPrompt>();
                             _spaceshipWarp.ProgressBar = radarWarpPromptProgressBar;
                         }

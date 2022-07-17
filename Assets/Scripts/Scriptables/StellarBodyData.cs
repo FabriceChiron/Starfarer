@@ -76,5 +76,7 @@ public class StellarBodyData : ScriptableObject
 
     public StellarBodyData[] ChildrenItem;
 
+    public AsteroidBeltData[] AsteroidBeltItem;
+
     public WarpGateData warpGate;
 }

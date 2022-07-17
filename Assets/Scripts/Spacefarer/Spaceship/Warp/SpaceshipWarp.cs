@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using SpaceGraphicsToolkit;
+using CW.Common;
 
 public class SpaceshipWarp : MonoBehaviour
 {
     private SgtFloatingWarpSmoothstep _warpSmoothstep;
+
+    public LayerMask IgnoreLayer;
 
     [SerializeField]
     private GameObject _warpEffectPrefab;
@@ -30,7 +33,7 @@ public class SpaceshipWarp : MonoBehaviour
         _progressBarLerpDuration = 2f;
 
     [SerializeField]
-    private bool _canWarp, _warping, _warpInitiated, _warpTargetLocked, _showWarpEffect, _stopProgressBar;
+    private bool _canWarp, _warpObstruction, _warping, _warpInitiated, _warpTargetLocked, _showWarpEffect, _stopProgressBar;
 
     [SerializeField]
     private WarpPrompt _radarWarpPrompt;
@@ -72,10 +75,11 @@ public class SpaceshipWarp : MonoBehaviour
             {
                 ToggleWarpPrompt(_radarWarpPrompt, false);
             }
-
+            
             _radarWarpPrompt = value;
-
             ToggleWarpPrompt(_radarWarpPrompt, CanWarp);
+            
+
         }
     }
     public RectTransform ProgressBar { get => _progressBar; set => _progressBar = value; }
@@ -107,6 +111,9 @@ public class SpaceshipWarp : MonoBehaviour
         _spaceshipAudio = GetComponent<SpaceshipAudio>();
         _warpEffect = Instantiate(_warpEffectPrefab, _spaceshipController.cameraPosition);
         _warpParticleSystem = _warpEffect.GetComponentInChildren<ParticleSystem>();
+
+        _spaceshipAudio.EngineWarpBackground.gameObject.AddComponent<CwFollow>().Target = _warpParticleSystem.transform;
+
         _warpParticleSystem.Stop();
 
         _warpSmoothstep = FindObjectOfType<SgtFloatingWarpSmoothstep>();
@@ -133,13 +140,39 @@ public class SpaceshipWarp : MonoBehaviour
         
         _warpTargetLocked = _warpSmoothstep.Warping;
 
-        CanWarp = (_previousWarpTarget != WarpTarget) && (NoWarpSphere != WarpTarget);
+        //CanWarp = (_previousWarpTarget != WarpTarget) && (NoWarpSphere != WarpTarget);
 
+        if(WarpTarget != null)
+        {
+            RaycastHit hit;
+
+            Vector3 direction = WarpTarget.transform.position - transform.position;
+
+            if (Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity, IgnoreLayer))
+            {
+                //Debug.Log($"{hit.transform.gameObject.GetComponentInParent<SgtFloatingTarget>().name} is between the starship and  {WarpTarget.name}");
+                //Debug.Log($"Blocked by {hit.transform.name}");
+                //ToggleWarpPrompt(RadarWarpPrompt, false, "from raycast if");
+                _warpObstruction = hit.transform.gameObject.GetComponentInParent<SgtFloatingTarget>() != WarpTarget;
+            }
+            else
+            {
+                _warpObstruction = false;
+                //ToggleWarpPrompt(RadarWarpPrompt, CanWarp, "from raycast else");
+            }
+        }
+        else
+        {
+        }
 
     }
 
     private void ToggleWarpPrompt(WarpPrompt warpPrompt, bool toggleActive)
     {
+        if (_warpObstruction)
+        {
+            toggleActive = false;
+        }
         warpPrompt.transform.parent.gameObject.SetActive(toggleActive);
     }
 
@@ -156,7 +189,10 @@ public class SpaceshipWarp : MonoBehaviour
         if(WarpTarget != null && CanWarp)
         {
             _targetFOV = _warpCameraFOV;
-            _spaceshipAudio.EngineWarp.PlayOneShot(_spaceshipAudio.EngineWarp.clip);
+            if (!_spaceshipAudio.EngineWarp.loop)
+            {
+                _spaceshipAudio.EngineWarp.PlayOneShot(_spaceshipAudio.EngineWarp.clip);
+            }
             //_spaceshipAudio.AudioSource.clip = _spaceshipAudio.WarpClip;
             //_spaceshipAudio.AudioSource.PlayOneShot(_spaceshipAudio.AudioSource.clip);
 
@@ -239,14 +275,17 @@ public class SpaceshipWarp : MonoBehaviour
 
     public void AbortWarp()
     {
-        Debug.Log($"Aborting Warp");
+        //Debug.Log($"Aborting Warp");
         _warpSmoothstep.AbortWarp();
         _targetFOV = _initialCameraFOV;
         //_warpParticleSystem.Stop();
         _FTLInfos.WarpState = WarpStates.CANCELED;
         if (!_spaceshipAudio.EngineStopWarp.isPlaying)
         {
-            _spaceshipAudio.EngineWarp.Stop();
+            if (!_spaceshipAudio.EngineWarp.loop)
+            {
+                _spaceshipAudio.EngineWarp.Stop();
+            }
             _spaceshipAudio.EngineStopWarp.PlayOneShot(_spaceshipAudio.EngineStopWarp.clip);
         }
     }

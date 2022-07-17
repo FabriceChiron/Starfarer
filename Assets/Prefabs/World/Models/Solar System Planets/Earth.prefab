@@ -152,13 +152,13 @@ MonoBehaviour:
   position:
     LocalX: 0
     LocalY: 0
-    LocalZ: 0
+    LocalZ: -13000000
     GlobalX: 0
     GlobalY: 0
     GlobalZ: 0
   expectedPosition: {x: 0, y: 0, z: 0}
   expectedPositionSet: 1
-  positionSet: 1
+  positionSet: 0
   seed: 0
 --- !u!114 &-2829271572238315516
 MonoBehaviour:
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6927338795248942147}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b42e1dc0604dde5458e70c58ea9da1c2, type: 3}
   m_Name: 
@@ -606,7 +606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8027548475197536673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0009784499, y: 0.00007043558, z: -0.00019409915}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.005, y: 1.005, z: 1.005}
   m_ConstrainProportionsScale: 0
   m_Children: []
