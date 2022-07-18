@@ -10819,6 +10819,7 @@ GameObject:
   - component: {fileID: 4302106564104629992}
   - component: {fileID: 5592355877321221873}
   - component: {fileID: 6460072115040070012}
+  - component: {fileID: 6272439568685098843}
   m_Layer: 0
   m_Name: Camera - FlatScreen
   m_TagString: Untagged
@@ -10945,6 +10946,19 @@ MonoBehaviour:
   followIn: 1
   localPosition: {x: 0, y: 0, z: 0}
   localRotation: {x: 0, y: 0, z: 0}
+--- !u!114 &6272439568685098843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281587867226459524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543105670369c7e49b28b587c69ad997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depthMode: 1
 --- !u!1 &5301225003640925218
 GameObject:
   m_ObjectHideFlags: 0
@@ -15074,7 +15088,11 @@ MonoBehaviour:
   progressiveLateralThrust: 0
   progressiveUpDownThrust: 0
   smoothInputSpeed: 1
+  smoothInputRoll: 0.2
   smoothForwardVelocity: 0
+  smoothLateralVelocity: 0
+  smoothVerticalVelocity: 0
+  smoothRollVelocity: 0
   smoothInputVelocity: 0
   _invertYAxis: 1
   _warpSmoothstep: {fileID: 0}
@@ -27041,6 +27059,19 @@ MonoBehaviour:
   useGlobal: 0
   matchPosition: 1
   matchRotation: 1
+--- !u!114 &2190550873713136070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532154284854879709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543105670369c7e49b28b587c69ad997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depthMode: 1
 --- !u!1 &1532154285045576416 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7668830300715375533, guid: f13bbbc9578242a44953eec81cfb27d4, type: 3}

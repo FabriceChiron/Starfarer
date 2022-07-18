@@ -97,6 +97,7 @@ public class SpaceshipController : MonoBehaviour
         roll,
         rollXR,
         rollXRControls,
+        smoothRoll,
         forwardThrust,
         lateralThrust,
         lateralThrustXR,
@@ -111,7 +112,11 @@ public class SpaceshipController : MonoBehaviour
         progressiveLateralThrust,
         progressiveUpDownThrust,
         smoothInputSpeed = 0.2f,
+        smoothInputRoll = 1f,
         smoothForwardVelocity,
+        smoothLateralVelocity,
+        smoothVerticalVelocity,
+        smoothRollVelocity,
         smoothInputVelocity;
 
     [Range(-1f, 1f)]
@@ -136,7 +141,7 @@ public class SpaceshipController : MonoBehaviour
             
             if(_spaceshipWeapons != null)
             {
-                _spaceshipWeapons.BlasterSpeed = (_isInSlowZone ? boostSpeedSlowZone : boostSpeed) * 1.5f;
+                //_spaceshipWeapons.BlasterSpeed = (_isInSlowZone ? boostSpeedSlowZone : boostSpeed) * 1.5f;
             }
         }
     }
@@ -282,8 +287,12 @@ public class SpaceshipController : MonoBehaviour
     {
         _starshipLockedTime -= Time.deltaTime;
 
-        if(_starshipLockedTime < 0f)
+        _spaceshipWeapons.BlasterSpeed = Mathf.Max(1500f, speed * 1.5f);
+
+        if (_starshipLockedTime < 0f)
         {
+            smoothRoll = Mathf.SmoothDamp(smoothRoll, Roll, ref smoothRollVelocity, smoothInputRoll);
+
             //Override Control inputs
             PitchYaw = JoystickGrabbed ? _XRControlValues.joystickValues.normalized * 0.3f : PitchYaw;
 
@@ -311,10 +320,15 @@ public class SpaceshipController : MonoBehaviour
 
             //ForwardSpeedRatio = (GetMaxSpeed() != 0f) ? speed / GetMaxSpeed() : 0f;
 
-            lateralSpeed = Mathf.Round(Mathf.Lerp(lateralSpeed, GetLateralSpeed(), Time.deltaTime * 10f));
+            //lateralSpeed = Mathf.Round(Mathf.Lerp(lateralSpeed, GetLateralSpeed(), Time.deltaTime * 10f));
+
+            lateralSpeed = Mathf.SmoothDamp(lateralSpeed, GetLateralSpeed(), ref smoothLateralVelocity, smoothInputSpeed); 
+
             //lateralSpeed = GetProgressiveThrust(GetLateralSpeed(), lateralSpeed);
 
             verticalSpeed = Mathf.Round(Mathf.Lerp(verticalSpeed, GetVerticalSpeed(), Time.deltaTime * 10f));
+            
+            verticalSpeed = Mathf.SmoothDamp(verticalSpeed, GetLateralSpeed(), ref smoothVerticalVelocity, smoothInputSpeed); 
             //verticalSpeed = GetProgressiveThrust(GetVerticalSpeed(), verticalSpeed);
 
             //Set moveDirection to the vertical axis (up and down keys) * speed
@@ -335,7 +349,7 @@ public class SpaceshipController : MonoBehaviour
             mouseXSmooth = Mathf.Lerp(mouseXSmooth, smoothPitchYaw.x * currentRotationSpeed, Time.deltaTime * cameraSmooth);
             mouseYSmooth = Mathf.Lerp(mouseYSmooth, smoothPitchYaw.y * (_invertYAxis ? -1f : 1f) * currentRotationSpeed, Time.deltaTime * cameraSmooth);
         
-            Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, Roll * -1f * currentRotationSpeed);
+            Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, smoothRoll * -1f * currentRotationSpeed);
             LookRotation = LookRotation * localRotation;
             transform.rotation = LookRotation;
             rotationZ -= mouseXSmooth;

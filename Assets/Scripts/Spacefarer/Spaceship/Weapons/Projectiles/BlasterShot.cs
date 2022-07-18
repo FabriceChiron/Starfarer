@@ -9,6 +9,10 @@ public class BlasterShot : MonoBehaviour
     [SerializeField]
     private float _blasterSpeed;
     public float BlasterSpeed { get => _blasterSpeed; set => _blasterSpeed = value; }
+    public SpaceshipWeapons SpaceshipWeapons { get => _spaceshipWeapons; set => _spaceshipWeapons = value; }
+
+    [SerializeField]
+    private SpaceshipWeapons _spaceshipWeapons;
 
     private float lifeTime = 3f;
 
@@ -27,6 +31,7 @@ public class BlasterShot : MonoBehaviour
     {
         //gameObject.GetComponent<SgtFloatingObject>();
         gameObject.AddComponent<SgtFloatingObject>();
+        _spaceshipWeapons = FindObjectOfType<SpaceshipWeapons>();
     }
 
     void Start()
@@ -47,7 +52,7 @@ public class BlasterShot : MonoBehaviour
     {
         if (!_hasExploded)
         {
-            transform.Translate(Vector3.forward * BlasterSpeed * Time.deltaTime, Space.Self);
+            transform.Translate(Vector3.forward * _spaceshipWeapons.BlasterSpeed * Time.deltaTime, Space.Self);
         }
 
         lifeTime -= Time.deltaTime;
