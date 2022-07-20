@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using CW.Common;
 using SpaceGraphicsToolkit;
 
@@ -17,6 +18,9 @@ public class SpaceshipCollisions : MonoBehaviour
 
     [SerializeField]
     private SpaceshipWarp _spaceshipWarp;
+
+    [SerializeField]
+    private AsteroidFieldInfo _asteroidFieldInfo;
     
 
     public bool IsInSlowZone { 
@@ -62,6 +66,10 @@ public class SpaceshipCollisions : MonoBehaviour
         {
             _isInAsteroidBelt = value;
 
+            _asteroidFieldInfo.GetComponent<Text>().enabled = value;
+
+            _spaceshipController.IsInAsteroidField = value;
+
             //foreach(SgtFloatingSpawnerRing spawnerRing in FindObjectsOfType<SgtFloatingSpawnerRing>())
             //{
             //    Debug.Log($"{spawnerRing.name} activated: {value}");
@@ -81,6 +89,7 @@ public class SpaceshipCollisions : MonoBehaviour
     {
         _spaceshipController = GetComponent<SpaceshipController>();
         _spaceshipWarp = GetComponent<SpaceshipWarp>();
+        _asteroidFieldInfo = FindObjectOfType<AsteroidFieldInfo>();
     }
 
     // Update is called once per frame
@@ -124,12 +133,12 @@ public class SpaceshipCollisions : MonoBehaviour
             }
         }
 
-        /*if(other.gameObject.layer == LayerMask.NameToLayer("AsteroidBelt"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("AsteroidBelt"))
         {
             IsInAsteroidBelt = true;
             //_debrisGrid.gameObject.SetActive(true);
             Debug.Log($"AsteroidBelt: {other.gameObject.GetComponentInParent<AsteroidBelt>().name}");
-        }*/
+        }
 
     }
 
@@ -157,11 +166,11 @@ public class SpaceshipCollisions : MonoBehaviour
             _spaceshipWarp.NoWarpSphere = null;
         }
 
-        /*if (other.gameObject.layer == LayerMask.NameToLayer("AsteroidBelt"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("AsteroidBelt"))
         {
             IsInAsteroidBelt = false;
             //_debrisGrid.gameObject.SetActive(false);
             Debug.Log("Leaving Asteroid Belt");
-        }*/
+        }
     }
 }

@@ -16,6 +16,12 @@ public class SpaceshipController : MonoBehaviour
     public float superBoostSpeed = 15000000f;
     public float strafeSpeed = 250000f;
 
+    [Header("Asteroid Field Speed")]
+    public float normalAsteroidFieldSpeed = 25000f;
+    public float boostAsteroidFieldSpeed = 45000f;
+    public float superBoostAsteroidFieldSpeed = 150000f;
+    public float strafeAsteroidFieldSpeed = 25000f;
+
     [Header("Slow Zone Speed")]
     public float normalSpeedSlowZone = 250f;
     public float boostSpeedSlowZone = 450f;
@@ -71,9 +77,7 @@ public class SpaceshipController : MonoBehaviour
 
     [Header("Zones")]
     [SerializeField]
-    private bool _isInSlowZone;
-    [SerializeField]
-    private bool _isInSlowZoneBuffer;
+    private bool _isInSlowZone, _isInSlowZoneBuffer, _isInAsteroidField;
 
     [Header("Debug")]
     private RectTransform _infos;
@@ -175,6 +179,7 @@ public class SpaceshipController : MonoBehaviour
     public float ProgressiveUpDownThrust { get => progressiveUpDownThrust; set => progressiveUpDownThrust = value; }
     public bool Boosting { get => _boosting; set => _boosting = value; }
     public bool SuperBoosting { get => _superBoosting; set => _superBoosting = value; }
+    public bool IsInAsteroidField { get => _isInAsteroidField; set => _isInAsteroidField = value; }
 
     private void OnEnable()
     {
@@ -213,7 +218,7 @@ public class SpaceshipController : MonoBehaviour
         
         if(Mathf.Abs(ForwardThrust) > 0.025f) 
         {
-            maxSpeed = GetSpeedStage(normalSpeed, normalSpeedSlowZone) * (ForwardThrust > 0 ? 1f : -1f);
+            maxSpeed = GetSpeedStage(normalSpeed, normalSpeedSlowZone, normalAsteroidFieldSpeed) * (ForwardThrust > 0 ? 1f : -1f);
 
         
             if (ForwardThrust > 0f)
@@ -221,12 +226,12 @@ public class SpaceshipController : MonoBehaviour
                 if (SuperBoosting)
                 {
                     //maxSpeed = forwardThrust * (IsInSlowZone ? superBoostSpeedSlowZone : superBoostSpeed);
-                    maxSpeed = GetSpeedStage(superBoostSpeed, superBoostSpeedSlowZone);
+                    maxSpeed = GetSpeedStage(superBoostSpeed, superBoostSpeedSlowZone, superBoostAsteroidFieldSpeed);
                 }
                 else if (Boosting)
                 {
                     //maxSpeed = forwardThrust * (IsInSlowZone ? boostSpeedSlowZone : boostSpeed);
-                    maxSpeed = GetSpeedStage(boostSpeed, boostSpeedSlowZone);
+                    maxSpeed = GetSpeedStage(boostSpeed, boostSpeedSlowZone, boostAsteroidFieldSpeed);
                 }
 
             }
@@ -251,17 +256,17 @@ public class SpaceshipController : MonoBehaviour
 
     private float GetVerticalSpeed()
     {
-        return UpDownThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone);
+        return UpDownThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone, strafeAsteroidFieldSpeed);
     }
 
     private float GetLateralSpeed()
     {
-        return LateralThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone);
+        return LateralThrust * GetSpeedStage(strafeSpeed, strafeSpeedSlowZone, strafeAsteroidFieldSpeed);
     }
 
-    private float GetSpeedStage(float speed, float speedSlowZone)
+    private float GetSpeedStage(float speed, float speedSlowZone, float speedAsteroidField)
     {
-        return IsInSlowZone ?
+        return IsInAsteroidField ? speedAsteroidField : IsInSlowZone ?
             speedSlowZone :
             speed;
     }

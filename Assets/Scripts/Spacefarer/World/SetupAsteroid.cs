@@ -48,7 +48,7 @@ public class SetupAsteroid : MonoBehaviour
     {
         liveParts.GetComponent<Rigidbody>().mass = transform.localScale.x;
         _radius = transform.localScale.x * 5f;
-        _power = _radius * 5f;
+        _power = _radius * 50f;
 
         if (isDead)
         {
