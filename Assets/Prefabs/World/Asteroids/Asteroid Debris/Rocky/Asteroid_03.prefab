@@ -121,7 +121,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6174629613224610179}
   - component: {fileID: 6919996371350750786}
-  - component: {fileID: 8421280653155233498}
   - component: {fileID: -4488364225195333151}
   m_Layer: 15
   m_Name: Asteroid_03
@@ -168,29 +167,6 @@ MonoBehaviour:
     y: 0
     z: 0
   show: 0
---- !u!114 &8421280653155233498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4930734338211130766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafcadce2aec5dc4b8dde998829302c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position:
-    LocalX: 0
-    LocalY: 0
-    LocalZ: 0
-    GlobalX: 0
-    GlobalY: 0
-    GlobalZ: 0
-  expectedPosition: {x: 0, y: 0, z: 0}
-  expectedPositionSet: 1
-  positionSet: 1
-  seed: 0
 --- !u!114 &-4488364225195333151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,7 +760,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3244519534086174237}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1

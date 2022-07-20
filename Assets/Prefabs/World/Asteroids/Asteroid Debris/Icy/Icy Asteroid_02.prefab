@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6174629613224610179}
   - component: {fileID: -7755361778297787326}
-  - component: {fileID: 4354737239225366395}
   - component: {fileID: 7864247216968493499}
   m_Layer: 15
   m_Name: Icy Asteroid_02
@@ -57,29 +56,6 @@ MonoBehaviour:
     y: 0
     z: 0
   show: 0
---- !u!114 &4354737239225366395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4930734338211130766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafcadce2aec5dc4b8dde998829302c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position:
-    LocalX: 0
-    LocalY: 0
-    LocalZ: 0
-    GlobalX: 0
-    GlobalY: 0
-    GlobalZ: 0
-  expectedPosition: {x: 0, y: 0, z: 0}
-  expectedPositionSet: 1
-  positionSet: 1
-  seed: 0
 --- !u!114 &7864247216968493499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -745,7 +721,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4628487798572162211}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1

@@ -138,7 +138,7 @@ public class SpaceshipWarp : MonoBehaviour
 
         LerpCameraFOV(_targetFOV);
         
-        _warpTargetLocked = _warpSmoothstep.Warping;
+        //_warpTargetLocked = _warpSmoothstep.Warping;
 
         //CanWarp = (_previousWarpTarget != WarpTarget) && (NoWarpSphere != WarpTarget);
 
@@ -278,6 +278,9 @@ public class SpaceshipWarp : MonoBehaviour
         //Debug.Log($"Aborting Warp");
         _warpSmoothstep.AbortWarp();
         _targetFOV = _initialCameraFOV;
+
+        _warpTargetLocked = false;
+
         //_warpParticleSystem.Stop();
         _FTLInfos.WarpState = WarpStates.CANCELED;
         if (!_spaceshipAudio.EngineStopWarp.isPlaying)
@@ -340,6 +343,8 @@ public class SpaceshipWarp : MonoBehaviour
             _stopProgressBar = false;
             StartCoroutine(coStarted);
 
+            _warpTargetLocked = true;
+
             _spaceshipAudio.EngineInitWarp.PlayOneShot(_spaceshipAudio.EngineInitWarp.clip);
 
             _FTLInfos.WarpState = WarpStates.STARTED;
@@ -357,6 +362,8 @@ public class SpaceshipWarp : MonoBehaviour
             _spaceshipAudio.EngineInitWarp.Stop();
 
             _FTLInfos.WarpState = WarpStates.CANCELED;
+
+            _warpTargetLocked = false;
         }
 
         if(context.performed)

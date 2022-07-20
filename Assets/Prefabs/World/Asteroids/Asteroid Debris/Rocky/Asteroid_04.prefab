@@ -90,7 +90,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6174629613224610179}
   - component: {fileID: -4619909120669648671}
-  - component: {fileID: -2396893463728601742}
   - component: {fileID: 7753502493037343585}
   m_Layer: 15
   m_Name: Asteroid_04
@@ -137,29 +136,6 @@ MonoBehaviour:
     y: 0
     z: 0
   show: 0
---- !u!114 &-2396893463728601742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4930734338211130766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafcadce2aec5dc4b8dde998829302c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position:
-    LocalX: 0
-    LocalY: 0
-    LocalZ: 0
-    GlobalX: 0
-    GlobalY: 0
-    GlobalZ: 0
-  expectedPosition: {x: 0, y: 0, z: 0}
-  expectedPositionSet: 1
-  positionSet: 1
-  seed: 0
 --- !u!114 &7753502493037343585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,16 +216,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.0000014305119
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0000007152556
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -257,15 +241,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 12dd731ddaef3e841b07bb97bffb86c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -361,7 +345,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2321378398195664497}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1

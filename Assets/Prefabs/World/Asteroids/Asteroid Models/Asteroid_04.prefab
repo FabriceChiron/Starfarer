@@ -87,8 +87,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dbc1e419fa1aa43b6e5439407329f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMin: 10000
-  scaleMax: 50000
+  initialHealth: {fileID: 0}
+  health: 100
+  liveParts: {fileID: 0}
+  deadParts: {fileID: 0}
+  isDead: 0
 --- !u!1001 &2321378398195564753
 PrefabInstance:
   m_ObjectHideFlags: 0

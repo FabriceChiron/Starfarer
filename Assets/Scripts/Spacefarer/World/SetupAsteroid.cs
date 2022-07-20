@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceGraphicsToolkit;
+using SpaceGraphicsToolkit.Debris;
 
 public class SetupAsteroid : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class SetupAsteroid : MonoBehaviour
     [SerializeField]
     private bool isDead;
 
+    private float _radius, _power = 100.0F;
+
     public int Health
     {
         get => health;
@@ -26,6 +30,7 @@ public class SetupAsteroid : MonoBehaviour
             if (value <= 0)
             {
                 isDead = true;
+                GetComponent<SgtDebris>().Pool = false;
                 DestroyAsteroid();
             }
         }
@@ -35,18 +40,23 @@ public class SetupAsteroid : MonoBehaviour
     void Start()
     {
         Health = initialHealth.IntValue;
+        gameObject.AddComponent<SgtFloatingObject>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         liveParts.GetComponent<Rigidbody>().mass = transform.localScale.x;
+        _radius = transform.localScale.x * 5f;
+        _power = _radius * 5f;
 
         if (isDead)
         {
             foreach(Rigidbody shardRigidbody in deadParts.GetComponentsInChildren<Rigidbody>())
             {
                 shardRigidbody.mass = transform.localScale.x / deadParts.GetComponentsInChildren<Rigidbody>().Length;
+
+                shardRigidbody.AddExplosionForce(_power, transform.position, _radius, 0f);
             }
         }
     }

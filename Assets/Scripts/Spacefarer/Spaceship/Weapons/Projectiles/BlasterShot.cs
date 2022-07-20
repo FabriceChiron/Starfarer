@@ -14,7 +14,7 @@ public class BlasterShot : MonoBehaviour
     [SerializeField]
     private SpaceshipWeapons _spaceshipWeapons;
 
-    private float lifeTime = 3f;
+    private float lifeTime = 30f;
 
     public LayerMask IgnoreLayer;
 
@@ -65,8 +65,8 @@ public class BlasterShot : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision - Explode!");
-        Explode();
+        //Debug.Log("Collision - Explode!");
+        //Explode();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -78,7 +78,7 @@ public class BlasterShot : MonoBehaviour
                 other.transform.GetComponentInParent<SetupAsteroid>().Health -= damage;
             }
 
-            Debug.Log($"Trigger - Explode! against {other.gameObject.name}");
+            //Debug.Log($"Trigger - Explode! against {other.gameObject.name}");
             Explode();
         }
     }
