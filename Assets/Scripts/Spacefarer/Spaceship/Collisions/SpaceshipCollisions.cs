@@ -99,7 +99,7 @@ public class SpaceshipCollisions : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        EnableOrbiting = !(IsInSlowZone || IsInSlowZoneBuffer || _spaceshipWarp.Warping || _spaceshipWarp.WarpInitiated);
+        EnableOrbiting = !(IsInSlowZone || IsInAsteroidBelt || IsInSlowZoneBuffer || _spaceshipWarp.Warping || _spaceshipWarp.WarpInitiated);
     }
 
     private void OnTriggerEnter(Collider other)

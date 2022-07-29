@@ -49,7 +49,7 @@ public class AsteroidBelt : MonoBehaviour
         _debrisSpawner.name = $"{name} - spawner";
         _debrisSpawner.transform.SetParent(FindObjectOfType<SgtFloatingRoot>().transform);
 
-        if(_asteroidBeltData.asteroidType == AsteroidType.Mixed || _asteroidBeltData.asteroidType == AsteroidType.Rocky)
+        /*if(_asteroidBeltData.asteroidType == AsteroidType.Mixed || _asteroidBeltData.asteroidType == AsteroidType.Rocky)
         {
             foreach(SgtDebris rockyAsteroidPrefab in _rockyAsteroidPrefabs)
             {
@@ -63,14 +63,17 @@ public class AsteroidBelt : MonoBehaviour
             {
                 _debrisSpawner.Prefabs.Add(icyAsteroidPrefab);
             }
-        }
+        }*/
 
         _debrisSpawner.SpawnLimit = _asteroidBeltData.Density;
         _debrisSpawner.SpawnScaleMin = _asteroidBeltData.asteroidMinSize;
         _debrisSpawner.SpawnScaleMax = _asteroidBeltData.asteroidMaxSize;
 
-        _debrisSpawner.ShowDistance = _asteroidBeltData.asteroidMaxSize * 1500f;
-        _debrisSpawner.HideDistance = _asteroidBeltData.asteroidMaxSize * 2250f;
+        _debrisSpawner.ShowDistance = _asteroidBeltData.asteroidMaxSize * 600f;
+        _debrisSpawner.HideDistance = _asteroidBeltData.asteroidMaxSize * 800f;
+
+/*        _debrisSpawner.ShowDistance = 200000f;
+        _debrisSpawner.HideDistance = 300000f;*/
 
         _debrisSpawner.Target = FindObjectOfType<AsteroidSpawnAnchor>().transform;
         //_debrisSpawner.SpawnAllDebrisInside();

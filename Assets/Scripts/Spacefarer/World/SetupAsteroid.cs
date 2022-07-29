@@ -46,7 +46,7 @@ public class SetupAsteroid : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        liveParts.GetComponent<Rigidbody>().mass = transform.localScale.x;
+        
         _radius = transform.localScale.x * 5f;
         _power = _radius * 50f;
 
@@ -54,10 +54,15 @@ public class SetupAsteroid : MonoBehaviour
         {
             foreach(Rigidbody shardRigidbody in deadParts.GetComponentsInChildren<Rigidbody>())
             {
-                shardRigidbody.mass = transform.localScale.x / deadParts.GetComponentsInChildren<Rigidbody>().Length;
+                //shardRigidbody.mass = transform.localScale.x * 10000f / deadParts.GetComponentsInChildren<Rigidbody>().Length;
+                shardRigidbody.mass = Mathf.Pow(transform.localScale.x, 3f) / deadParts.GetComponentsInChildren<Rigidbody>().Length;
 
                 shardRigidbody.AddExplosionForce(_power, transform.position, _radius, 0f);
             }
+        } 
+        else
+        {
+            liveParts.GetComponent<Rigidbody>().mass = Mathf.Pow(transform.localScale.x, 3f);
         }
     }
 

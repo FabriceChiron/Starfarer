@@ -342,7 +342,10 @@ public class SpaceshipController : MonoBehaviour
             //Set moveDirection to the vertical axis (up and down keys) * speed
             Vector3 moveDirection = new Vector3(lateralSpeed, verticalSpeed, speed);
             
-            _asteroidSpawnAnchor.LocalPosition = Vector3.ClampMagnitude(moveDirection, 10000f);
+            //_asteroidSpawnAnchor.LocalPosition = Vector3.ClampMagnitude(moveDirection, 10000f);
+            _asteroidSpawnAnchor.LocalPosition = moveDirection;
+
+            Debug.Log(moveDirection.magnitude);
         
             //Transform the vector3 to local space
             moveDirection = transform.TransformDirection(moveDirection);

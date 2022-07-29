@@ -4079,7 +4079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   spawnInside: {fileID: 273352953041636755}
-  showSpeed: 10
+  showSpeed: 1
   showDistance: 1000000
   hideDistance: 3000000
   spawnOnAwake: 0
@@ -4088,7 +4088,19 @@ MonoBehaviour:
   spawnRateMax: 0.02
   spawnScaleMin: 500
   spawnScaleMax: 50000
-  prefabs: []
+  prefabs:
+  - {fileID: 2637227400457161508, guid: 496002de9a897b5499a04f4652b77aa0, type: 3}
+  - {fileID: 2637227400457161508, guid: e17fe5f06025e1b4a80733034b7eafca, type: 3}
+  - {fileID: -7755361778297787326, guid: c80d0b4bc9bba5e4892803b631824b89, type: 3}
+  - {fileID: -7755361778297787326, guid: 76a1df7d1e77a6943939b88b6747aa4a, type: 3}
+  - {fileID: 6919996371350750786, guid: c6bc482b095e46b4bae640aa07182913, type: 3}
+  - {fileID: 6919996371350750786, guid: dadb4747c2a681d48b97b905d1ab5fb1, type: 3}
+  - {fileID: -4619909120669648671, guid: 165ee4f911ff68f40b2b9a8f40f3dea5, type: 3}
+  - {fileID: -4619909120669648671, guid: cf8f299c1ed68f342b158c6f1a7d118a, type: 3}
+  - {fileID: -5833088701195410613, guid: 28317c26498b73c4e84e7321365f13fb, type: 3}
+  - {fileID: -5833088701195410613, guid: 7870bb23064037b4fb77849471fbbd40, type: 3}
+  - {fileID: -7471392627954753451, guid: ea59422b2b1531f41b59023b905bf485, type: 3}
+  - {fileID: -7471392627954753451, guid: 7cf26db9879ea4e459d090f872481940, type: 3}
   debris: []
 --- !u!1 &4067451109334228867
 GameObject:
