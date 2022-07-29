@@ -68,8 +68,10 @@ public class SpaceshipAudio : MonoBehaviour
         ThrustValues.y = Mathf.Abs(_spaceshipController.ProgressiveUpDownThrust);
         ThrustValues.z = Mathf.Abs(_spaceshipController.ProgressiveForwardThrust);
 
-        EngineStrafe.volume = GoToVolume(EngineStrafe.volume, (ThrustValues.x > 0.025f) ? ThrustValues.x : 0f);
-        EngineUpDown.volume = GoToVolume(EngineUpDown.volume, (ThrustValues.y > 0.025f) ? ThrustValues.y : 0f);
+        //EngineStrafe.volume = GoToVolume(EngineStrafe.volume, (ThrustValues.x > 0.025f) ? ThrustValues.x : 0f);
+        EngineStrafe.volume = (ThrustValues.x > 0.025f) ? ThrustValues.x : 0f;
+        //EngineUpDown.volume = GoToVolume(EngineUpDown.volume, (ThrustValues.y > 0.025f) ? ThrustValues.y : 0f);
+        EngineUpDown.volume = (ThrustValues.y > 0.025f) ? ThrustValues.y : 0f;
 
         if (ThrustValues.z > 0.025f)
         {
@@ -78,42 +80,63 @@ public class SpaceshipAudio : MonoBehaviour
             {
                 if (_spaceshipController.SuperBoosting)
                 {
-                    EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
+                    /*EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
                     EngineNormal.volume = GoToVolume(EngineNormal.volume, 0f);
                     EngineBoost.volume = GoToVolume(EngineBoost.volume, 0f);
-                    EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, ThrustValues.z);
+                    EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, ThrustValues.z);*/
+
+                    EngineIdle.volume = 0f;
+                    EngineNormal.volume = 0f;
+                    EngineBoost.volume = 0f;
+                    EngineSuperBoost.volume = ThrustValues.z;
                 }
                 else if (_spaceshipController.Boosting)
                 {
-                    EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
+                    /*EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
                     EngineNormal.volume = GoToVolume(EngineNormal.volume, 0f);
                     EngineBoost.volume = GoToVolume(EngineBoost.volume, ThrustValues.z);
-                    EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);
+                    EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);*/  
+                    EngineIdle.volume = 0f;
+                    EngineNormal.volume = 0f;
+                    EngineBoost.volume = ThrustValues.z;
+                    EngineSuperBoost.volume = 0f;
                 }
                 else
                 {
-                    EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
+                    /*EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
                     EngineNormal.volume = GoToVolume(EngineNormal.volume, ThrustValues.z);
                     EngineBoost.volume = GoToVolume(EngineBoost.volume, 0f);
-                    EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);
+                    EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);*/
+                    EngineIdle.volume = 0f;
+                    EngineNormal.volume = ThrustValues.z;
+                    EngineBoost.volume = 0f;
+                    EngineSuperBoost.volume = 0f;
                 }
             }
             //if Backward
             else
             {
-                EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
+                /*EngineIdle.volume = GoToVolume(EngineIdle.volume, 0f);
                 EngineNormal.volume = GoToVolume(EngineNormal.volume, ThrustValues.z);
                 EngineBoost.volume = GoToVolume(EngineBoost.volume, 0f);
-                EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);
+                EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);*/
+                EngineIdle.volume = 0f;
+                EngineNormal.volume = ThrustValues.z;
+                EngineBoost.volume = 0f;
+                EngineSuperBoost.volume = 0f;
             }
         }
         //if 0
         else
         {
-            EngineIdle.volume = GoToVolume(EngineIdle.volume, ThrustValues.z);
+            /*EngineIdle.volume = GoToVolume(EngineIdle.volume, 1f);
             EngineNormal.volume = GoToVolume(EngineNormal.volume, 0f);
             EngineBoost.volume = GoToVolume(EngineBoost.volume, 0f);
-            EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);
+            EngineSuperBoost.volume = GoToVolume(EngineSuperBoost.volume, 0f);*/        
+            EngineIdle.volume = 1f;
+            EngineNormal.volume = 0f;
+            EngineBoost.volume = 0f;
+            EngineSuperBoost.volume = 0f;
         }
     }
 }

@@ -134,6 +134,9 @@ public class SpaceshipController : MonoBehaviour
     [SerializeField]
     private SgtFloatingWarpSmoothstep _warpSmoothstep;
 
+    [SerializeField]
+    private CwFollow _asteroidSpawnAnchor;
+
     public Vector2 PitchYaw { get => pitchYaw; set => pitchYaw = value; }
     public float Roll { get => roll; set => roll = value; }
     public Quaternion LookRotation { get => lookRotation; set => lookRotation = value; }
@@ -331,16 +334,19 @@ public class SpaceshipController : MonoBehaviour
 
             //lateralSpeed = GetProgressiveThrust(GetLateralSpeed(), lateralSpeed);
 
-            verticalSpeed = Mathf.Round(Mathf.Lerp(verticalSpeed, GetVerticalSpeed(), Time.deltaTime * 10f));
+            //verticalSpeed = Mathf.Round(Mathf.Lerp(verticalSpeed, GetVerticalSpeed(), Time.deltaTime * 10f));
             
-            verticalSpeed = Mathf.SmoothDamp(verticalSpeed, GetLateralSpeed(), ref smoothVerticalVelocity, smoothInputSpeed); 
+            verticalSpeed = Mathf.SmoothDamp(verticalSpeed, GetVerticalSpeed(), ref smoothVerticalVelocity, smoothInputSpeed); 
             //verticalSpeed = GetProgressiveThrust(GetVerticalSpeed(), verticalSpeed);
 
             //Set moveDirection to the vertical axis (up and down keys) * speed
             Vector3 moveDirection = new Vector3(lateralSpeed, verticalSpeed, speed);
+            
+            _asteroidSpawnAnchor.LocalPosition = Vector3.ClampMagnitude(moveDirection, 10000f);
         
             //Transform the vector3 to local space
             moveDirection = transform.TransformDirection(moveDirection);
+
 
             //Set the velocity, so you can move
             r.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);

@@ -325,7 +325,7 @@ public class StellarSystemGenerator : MonoBehaviour
 
         if (jovian != null)
         {
-            atmosphereCollider = Instantiate(_atmosphereColliderPrefab, stellarBody.transform).transform;
+            atmosphereCollider = Instantiate(_atmosphereColliderPrefab, jovian.transform).transform;
         }
         else if (stellarBody.GetComponentInChildren<SgtAtmosphere>() != null)
         {
@@ -386,7 +386,7 @@ public class StellarSystemGenerator : MonoBehaviour
         
             if(stellarBodyGravitySource != null)
             {
-                stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+10;
+                stellarBodyGravitySource.Mass = stellarBodyData.Mass * (float)10e+11;
             }
         }
 

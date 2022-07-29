@@ -43,7 +43,7 @@ public class SpaceshipWeapons : MonoBehaviour
         
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         if (_isFiring)
         {

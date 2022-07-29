@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using SpaceGraphicsToolkit;
 using CW.Common;
+using MilkShake;
 
 public class SpaceshipWarp : MonoBehaviour
 {
@@ -43,6 +44,14 @@ public class SpaceshipWarp : MonoBehaviour
 
     [SerializeField]
     private Camera _activeCamera;
+
+    [SerializeField]
+    private ShakePreset _shakePreset;
+
+    [SerializeField]
+    private Shaker _shaker;
+
+    private ShakeInstance _shakeInstance;
 
     [SerializeField]
     FTL_Infos _FTLInfos;
@@ -122,6 +131,7 @@ public class SpaceshipWarp : MonoBehaviour
         _targetFOV = _activeCamera.fieldOfView;
 
         _FTLInfos = GetComponentInChildren<FTL_Infos>();
+
     }
 
     // Update is called once per frame
@@ -197,6 +207,10 @@ public class SpaceshipWarp : MonoBehaviour
             //_spaceshipAudio.AudioSource.PlayOneShot(_spaceshipAudio.AudioSource.clip);
 
             _warpSmoothstep.WarpTo(WarpTarget.GetComponent<SgtFloatingObject>().Position);
+
+
+            _shakeInstance = _shaker.Shake(_shakePreset);
+            _shakeInstance.Start(1f);
         }
     }
 
@@ -281,6 +295,7 @@ public class SpaceshipWarp : MonoBehaviour
 
         _warpTargetLocked = false;
 
+
         //_warpParticleSystem.Stop();
         _FTLInfos.WarpState = WarpStates.CANCELED;
         if (!_spaceshipAudio.EngineStopWarp.isPlaying)
@@ -291,6 +306,8 @@ public class SpaceshipWarp : MonoBehaviour
             }
             _spaceshipAudio.EngineStopWarp.PlayOneShot(_spaceshipAudio.EngineStopWarp.clip);
         }
+
+        _shakeInstance.Stop(1f, false);
     }
 
 /*    private void OnTriggerEnter(Collider other)

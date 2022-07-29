@@ -72,7 +72,7 @@ public class AsteroidBelt : MonoBehaviour
         _debrisSpawner.ShowDistance = _asteroidBeltData.asteroidMaxSize * 1500f;
         _debrisSpawner.HideDistance = _asteroidBeltData.asteroidMaxSize * 2250f;
 
-        _debrisSpawner.Target = FindObjectOfType<SpaceshipController>().transform;
+        _debrisSpawner.Target = FindObjectOfType<AsteroidSpawnAnchor>().transform;
         //_debrisSpawner.SpawnAllDebrisInside();
 
         GetComponent<CwFollow>().Target = _center.transform;

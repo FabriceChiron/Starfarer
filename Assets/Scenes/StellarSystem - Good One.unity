@@ -132,7 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 287828930}
-  - component: {fileID: 287828931}
   - component: {fileID: 287828934}
   - component: {fileID: 287828936}
   m_Layer: 15
@@ -159,18 +158,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &287828931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 287828929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82ba346548faaf6469d7e58d0bd7b9a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &287828934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955576e8d67ab2f488e03609fdf46db8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Utils: {fileID: 287828931}
+  Utils: {fileID: 0}
   _scales: {fileID: 11400000, guid: 74c9130209d1ebe4fa585d7215674b09, type: 2}
   _playerPrefab: {fileID: 4219354477285782647, guid: 9c6119864de857143b37554a56b279d9, type: 3}
   _forRadarPrefab: {fileID: 8509107876706731914, guid: e6153eba86a449a4b9ba8be68d0d3394, type: 3}

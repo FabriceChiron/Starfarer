@@ -254,7 +254,8 @@ public class RaycastToRadar : MonoBehaviour
                     else
                     {
                         _spaceshipWarp.WarpTarget = _floatingTarget;
-                        _spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+                        //_spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+                        _spaceshipWarp.WarpTime = stellarBodyDistance * 5f;
                         _spaceshipWarp.CanWarp = true;
 
                         if (RadarWarpPrompt != null)
@@ -267,7 +268,8 @@ public class RaycastToRadar : MonoBehaviour
                 else
                 {
                     _spaceshipWarp.WarpTarget = _floatingTarget;
-                    _spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+                    //_spaceshipWarp.WarpTime = Mathf.Max(stellarBodyDistance, 3f);
+                    _spaceshipWarp.WarpTime = stellarBodyDistance * 5f;
                     _spaceshipWarp.CanWarp = true;
 
                     if (RadarWarpPrompt != null)
